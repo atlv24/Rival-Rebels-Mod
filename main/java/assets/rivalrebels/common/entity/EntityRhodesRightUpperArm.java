@@ -36,9 +36,9 @@ public class EntityRhodesRightUpperArm extends EntityRhodesPiece
 		super(w);
 	}
 	
-	public EntityRhodesRightUpperArm(World w, double x, double y, double z)
+	public EntityRhodesRightUpperArm(World w, double x, double y, double z, float scale, int color)
 	{
-		super(w, x, y, z);
+		super(w, x, y, z, scale, color);
 		health = 400;
 	}
 

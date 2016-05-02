@@ -27,6 +27,8 @@ import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.core.RivalRebelsDamageSource;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
 import assets.rivalrebels.common.explosion.Explosion;
+import assets.rivalrebels.common.packet.PacketDispatcher;
+import assets.rivalrebels.common.packet.RhodesPiecePacket;
 import assets.rivalrebels.common.tileentity.TileEntityLaptop;
 
 public class EntityRhodesPiece extends Entity
@@ -34,6 +36,8 @@ public class EntityRhodesPiece extends Entity
 	protected int health;
 	private float myaw;
 	private float mpitch;
+	public float scale = 1.0f;
+	public int color = 0;
 	
 	public EntityRhodesPiece(World w)
 	{
@@ -42,10 +46,12 @@ public class EntityRhodesPiece extends Entity
 		boundingBox.setBounds(-1.5, -1.5, -1.5, 1.5, 1.5, 1.5);
 	}
 	
-	public EntityRhodesPiece(World w, double x, double y, double z)
+	public EntityRhodesPiece(World w, double x, double y, double z, float s, int c)
 	{
 		this(w);
 		setPosition(x, y, z);
+		scale = s;
+		color = c;
 		myaw = (float) (rand.nextGaussian()*20);
 		mpitch = (float) (rand.nextGaussian()*20);
 		motionX = (float) (rand.nextGaussian()*0.75);
@@ -84,6 +90,7 @@ public class EntityRhodesPiece extends Entity
 	public void onUpdate()
 	{
 		super.onUpdate();
+		if (ticksExisted == 1) PacketDispatcher.packetsys.sendToAll(new RhodesPiecePacket(this));
 		ticksExisted++;
 		if (worldObj.rand.nextInt(Math.max(getMaxAge()*(RivalRebels.rhodesPromode?1:30) - ticksExisted, RivalRebels.rhodesPromode?100:1))==0)
 		{

@@ -36,9 +36,9 @@ public class EntityRhodesRightLowerLeg extends EntityRhodesPiece
 		super(w);
 	}
 	
-	public EntityRhodesRightLowerLeg(World w, double x, double y, double z)
+	public EntityRhodesRightLowerLeg(World w, double x, double y, double z, float scale, int color)
 	{
-		super(w, x, y, z);
+		super(w, x, y, z, scale, color);
 		health = 800;
 	}
 

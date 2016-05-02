@@ -66,192 +66,138 @@ public class BlockRhodesScaffold extends BlockAutoTemplate
 		super.build(world, x, y, z);
 		if (!world.isRemote)
 		{
+			int scale = 1;
+			if (world.getBlock(x, y-1, z) == RivalRebels.buildrhodes && world.getBlock(x, y-2, z) == RivalRebels.buildrhodes) scale = 2;
 			for (int i = 0; i < 32*9; i++)
 			{
 				int fy = +30-(i/9);
 				int fx1 = -8+(i%9);
 				int fx2 = +9-(i%9);
+				fy *= scale;
+				fx1 *= scale;
+				fx2 *= scale;
 				byte b = binimg[i];
-				if (b == 0)
+				if (scale == 1)
 				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
+					place(world,x,y,z,fy,fx1,b);
+					place(world,x,y,z,fy,fx2,b);
 				}
-				if (b == 1)
+				else if (scale == 2)
 				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-1, Blocks.air);
-					if (RivalRebels.prefillrhodes)
-					{
-						world.setBlock(x+fx1, y+fy, z, RivalRebels.conduit);
-						world.setBlock(x+fx2, y+fy, z, RivalRebels.conduit);
-					}
-					else
-					{
-						world.setBlock(x+fx1, y+fy, z, Blocks.air);
-						world.setBlock(x+fx2, y+fy, z, Blocks.air);
-					}
-					world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
-				}
-				if (b == 2)
-				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z, RivalRebels.rhodesactivator);
-					world.setBlock(x+fx2, y+fy, z, RivalRebels.rhodesactivator);
-					world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
-				}
-				if (b == 3)
-				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z-3, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+3, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z+3, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
-				}
-				if (b == 4)
-				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z-3, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z-2, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z-2, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z-1, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z-1, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+1, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z+1, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+2, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z+2, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+3, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z+3, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
-				}
-				if (b == 5)
-				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z-3, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z-2, RivalRebels.conduit);
-					world.setBlock(x+fx2, y+fy, z-2, RivalRebels.conduit);
-					world.setBlock(x+fx1, y+fy, z-1, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z-1, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+1, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z+1, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+2, RivalRebels.conduit);
-					world.setBlock(x+fx2, y+fy, z+2, RivalRebels.conduit);
-					world.setBlock(x+fx1, y+fy, z+3, RivalRebels.steel);
-					world.setBlock(x+fx2, y+fy, z+3, RivalRebels.steel);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
-				}
-				if (b == 6)
-				{
-					world.setBlock(x+fx1, y+fy, z-4, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z-4, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z-3, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z-3, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z-2, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z-2, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z-1, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z-1, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z+1, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z+1, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z+2, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z+2, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z+3, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z+3, RivalRebels.reactive);
-					world.setBlock(x+fx1, y+fy, z+4, RivalRebels.reactive);
-					world.setBlock(x+fx2, y+fy, z+4, RivalRebels.reactive);
-				}
-				if (b == 7)
-				{
-					world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-4, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z-1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+1, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+2, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+3, Blocks.air);
-					world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
-					world.setBlock(x+fx2, y+fy, z+4, Blocks.air);
+					place(world,x,y,z,fy,fx1,b);
+					place(world,x,y,z,fy,fx2,b);
+					place(world,x,y,z,fy,fx1+1,b);
+					place(world,x,y,z,fy,fx2+1,b);
+					place(world,x,y,z,fy+1,fx1,b);
+					place(world,x,y,z,fy+1,fx2,b);
+					place(world,x,y,z,fy+1,fx1+1,b);
+					place(world,x,y,z,fy+1,fx2+1,b);
 				}
 			}
 		}
 	}
 	
+	private void place(World world, int x, int y, int z, int fy, int fx1, byte b)
+	{
+		if (b == 0)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+		if (b == 1)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
+			if (RivalRebels.prefillrhodes) world.setBlock(x+fx1, y+fy, z, RivalRebels.conduit);
+			else world.setBlock(x+fx1, y+fy, z, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+		if (b == 2)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z, RivalRebels.rhodesactivator);
+			world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+		if (b == 3)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+3, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+		if (b == 4)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z-2, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z-1, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+1, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+2, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+3, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+		if (b == 5)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z-2, RivalRebels.conduit);
+			world.setBlock(x+fx1, y+fy, z-1, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+1, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+2, RivalRebels.conduit);
+			world.setBlock(x+fx1, y+fy, z+3, RivalRebels.steel);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+		if (b == 6)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z-3, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z-2, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z-1, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z+1, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z+2, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z+3, RivalRebels.reactive);
+			world.setBlock(x+fx1, y+fy, z+4, RivalRebels.reactive);
+		}
+		if (b == 7)
+		{
+			world.setBlock(x+fx1, y+fy, z-4, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z-1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+1, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+2, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+3, Blocks.air);
+			world.setBlock(x+fx1, y+fy, z+4, Blocks.air);
+		}
+	}
+
 	@SideOnly(Side.CLIENT)
 	IIcon	icon1;
 	@SideOnly(Side.CLIENT)

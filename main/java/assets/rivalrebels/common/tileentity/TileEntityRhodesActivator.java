@@ -47,44 +47,98 @@ public class TileEntityRhodesActivator extends TileEntityMachineBase
 		{
 			if (charge == 100)
 			{
-				TileEntity te = worldObj.getTileEntity(xCoord-3, yCoord-21, zCoord);
-				if (te instanceof TileEntityRhodesActivator)
+				// all 4 main charge points are valid
+				boolean buildrhodes = true;
+				boolean buildrhodes1 = true;
+				int x = xCoord;
+				int y = yCoord;
+				int z = zCoord;
+				for (int i = 0; i < 31*9; i++)
 				{
-					// all 4 main charge points are valid
-					boolean buildrhodes = true;
-					int x = xCoord - 2;
-					int y = yCoord + 2;
-					int z = zCoord;
+					byte b = BlockRhodesScaffold.binimg[i];
+					int fy = 2-(i/9);
+					int fx1 = -10+(i%9);
+					int fx2 = +7-(i%9);
+					Block s1 = worldObj.getBlock(x+fx1, y+fy, z);
+					Block s2 = worldObj.getBlock(x+fx2, y+fy, z);
+					if (b == 1 && (s1 != RivalRebels.conduit || s2 != RivalRebels.conduit))
+					{
+						buildrhodes = false;
+						break;
+					}
+					if (b == 2 && (s1 != RivalRebels.rhodesactivator || s2 != RivalRebels.rhodesactivator))
+					{
+						buildrhodes = false;
+						break;
+					}
+				}
+				if (!buildrhodes)
+				for (int i = 0; i < 31*9; i++)
+				{
+					byte b = BlockRhodesScaffold.binimg[i];
+					int fy = 2-(i/9);
+					int fx1 = -10+(i%9);
+					int fx2 = +7-(i%9);
+					fy *= 2;
+					fx1 *= 2;
+					fx2 *= 2;
+					Block s1 = worldObj.getBlock(x+fx1, y+fy, z);
+					Block s2 = worldObj.getBlock(x+fx2, y+fy, z);
+					if (b == 1 && (s1 != RivalRebels.conduit || s2 != RivalRebels.conduit))
+					{
+						buildrhodes1 = false;
+						break;
+					}
+					if (b == 2 && (s1 != RivalRebels.rhodesactivator || s2 != RivalRebels.rhodesactivator))
+					{
+						buildrhodes1 = false;
+						break;
+					}
+				}
+				if (buildrhodes)
+				{
 					for (int i = 0; i < 31*9; i++)
 					{
 						byte b = BlockRhodesScaffold.binimg[i];
-						if (b == 1 && (worldObj.getBlock(x-8+(i%9), y-(i/9), z) != RivalRebels.conduit || worldObj.getBlock(x+9-(i%9), y-(i/9), z) != RivalRebels.conduit))
+						if (b == 1)
 						{
-							buildrhodes = false;
-							break;
-						}
-						if (b == 2 && (worldObj.getBlock(x-8+(i%9), y-(i/9), z) != RivalRebels.rhodesactivator || worldObj.getBlock(x+9-(i%9), y-(i/9), z) != RivalRebels.rhodesactivator))
-						{
-							buildrhodes = false;
-							break;
+							int fy = 2-(i/9);
+							int fx1 = -10+(i%9);
+							int fx2 = +7-(i%9);
+							worldObj.setBlock(x+fx1, y+fy, z, Blocks.air);
+							worldObj.setBlock(x+fx2, y+fy, z, Blocks.air);
 						}
 					}
-					if (buildrhodes)
+					EntityRhodes er = new EntityRhodes(worldObj, x-1f, y-13, z, 1);
+					if (zCoord > this.z) er.bodyyaw = 180;
+					worldObj.spawnEntityInWorld(er);
+				}
+				else if (buildrhodes1)
+				{
+					for (int i = 0; i < 31*9; i++)
 					{
-						for (int i = 0; i < 31*9; i++)
+						byte b = BlockRhodesScaffold.binimg[i];
+						if (b == 1)
 						{
-							byte b = BlockRhodesScaffold.binimg[i];
-							if (b == 1)
-							{
-								int f = y-(i/9);
-								worldObj.setBlock(x-8+(i%9), f, z, Blocks.air);
-								worldObj.setBlock(x+9-(i%9), f, z, Blocks.air);
-							}
+							int fy = 2-(i/9);
+							int fx1 = -10+(i%9);
+							int fx2 = +7-(i%9);
+							fy *= 2;
+							fx1 *= 2;
+							fx2 *= 2;
+							worldObj.setBlock(x+fx1, y+fy, z, Blocks.air);
+							worldObj.setBlock(x+fx2, y+fy, z, Blocks.air);
+							worldObj.setBlock(x+fx1+1, y+fy, z, Blocks.air);
+							worldObj.setBlock(x+fx2+1, y+fy, z, Blocks.air);
+							worldObj.setBlock(x+fx1, y+fy+1, z, Blocks.air);
+							worldObj.setBlock(x+fx2, y+fy+1, z, Blocks.air);
+							worldObj.setBlock(x+fx1+1, y+fy+1, z, Blocks.air);
+							worldObj.setBlock(x+fx2+1, y+fy+1, z, Blocks.air);
 						}
-						EntityRhodes er = new EntityRhodes(worldObj, x+1f, y-15, z);
-						if (zCoord > this.z) er.bodyyaw = 180;
-						worldObj.spawnEntityInWorld(er);
 					}
+					EntityRhodes er = new EntityRhodes(worldObj, x-2f, y-26, z, 2);
+					if (zCoord > this.z) er.bodyyaw = 180;
+					worldObj.spawnEntityInWorld(er);
 				}
 				return power*0.5f;
 			}

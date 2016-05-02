@@ -36,9 +36,9 @@ public class EntityRhodesHead extends EntityRhodesPiece
 		super(w);
 	}
 	
-	public EntityRhodesHead(World w, double x, double y, double z)
+	public EntityRhodesHead(World w, double x, double y, double z, float scale, int color)
 	{
-		super(w, x, y, z);
+		super(w, x, y, z, scale, color);
 		health = 700;
 	}
 

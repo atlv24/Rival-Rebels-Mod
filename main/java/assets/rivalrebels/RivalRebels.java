@@ -10,7 +10,7 @@
  * http://RivalRebels.com/
  *******************************************************************************/
 // Created by Rodol AKA vertice
-// Version 1.6.4G
+// Version 1.7.10T
 
 package assets.rivalrebels;
 
@@ -254,7 +254,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"S";
+	public static final String				rrversion		= mcversion+"T";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()

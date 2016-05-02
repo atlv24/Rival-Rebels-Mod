@@ -188,9 +188,9 @@ public class RivalRebelsRound implements IMessage
 		while (f >= 1)
 		{
 			f--;
-			world.spawnEntityInWorld(new EntityRhodes(world, cSpawnx+Math.random()-0.5f, 170, cSpawnz+Math.random()-0.5f));
+			world.spawnEntityInWorld(new EntityRhodes(world, cSpawnx+Math.random()-0.5f, 170, cSpawnz+Math.random()-0.5f,1));
 		}
-		if (f > Math.random()) world.spawnEntityInWorld(new EntityRhodes(world, cSpawnx+Math.random()-0.5f, 170, cSpawnz+Math.random()-0.5f));
+		if (f > Math.random()) world.spawnEntityInWorld(new EntityRhodes(world, cSpawnx+Math.random()-0.5f, 170, cSpawnz+Math.random()-0.5f,1));
 		buildSpawn();
 		omegaHealth=RivalRebels.objectiveHealth;
 		sigmaHealth=RivalRebels.objectiveHealth;
@@ -342,9 +342,9 @@ public class RivalRebelsRound implements IMessage
 			omega.setAllowFriendlyFire(false);
 			sigma.setAllowFriendlyFire(false);
 			ScoreObjective kills = scrb.addScoreObjective("kills", IScoreObjectiveCriteria.playerKillCount);
-			if (RivalRebels.scoreboardenabled)
 			scrb.func_96530_a(0, kills);
 			ScoreObjective deaths = scrb.addScoreObjective("deaths", IScoreObjectiveCriteria.deathCount);
+			if (RivalRebels.scoreboardenabled)
 			scrb.func_96530_a(1, deaths);
 			deaths.setDisplayName("§8R§7I§fV§7A§8L R§7E§fBE§7L§8S");
 			} catch(Exception e) {} //just in case teams already exist etc

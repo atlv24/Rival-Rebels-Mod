@@ -1241,7 +1241,7 @@ public class SteelBlockRenderer implements ISimpleBlockRenderingHandler
 	@Override
 	public int getRenderId()
 	{
-		return 100;
+		return 485;
 	}
 	
 	@Override

@@ -87,6 +87,7 @@ import assets.rivalrebels.common.tileentity.TileEntityRhodesActivator;
 public class EntityRhodes extends Entity
 {
 	public int health = RivalRebels.rhodesHealth;
+	public float scale = 1;
 	private int damageUntilWake = 100;
 	private static HashSet blocklist = new HashSet();
 	static {
@@ -167,6 +168,7 @@ public class EntityRhodes extends Entity
 	public static final int ecshield = 8+recharge;
 	public static final int maxenergy = 800;
 	public int energy = maxenergy;
+	public int b2energy = 0;
 	public int nukecount = 8;
 	public int rocketcount = 5000;
 	public int flamecount = 10000;
@@ -181,6 +183,7 @@ public class EntityRhodes extends Entity
 	public boolean stop = true;
 	public boolean guard = false;
 	public boolean b2spirit = false;
+	public boolean freeze = false;
 	public int plasmacharge = 0;
 	public int tickssincenuke = 10;
 	public static String texloc;
@@ -192,7 +195,7 @@ public class EntityRhodes extends Entity
 	{
 		super(w);
 		ignoreFrustumCheck = true;
-		boundingBox.setBounds(-5, -15, -5, 5, 15, 5);
+		boundingBox.setBounds(-5*scale, -15*scale, -5*scale, 5*scale, 15*scale, 5*scale);
 		noClip = true;
 		entityCollisionReduction = 100;
 		yOffset = 0;
@@ -224,9 +227,16 @@ public class EntityRhodes extends Entity
 		flamecount += flamecount * random.nextFloat() * RivalRebels.rhodesRandom;
 	}
 	
-	public EntityRhodes(World w, double x, double y, double z)
+	public EntityRhodes(World w, double x, double y, double z, float s)
 	{
 		this(w);
+		scale = s;
+		if (scale >= 2.0)
+		{
+			nukecount *= 0.25;
+			rocketcount *= 0.004;
+		}
+		boundingBox.setBounds(-5*scale, -15*scale, -5*scale, 5*scale, 15*scale, 5*scale);
 		setPosition(x, y, z);
 		if (!worldObj.isRemote) PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING " + getName() + " RivalRebels.tsar.armed"));
 	}
@@ -258,7 +268,8 @@ public class EntityRhodes extends Entity
 			float rightlegheight = 7.26756f
 					+ (MathHelper.cos((rightthighpitch+11.99684962f)*0.01745329252f) * 7.331691240f)
 					+ (MathHelper.cos((rightthighpitch+rightshinpitch-12.2153067f)*0.01745329252f) * 8.521366426f);
-
+			leftlegheight *= scale;
+			rightlegheight *= scale;
 			float bodyY = (leftlegheight > rightlegheight) ? leftlegheight : rightlegheight;
 			if (!worldObj.isRemote)
 			{
@@ -277,7 +288,7 @@ public class EntityRhodes extends Entity
 			
 			if (rider!=null)
 			{
-				rider.setPosition(((posX+syaw*5.5) - rider.posX) * 0.33f + rider.posX, ((posY + bodyY - 10 - (worldObj.isRemote?0:rider.getEyeHeight())) - rider.posY) * 0.33f + rider.posY, ((posZ+cyaw*5.5) - rider.posZ) * 0.33f + rider.posZ);
+				rider.setPosition(((posX+syaw*5.5*scale) - rider.posX) * 0.33f + rider.posX, ((posY + bodyY - 10*scale - (worldObj.isRemote?0:rider.getEyeHeight())) - rider.posY) * 0.33f + rider.posY, ((posZ+cyaw*5.5*scale) - rider.posZ) * 0.33f + rider.posZ);
 				rider.onGround = true;
 				if (worldObj.isRemote) RivalRebels.round.setInvisible(rider);
 				rider.setInWeb();
@@ -294,9 +305,9 @@ public class EntityRhodes extends Entity
 						offset = 0;
 					}
 				}
-				passenger1.setPosition(posX+cyaw*6.5f,
-										posY + bodyY - 6.38f - offset,
-										posZ-syaw*6.5f);
+				passenger1.setPosition(posX+cyaw*6.5f*scale,
+										posY + bodyY - 6.38f*scale - offset,
+										posZ-syaw*6.5f*scale);
 				passenger1.onGround = true;
 				passenger1.setInWeb();
 			}
@@ -310,9 +321,9 @@ public class EntityRhodes extends Entity
 						offset = 0;
 					}
 				}
-				passenger2.setPosition(posX-cyaw*6.5f,
-										posY + bodyY - 6.38f - offset,
-										posZ+syaw*6.5f);
+				passenger2.setPosition(posX-cyaw*6.5f*scale,
+										posY + bodyY - 6.38f*scale - offset,
+										posZ+syaw*6.5f*scale);
 				passenger2.onGround = true;
 				passenger2.setInWeb();
 			}
@@ -331,16 +342,16 @@ public class EntityRhodes extends Entity
 				{
 					float syaw = MathHelper.sin(bodyyaw * 0.01745329252f);
 					float cyaw = MathHelper.cos(bodyyaw * 0.01745329252f);
-					worldObj.spawnEntityInWorld(new EntityRhodesHead(worldObj, posX, posY+13, posZ));
-					worldObj.spawnEntityInWorld(new EntityRhodesTorso(worldObj, posX, posY+7, posZ));
-					worldObj.spawnEntityInWorld(new EntityRhodesLeftUpperArm(worldObj, posX+cyaw*6.4, posY+7, posZ+syaw*6.4));
-					worldObj.spawnEntityInWorld(new EntityRhodesRightUpperArm(worldObj, posX-cyaw*6.4, posY+7, posZ-syaw*6.4));
-					worldObj.spawnEntityInWorld(new EntityRhodesLeftLowerArm(worldObj, posX+cyaw*6.4, posY+3, posZ+syaw*6.4));
-					worldObj.spawnEntityInWorld(new EntityRhodesRightLowerArm(worldObj, posX-cyaw*6.4, posY+3, posZ-syaw*6.4));
-					worldObj.spawnEntityInWorld(new EntityRhodesLeftUpperLeg(worldObj, posX+cyaw*3, posY-3, posZ+syaw*3));
-					worldObj.spawnEntityInWorld(new EntityRhodesRightUpperLeg(worldObj, posX-cyaw*3, posY-3, posZ-syaw*3));
-					worldObj.spawnEntityInWorld(new EntityRhodesLeftLowerLeg(worldObj, posX+cyaw*3, posY-10, posZ+syaw*3));
-					worldObj.spawnEntityInWorld(new EntityRhodesRightLowerLeg(worldObj, posX-cyaw*3, posY-10, posZ-syaw*3));
+					worldObj.spawnEntityInWorld(new EntityRhodesHead(worldObj, posX, posY+13*scale, posZ, scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesTorso(worldObj, posX, posY+7*scale, posZ, scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesLeftUpperArm(worldObj, posX+cyaw*6.4*scale, posY+7*scale, posZ+syaw*6.4*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesRightUpperArm(worldObj, posX-cyaw*6.4*scale, posY+7*scale, posZ-syaw*6.4*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesLeftLowerArm(worldObj, posX+cyaw*6.4*scale, posY+3*scale, posZ+syaw*6.4*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesRightLowerArm(worldObj, posX-cyaw*6.4*scale, posY+3*scale, posZ-syaw*6.4*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesLeftUpperLeg(worldObj, posX+cyaw*3*scale, posY-3*scale, posZ+syaw*3*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesRightUpperLeg(worldObj, posX-cyaw*3*scale, posY-3*scale, posZ-syaw*3*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesLeftLowerLeg(worldObj, posX+cyaw*3*scale, posY-10*scale, posZ+syaw*3*scale,scale, colorType));
+					worldObj.spawnEntityInWorld(new EntityRhodesRightLowerLeg(worldObj, posX-cyaw*3*scale, posY-10*scale, posZ-syaw*3*scale,scale, colorType));
 				}
 			}
 			health--;
@@ -409,14 +420,15 @@ public class EntityRhodes extends Entity
 				+ (MathHelper.sin((leftthighpitch+leftshinpitch-12.2153067f)*0.01745329252f) * 8.521366426f);
 		float rightlegstride = (MathHelper.sin((rightthighpitch+11.99684962f)*0.01745329252f) * 7.331691240f)
 				+ (MathHelper.sin((rightthighpitch+rightshinpitch-12.2153067f)*0.01745329252f) * 8.521366426f);
+		leftlegstride *= scale;
+		rightlegstride *= scale;
 		
-		
-		float lpx = (float)posX - syaw * leftlegstride + cyaw * 3.6846f;
-		float lpy = (float)posY-15 + bodyY - leftlegheight;
-		float lpz = (float)posZ - cyaw * leftlegstride - syaw * 3.6846f;
-		float rpx = (float)posX - syaw * rightlegstride - cyaw * 3.6846f;
-		float rpy = (float)posY-15 + bodyY - rightlegheight;
-		float rpz = (float)posZ - cyaw * rightlegstride + syaw * 3.6846f;
+		float lpx = (float)posX - syaw * leftlegstride + cyaw * 3.6846f*scale;
+		float lpy = (float)posY-15*scale + bodyY - leftlegheight;
+		float lpz = (float)posZ - cyaw * leftlegstride - syaw * 3.6846f*scale;
+		float rpx = (float)posX - syaw * rightlegstride - cyaw * 3.6846f*scale;
+		float rpy = (float)posY-15*scale + bodyY - rightlegheight;
+		float rpz = (float)posZ - cyaw * rightlegstride + syaw * 3.6846f*scale;
 		int ilpx = (int)lpx;
 		int ilpy = (int)lpy;
 		int ilpz = (int)lpz;
@@ -487,7 +499,7 @@ public class EntityRhodes extends Entity
 				worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+2, Blocks.air);
 			}
 			int px = (int) posX;
-			int py = (int) posY-5 + (ticksExisted%20);
+			int py = (int) (posY-5*scale + (ticksExisted%20)*scale);
 			int pz = (int) posZ;
 			for (int x = -4; x < 5; x++)
 			{
@@ -562,12 +574,12 @@ public class EntityRhodes extends Entity
 		{
 			Entity e = (Entity) iter.next();
 			if (e == rider || e == passenger1 || e == passenger2) continue;
-			double bbd = (e.width+10)*0.5;
-			double bbh = (e.height+30)*0.5;
+			double bbd = (e.width+10*scale)*0.5;
+			double bbh = (e.height+30*scale)*0.5;
 			if (e instanceof EntityRhodes)
 			{
-				bbd = 10;
-				bbh = 30;
+				bbd = 10 * (((EntityRhodes)e).scale+scale) * 0.5;
+				bbh = 30 * (((EntityRhodes)e).scale+scale) * 0.5;
 			}
 			double dist = (e.posX-posX)*(e.posX-posX)+(e.posZ-posZ)*(e.posZ-posZ);
 			if ((ac == 0 || ac == 1 || ac == 11 || !RivalRebels.rhodesAI) && e instanceof EntityPlayer && dist < bbd*bbd*0.25f && e.posY < posY+bbh+1 && e.posY > posY-bbh+1)
@@ -773,20 +785,25 @@ public class EntityRhodes extends Entity
 				endz = hit.zCoord;
 			}
 			
-			if (b2spirit && tickssincenuke >= 40 && nukecount > 0 && health > 2000)
+			/*if (b2spirit && !freeze && b2energy == 0)
 			{
+				freeze = true;
+				worldObj.spawnEntityInWorld(new EntityB2Spirit(this));
+			}*/
+			if (b2spirit && tickssincenuke >= 40 && nukecount > 0 && health > 2000)
+ 			{
 				tickssincenuke = 0;
 				nukecount--;
 				health -= 1000;
 				worldObj.spawnEntityInWorld(new EntityB2Spirit(worldObj, endx, endy, endz, posX, posY, posZ, null, false, false));
-			}
+ 			}
 			
 			if (laser)
 			{
 				laserOn = (byte)(worldObj.rand.nextInt(2)+1);
 				RivalRebelsSoundPlayer.playSound(this, 22, 1, 30f, 0f);
 				float x = (float) (posX - endx);
-				float y = (float) (posY + 13 - endy);
+				float y = (float) (posY + 13*scale - endy);
 				float z = (float) (posZ - endz);
 				float pitch = (float) (720f-atan2((float)Math.sqrt(x*x+z*z)*(syaw*x+cyaw*z>0?-1f:1f), y))%360-270;
 				
@@ -794,12 +811,12 @@ public class EntityRhodes extends Entity
 				
 				if (Math.abs(headpitch-pitch) < 10f && ticksExisted % 3 == 0)
 				{
-					range = 70;
-					Vec3 start = Vec3.createVectorHelper(posX, posY+13, posZ);
+					range = 70*scale;
+					Vec3 start = Vec3.createVectorHelper(posX, posY+13*scale, posZ);
 					Vec3 end = Vec3.createVectorHelper(0, 0, range);
 					end.rotateAroundX(-headpitch / 180.0F * (float) Math.PI);
 					end.rotateAroundY(bodyyaw / 180.0F * (float) Math.PI);
-					end = end.addVector(posX, posY+13, posZ);
+					end = end.addVector(posX, posY+13*scale, posZ);
 					Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this,AxisAlignedBB.getBoundingBox(Math.min(start.xCoord,end.xCoord)-5,
 																													Math.min(start.yCoord,end.yCoord)-5,
 																													Math.min(start.zCoord,end.zCoord)-5,
@@ -819,7 +836,7 @@ public class EntityRhodes extends Entity
 						{
 							Vec3 entity = Vec3.createVectorHelper(e.posX, e.posY, e.posZ);
 							double bbx = 1;
-							if (e instanceof EntityRhodes) bbx = 20;
+							if (e instanceof EntityRhodes) bbx = 20 * ((EntityRhodes)e).scale;
 							if (entity.subtract(start).crossProduct(entity.subtract(end)).squareDistanceTo(0, 0, 0) < 10000 * bbx)
 							{
 								e.attackEntityFrom(RivalRebelsDamageSource.laserburst, 24);
@@ -945,9 +962,9 @@ public class EntityRhodes extends Entity
 			
 			if (flame || prevflame)
 			{
-				float px = (float)posX-cyaw*6.4f;
-				float py = (float)posY+6.26759f;
-				float pz = (float)posZ+syaw*6.4f;
+				float px = (float)posX-cyaw*6.4f*scale;
+				float py = (float)posY+6.26759f*scale;
+				float pz = (float)posZ+syaw*6.4f*scale;
 				float x = px - (float)endx;
 				float y = py - (float)endy;
 				float z = pz - (float)endz;
@@ -968,7 +985,7 @@ public class EntityRhodes extends Entity
 							if (f > 1.0F) f = 1.0F;
 							f+=0.7f;
 							RivalRebelsSoundPlayer.playSound(this, 16, 2, 1, 0.5f);
-							float cp = -f/(float)Math.sqrt(x*x+y*y+z*z);
+							float cp = -f/(float)Math.sqrt(x*x+y*y+z*z)*scale;
 							x*=cp;
 							y*=cp;
 							z*=cp;
@@ -994,18 +1011,18 @@ public class EntityRhodes extends Entity
 						y*=cp;
 						z*=cp;
 						worldObj.spawnEntityInWorld(new EntityFlameBall(worldObj, px, py, pz, 
-								x, y, z, 8+Math.random()*8, 0.4f));
+								x, y, z, (8+Math.random()*8)*scale, 0.4f));
 						worldObj.spawnEntityInWorld(new EntityFlameBall(worldObj, px, py, pz, 
-								x, y, z, 8+Math.random()*8, 0.4f));
+								x, y, z, (8+Math.random()*8)*scale, 0.4f));
 					}
 				}
 			}
 			tickssincenuke++;
 			if (rocket || bomb)
 			{
-				float px = (float)posX+cyaw*6.4f;
-				float py = (float)posY+6.26759f;
-				float pz = (float)posZ-syaw*6.4f;
+				float px = (float)posX+cyaw*6.4f*scale;
+				float py = (float)posY+6.26759f*scale;
+				float pz = (float)posZ-syaw*6.4f*scale;
 				float x = px - (float)endx;
 				float y = py - (float)endy;
 				float z = pz - (float)endz;
@@ -1024,12 +1041,16 @@ public class EntityRhodes extends Entity
 							nukecount--;
 							RivalRebelsSoundPlayer.playSound(this, 23, 10, 1f);
 							float cp = -0.5f/(float)Math.sqrt(x*x+y*y+z*z);
-							worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
-								x*cp, y*cp, z*cp));
+							if (scale >= 2.0)
+								worldObj.spawnEntityInWorld(new EntityTsar(worldObj, px, py, pz, 
+										x*cp*5.0f, y*cp*5.0f, z*cp*5.0f));
+							else
+								worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
+										x*cp, y*cp, z*cp));
 						}
 					}
 					
-					if (rocket && ticksExisted-lastshot > ((shotstaken == 21)?80:5))
+					if (rocket && ticksExisted-lastshot > ((scale >= 2.0)?30:((shotstaken == 21)?80:5)))
 					{
 						rocketcount--;
 						lastshot = ticksExisted;
@@ -1037,8 +1058,13 @@ public class EntityRhodes extends Entity
 						shotstaken++;
 						RivalRebelsSoundPlayer.playSound(this, 23, 10, 1f);
 						float cp = -0.5f/(float)Math.sqrt(x*x+y*y+z*z);
-						worldObj.spawnEntityInWorld(new EntitySeekB83(worldObj, px, py, pz, 
-							x*cp, y*cp, z*cp));
+						
+						if (scale >= 2.0)
+							worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
+									x*cp, y*cp, z*cp));
+						else
+							worldObj.spawnEntityInWorld(new EntitySeekB83(worldObj, px, py, pz, 
+									x*cp, y*cp, z*cp));
 					}
 				}
 			}
@@ -1360,8 +1386,8 @@ public class EntityRhodes extends Entity
 	private int walkstate = 0;
 	private void doWalkingAnimation(float syaw, float cyaw)
 	{
-		motionX = syaw * 0.125f;
-		motionZ = cyaw * 0.125f;
+		motionX = syaw * 0.125f*scale;
+		motionZ = cyaw * 0.125f*scale;
 		switch (walkstate)
 		{
 		case 0: {
@@ -1516,9 +1542,10 @@ public class EntityRhodes extends Entity
 	boolean nuke = false;
 	private void shootRocketsAtBestTarget(float syaw, float cyaw)
 	{
-		float px = (float)posX+cyaw*6.4f;
-		float py = (float)posY+6.26759f;
-		float pz = (float)posZ+syaw*6.4f;
+		if (rocketcount < 0) return;
+		float px = (float)posX+cyaw*6.4f*scale;
+		float py = (float)posY+6.26759f*scale;
+		float pz = (float)posZ+syaw*6.4f*scale;
 		TileEntity te = null;
 		lastrockettargetting--;
 		if (lastrockettargetting<0||lastRocketTarget==null||lastRocketTarget.isDead || (lastRocketTarget instanceof EntityLivingBase && ((EntityLivingBase)lastRocketTarget).getHealth()<=0))
@@ -1532,16 +1559,16 @@ public class EntityRhodes extends Entity
 				float dot = (cyaw * dx + syaw * dz);
 				if (dot*Math.abs(dot) > -0.25 * (dx*dx+dz*dz))
 				{
-					float dy = ((float)lastRocketTarget.posY-(float)posY-6.2f);
+					float dy = ((float)lastRocketTarget.posY-(float)posY-6.2f*scale);
 					float dist = dx*dx+dy*dy+dz*dz;
-					if (dist < 100*100 && rayTraceBlocks(px, py, pz, (float)lastRocketTarget.posX, (float)lastRocketTarget.posY+lastRocketTarget.height/2f, (float)lastRocketTarget.posZ) == null)
+					if (dist < 100*100*scale*scale && rayTraceBlocks(px, py, pz, (float)lastRocketTarget.posX, (float)lastRocketTarget.posY+lastRocketTarget.height/2f, (float)lastRocketTarget.posZ) == null)
 					{
 						priority = getPriority(lastRocketTarget)-(float)Math.sqrt(dist)+10;
 					}
 				}
 			}
 			if (priority <= 0) lastRocketTarget = null;
-			Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(px-100, py-100, pz-100, px+100, py+100, pz+100)).iterator();
+			Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(px-100*scale, py-100*scale, pz-100*scale, px+100*scale, py+100*scale, pz+100*scale)).iterator();
 			while(iter.hasNext())
 			{
 				Entity e = (Entity) iter.next();
@@ -1563,7 +1590,7 @@ public class EntityRhodes extends Entity
 					{
 						float dy = (float)e.posY-py;
 						float dist = dx*dx+dy*dy+dz*dz;
-						if (dist < 100*100)
+						if (dist < 100*100*scale*scale)
 						{
 							float prio = getPriority(e)-(float)Math.sqrt(dist);
 							if (prio > priority && rayTraceBlocks(px, py, pz, (float)e.posX, (float)e.posY+e.height/2f, (float)e.posZ) == null)
@@ -1625,15 +1652,20 @@ public class EntityRhodes extends Entity
 				else pointing = false;
 			}
 			
-			if (pointing && ticksExisted-lastshot > ((shotstaken == 21)?80:5))
+			if (pointing && ticksExisted-lastshot > ((scale >= 2.0)?30:((shotstaken == 21)?80:5)))
 			{
+				rocketcount--;
 				lastshot = ticksExisted;
 				if (shotstaken == 21) shotstaken = 0;
 				shotstaken++;
 				RivalRebelsSoundPlayer.playSound(this, 23, 10, 1f);
 				float cp = -0.5f/(float)Math.sqrt(x*x+y*y+z*z);
-				worldObj.spawnEntityInWorld(new EntitySeekB83(worldObj, px, py, pz, 
-					x*cp, y*cp, z*cp));
+				if (scale >= 2.0)
+					worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
+							x*cp, y*cp, z*cp));
+				else
+					worldObj.spawnEntityInWorld(new EntitySeekB83(worldObj, px, py, pz, 
+							x*cp, y*cp, z*cp));
 			}
 		}
 		else if (lastRocketTarget != null && !lastRocketTarget.isDead)
@@ -1663,21 +1695,30 @@ public class EntityRhodes extends Entity
 				{
 					RivalRebelsSoundPlayer.playSound(this, 23, 10, 1f);
 					float cp = -0.5f/(float)Math.sqrt(x*x+y*y+z*z);
-					worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
-						x*cp, y*cp, z*cp));
+					if (scale >= 2.0)
+						worldObj.spawnEntityInWorld(new EntityTsar(worldObj, px, py, pz, 
+								x*cp*5.0f, y*cp*5.0f, z*cp*5.0f));
+					else
+						worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
+								x*cp, y*cp, z*cp));
 				}
 			}
 			else
 			{
-				if (pointing && ticksExisted-lastshot > ((shotstaken == 21)?80:5))
+				if (pointing && ticksExisted-lastshot > ((scale >= 2.0)?30:((shotstaken == 21)?80:5)))
 				{
+					rocketcount--;
 					lastshot = ticksExisted;
 					if (shotstaken == 21) shotstaken = 0;
 					shotstaken++;
 					RivalRebelsSoundPlayer.playSound(this, 23, 10, 1f);
 					float cp = -0.5f/(float)Math.sqrt(x*x+y*y+z*z);
-					worldObj.spawnEntityInWorld(new EntitySeekB83(worldObj, px, py, pz, 
-						x*cp, y*cp, z*cp));
+					if (scale >= 2.0)
+						worldObj.spawnEntityInWorld(new EntityB83NoShroom(worldObj, px, py, pz, 
+								x*cp, y*cp, z*cp));
+					else
+						worldObj.spawnEntityInWorld(new EntitySeekB83(worldObj, px, py, pz, 
+								x*cp, y*cp, z*cp));
 				}
 			}
 		}
@@ -1687,9 +1728,9 @@ public class EntityRhodes extends Entity
 	private int lastflametargetting = 0;
 	private void shootFlameAtBestTarget(float syaw, float cyaw)
 	{
-		float px = (float)posX-cyaw*6.4f;
-		float py = (float)posY+6.26759f;
-		float pz = (float)posZ-syaw*6.4f;
+		float px = (float)posX-cyaw*6.4f*scale;
+		float py = (float)posY+6.26759f*scale;
+		float pz = (float)posZ-syaw*6.4f*scale;
 		lastflametargetting--;
 		if (lastflametargetting<0||lastFlameTarget==null||lastFlameTarget.isDead || (lastFlameTarget instanceof EntityLivingBase && ((EntityLivingBase)lastFlameTarget).getHealth()<=0))
 		{
@@ -1704,14 +1745,14 @@ public class EntityRhodes extends Entity
 				{
 					float dy = ((float)lastFlameTarget.posY-(float)posY-6.2f);
 					float dist = dx*dx+dy*dy+dz*dz;
-					if (dist < 40*40 && rayTraceBlocks(px, py, pz, (float)lastFlameTarget.posX, (float)lastFlameTarget.posY+lastFlameTarget.height, (float)lastFlameTarget.posZ) == null)
+					if (dist < 40*40*scale*scale && rayTraceBlocks(px, py, pz, (float)lastFlameTarget.posX, (float)lastFlameTarget.posY+lastFlameTarget.height, (float)lastFlameTarget.posZ) == null)
 					{
 						priority = getPriority(lastFlameTarget)-(float)Math.sqrt(dist)+10;
 					}
 				}
 			}
 			if (priority <= 0) lastFlameTarget = null;
-			Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(px-40, py-40, pz-40, px+40, py+40, pz+40)).iterator();
+			Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(px-40*scale, py-40*scale, pz-40*scale, px+40*scale, py+40*scale, pz+40*scale)).iterator();
 			while(iter.hasNext())
 			{
 				Entity e = (Entity) iter.next();
@@ -1733,7 +1774,7 @@ public class EntityRhodes extends Entity
 					{
 						float dy = (float)e.posY-py;
 						float dist = dx*dx+dy*dy+dz*dz;
-						if (dist < 40*40)
+						if (dist < 40*40*scale*scale)
 						{
 							float prio = getPriority(e)-(float)Math.sqrt(dist);
 							if (prio > priority && rayTraceBlocks(px, py, pz, (float)e.posX, (float)e.posY+e.height, (float)e.posZ) == null)
@@ -1776,9 +1817,9 @@ public class EntityRhodes extends Entity
 				y*=cp;
 				z*=cp;
 				worldObj.spawnEntityInWorld(new EntityFlameBall(worldObj, px, py, pz, 
-						x, y, z, 8+Math.random()*8, 0.4f));
+						x, y, z, (8+Math.random()*8)*scale, 0.4f));
 				worldObj.spawnEntityInWorld(new EntityFlameBall(worldObj, px, py, pz, 
-						x, y, z, 8+Math.random()*8, 0.4f));
+						x, y, z, (8+Math.random()*8)*scale, 0.4f));
 			}
 		}
 	}
@@ -1806,7 +1847,7 @@ public class EntityRhodes extends Entity
 			}
 			if (priority <= 0) lastLaserTarget = null;
 
-			Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX-70, posY+13-70, posZ-70, posX+70, posY+13+70, posZ+70)).iterator();
+			Iterator iter = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX-70*scale, posY+13*scale-70*scale, posZ-70*scale, posX+70*scale, posY+13*scale+70*scale, posZ+70*scale)).iterator();
 			while(iter.hasNext())
 			{
 				Entity e = (Entity) iter.next();
@@ -1827,7 +1868,7 @@ public class EntityRhodes extends Entity
 					{
 						float y = (float) (e.posY-13-posY);
 						float dist = x*x+y*y+z*z;
-						if (dist < 70*70)
+						if (dist < 70*70*scale*scale)
 						{
 							if (y*Math.abs(y)>-0.64f*dist)
 							{
@@ -2135,6 +2176,7 @@ public class EntityRhodes extends Entity
 		nbt.setInteger("flamecount", flamecount);
 		nbt.setInteger("nukecount", nukecount);
 		nbt.setInteger("texfolder", itexfolder);
+		nbt.setFloat("scale", scale);
 		if (itexfolder != -1) nbt.setString("texloc", itexloc);
 	}
 	
@@ -2164,6 +2206,7 @@ public class EntityRhodes extends Entity
 		flamecount = nbt.getInteger("flamecount");
 		nukecount = nbt.getInteger("nukecount");
 		itexfolder = nbt.getInteger("texfolder");
+		scale = nbt.getFloat("scale");
 		if (itexfolder != -1) itexloc = nbt.getString("texloc");
 	}
 	

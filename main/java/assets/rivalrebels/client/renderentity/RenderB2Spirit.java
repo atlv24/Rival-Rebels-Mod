@@ -48,7 +48,7 @@ public class RenderB2Spirit extends Render
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		GL11.glRotatef(b2spirit.rotationYaw, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(b2spirit.rotationPitch, 0.0F, 0.0F, 1.0F);
+		GL11.glRotatef(b2spirit.rotationPitch, 1.0F, 0.0F, 0.0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		md.render();

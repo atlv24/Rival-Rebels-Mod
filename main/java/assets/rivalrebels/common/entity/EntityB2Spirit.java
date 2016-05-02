@@ -39,6 +39,7 @@ public class EntityB2Spirit extends Entity
 	public boolean 				carpet	= false;
 	public static float 		radius = 80;
 	public static float 		range = 20;
+	public EntityRhodes			rhodeswing = null;
 	
 	public EntityB2Spirit(World par1World)
 	{
@@ -74,6 +75,16 @@ public class EntityB2Spirit extends Entity
 		}
 		if (!dropall && bomb > 1) bomb = 1;
 		if (!worldObj.isRemote) startBombRun(tz-z1, x1-tx);
+	}
+	
+	public EntityB2Spirit(EntityRhodes r)
+	{
+		this(r.worldObj);
+		ticksUntilBomb = 1000000;
+		rhodeswing = r;
+		posX = r.posX - r.motionX * 500;
+		posY = 120;
+		posZ = r.posZ - r.motionZ * 500;
 	}
 	
 	@Override
@@ -112,6 +123,25 @@ public class EntityB2Spirit extends Entity
 		this.lastTickPosZ = this.posZ;
 		
 		if (Math.random() > 0.8f) RivalRebelsSoundPlayer.playSound(this, 8, 0, 4.5f, 1.3f);
+		
+		if (rhodeswing != null)
+		{
+			motionX = rhodeswing.posX - posX;
+			motionY = rhodeswing.posY - posY;
+			motionZ = rhodeswing.posZ - posZ;
+			double t = Math.sqrt(motionX*motionX+motionY*motionY+motionZ*motionZ);
+			motionX /= t*10;
+			motionY /= t;
+			motionZ /= t*10;
+			rotationYaw = rhodeswing.rotationYaw;
+			rotationPitch = (float) (Math.min(t,90.0));
+			if (t < 25.0)
+			{
+				rhodeswing.b2energy = 100;
+				rhodeswing.freeze = false;
+				setDead();
+			}
+		}
 		
 		if (ticksUntilBomb <= range && ticksUntilBomb >= -range && !worldObj.isRemote)
 		{
@@ -167,31 +197,34 @@ public class EntityB2Spirit extends Entity
 		posX += motionX;
 		posY += motionY;
 		posZ += motionZ;
-		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
-		
-		for (this.rotationPitch = (float) (Math.atan2(this.motionY, var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+		if (rhodeswing == null)
 		{
-			;
+			float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+			
+			for (this.rotationPitch = (float) (Math.atan2(this.motionY, var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+			{
+				;
+			}
+			
+			while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
+			{
+				this.prevRotationPitch += 360.0F;
+			}
+			
+			while (this.rotationYaw - this.prevRotationYaw < -180.0F)
+			{
+				this.prevRotationYaw -= 360.0F;
+			}
+			
+			while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
+			{
+				this.prevRotationYaw += 360.0F;
+			}
+			
+			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
+			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 		}
-		
-		while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
-		{
-			this.prevRotationPitch += 360.0F;
-		}
-		
-		while (this.rotationYaw - this.prevRotationYaw < -180.0F)
-		{
-			this.prevRotationYaw -= 360.0F;
-		}
-		
-		while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
-		{
-			this.prevRotationYaw += 360.0F;
-		}
-		
-		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 	
@@ -254,13 +287,13 @@ public class EntityB2Spirit extends Entity
 	@Override
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		
+		par1NBTTagCompound.setBoolean("carpet", carpet);
 	}
 	
 	@Override
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		
+		carpet = par1NBTTagCompound.getBoolean("carpet");
 	}
 	
 	@Override

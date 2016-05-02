@@ -32,6 +32,7 @@ public class RhodesPacket implements IMessage
 	boolean	fire		= false;
 	boolean forcefield = false;
 	boolean plasma = false;
+	float scale = 0;
 	float headyaw = 0;
 	float headpitch = 0;
 	float leftarmyaw = 0;
@@ -45,6 +46,7 @@ public class RhodesPacket implements IMessage
 	int health;
 	byte laserOn;
 	byte colorType;
+	int b2energy;
 	int riderid;
 	int pass1id;
 	int pass2id;
@@ -80,6 +82,7 @@ public class RhodesPacket implements IMessage
 		laserOn = er.laserOn;
 		forcefield = er.forcefield;
 		colorType = er.colorType;
+		b2energy = er.b2energy;
 		riderid = er.rider != null ? er.rider.getEntityId() : -1;
 		pass1id = er.passenger1 != null ? er.passenger1.getEntityId() : -1;
 		pass2id = er.passenger2 != null ? er.passenger2.getEntityId() : -1;
@@ -89,6 +92,7 @@ public class RhodesPacket implements IMessage
 		nukecount = er.nukecount;
 		texloc = er.itexloc;
 		texfolder = er.itexfolder;
+		scale = er.scale;
 	}
 	
 	@Override
@@ -112,9 +116,11 @@ public class RhodesPacket implements IMessage
 		health = buf.readShort();
 		laserOn = buf.readByte();
 		colorType = buf.readByte();
+		b2energy = buf.readShort();
 		riderid = buf.readInt();
 		pass1id = buf.readInt();
 		pass2id = buf.readInt();
+		scale = buf.readFloat();
 		rocketcount = buf.readShort();
 		energy = buf.readShort();
 		flamecount = buf.readShort();
@@ -155,9 +161,11 @@ public class RhodesPacket implements IMessage
 		buf.writeShort(health);
 		buf.writeByte(laserOn);
 		buf.writeByte(colorType);
+		buf.writeShort(b2energy);
 		buf.writeInt(riderid);
 		buf.writeInt(pass1id);
 		buf.writeInt(pass2id);
+		buf.writeFloat(scale);
 		buf.writeShort(rocketcount);
 		buf.writeShort(energy);
 		buf.writeShort(flamecount);
@@ -222,6 +230,7 @@ public class RhodesPacket implements IMessage
 				er.laserOn = m.laserOn;
 				er.forcefield = m.forcefield;
 				er.colorType = m.colorType;
+				er.b2energy = m.b2energy;
 				er.ticksSinceLastPacket = 0;
 				er.rocketcount = m.rocketcount;
 				er.energy = m.energy;
@@ -229,6 +238,7 @@ public class RhodesPacket implements IMessage
 				er.nukecount = m.nukecount;
 				er.itexloc = m.texloc;
 				er.itexfolder = m.texfolder;
+				er.scale = m.scale;
 				if (er.health <= 0 && er.rider != null)
 				{
 					er.rider.setPosition(er.posX+5, er.posY-12, er.posZ);

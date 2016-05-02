@@ -47,5 +47,6 @@ public class PacketDispatcher
 		packetsys.registerMessage(ADSUpdatePacket.Handler.class,		ADSUpdatePacket.class,			packetCount++, Side.CLIENT);
 		packetsys.registerMessage(RhodesPacket.Handler.class,			RhodesPacket.class,				packetCount++, Side.CLIENT);
 		packetsys.registerMessage(RhodesJumpPacket.Handler.class,		RhodesJumpPacket.class,			packetCount++, Side.SERVER);
+		packetsys.registerMessage(RhodesPiecePacket.Handler.class,		RhodesPiecePacket.class,		packetCount++, Side.CLIENT);
 	}
 }

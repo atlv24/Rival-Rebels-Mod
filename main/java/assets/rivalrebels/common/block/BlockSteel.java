@@ -37,7 +37,7 @@ public class BlockSteel extends Block
 	@Override
 	public int getRenderType()
 	{
-		return 100;
+		return 485;
 	}
 	
 	@Override

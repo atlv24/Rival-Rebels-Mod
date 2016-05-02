@@ -45,6 +45,8 @@ public class RenderRhodesLeftUpperArm extends Render
 	{
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y, (float) z);
+		GL11.glScalef(rhodes.scale, rhodes.scale, rhodes.scale);
+		GL11.glColor3f(RenderRhodes.colors[rhodes.color*3], RenderRhodes.colors[rhodes.color*3+1], RenderRhodes.colors[rhodes.color*3+2]);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RenderRhodes.texture);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(rhodes.rotationYaw, 0, 1, 0);

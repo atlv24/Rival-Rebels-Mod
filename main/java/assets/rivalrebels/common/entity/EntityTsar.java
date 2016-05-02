@@ -53,6 +53,18 @@ public class EntityTsar extends EntityThrowable
 		hasTrollface = troll;
 	}
 	
+	public EntityTsar(World worldObj, float px, float py, float pz, float f, float g, float h)
+	{
+		this(worldObj);
+		setPosition(px, py, pz);
+		yOffset = 0.0F;
+		motionX = f;
+		motionY = g;
+		motionZ = h;
+		aoc = 5;
+		hasTrollface = true;
+	}
+	
 	/**
 	 * Called to update the entity's position/logic.
 	 */

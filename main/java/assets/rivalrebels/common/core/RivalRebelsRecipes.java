@@ -115,7 +115,7 @@ public class RivalRebelsRecipes
 		GameRegistry.addRecipe(new ItemStack(RivalRebels.emptyrod, 4), new Object[] { "SPS", 'S', RivalRebels.steel, 'P', RivalRebels.pliers });
 		
 		// Supplies
-		GameRegistry.addRecipe(new ItemStack(RivalRebels.expill, 4), new Object[] { "STG", " BR", "F W", 'S', Items.wheat_seeds, 'T', RivalRebels.flag2, 'G', RivalRebels.gasgrenade, 'B', Items.milk_bucket, 'R', RivalRebels.rocket, 'F', RivalRebels.fuel, 'W', Items.water_bucket });
+		GameRegistry.addRecipe(new ItemStack(RivalRebels.expill, 4), new Object[] { "STG", " BR", "F W", 'S', Items.wheat_seeds, 'T', RivalRebels.trollmask, 'G', RivalRebels.gasgrenade, 'B', Items.milk_bucket, 'R', RivalRebels.rocket, 'F', RivalRebels.fuel, 'W', Items.water_bucket });
 		
 		GameRegistry.addRecipe(new ItemStack(RivalRebels.safepill, 4), new Object[] { "S  ", " B ", "F W", 'S', Items.wheat_seeds, 'B', Items.milk_bucket, 'F', RivalRebels.fuel, 'W', Items.water_bucket });
 		

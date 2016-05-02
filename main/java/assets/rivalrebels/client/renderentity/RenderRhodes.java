@@ -61,6 +61,7 @@ public class RenderRhodes extends Render
     public static IModelCustom ffshin;
 	private ModelBlastSphere modelsphere;
 	public static ModelFromObj	md;
+	public static ModelFromObj	b2jet;
 	public static String[] texfolders = {
 			"blocks/",
 			"entity/",
@@ -95,7 +96,9 @@ public class RenderRhodes extends Render
 		try
 		{
 			md = ModelFromObj.readObjFile("d.obj");
-			md.scale(3, 3, 3);
+			b2jet = ModelFromObj.readObjFile("s.obj");
+			md.scale(2.5f, 2.5f, 2.5f);
+			b2jet.scale(2.5f, 2.5f, 2.5f);
 		}
 		catch (Exception e)
 		{
@@ -145,7 +148,7 @@ public class RenderRhodes extends Render
 		}
 	}*/
 	
-	private static float[] colors = {
+	public static float[] colors = {
 		255/255f,     255/255f,     255/255f, //1
 		125/255f,     142/255f,     180/255f, //2
 		146/255f,      68/255f,      68/255f, //3
@@ -172,7 +175,7 @@ public class RenderRhodes extends Render
 			if (rhodes.ticksExisted<10) ptt = 1;
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float) x, (float) y, (float) z);
-			
+			GL11.glScalef(rhodes.scale, rhodes.scale, rhodes.scale);
 			
 			FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
             float f = 5F;
@@ -253,8 +256,15 @@ public class RenderRhodes extends Render
 				Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
 				GL11.glPushMatrix();
 				GL11.glRotatef(-90f, 1, 0, 0);
-				GL11.glTranslatef(0, 4, 0);
-				//md.render();
+				GL11.glTranslatef(0, 4, -2);
+				if (rhodes.b2energy > 0) md.render();
+	    		GL11.glEnable(GL11.GL_BLEND);
+	    		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+	    		Minecraft.getMinecraft().renderEngine.bindTexture(flametex);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+				if (rhodes.jet && rhodes.b2energy > 0) b2jet.render();
+	    		GL11.glDisable(GL11.GL_BLEND);
 				GL11.glPopMatrix();
 				Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 				
