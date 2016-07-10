@@ -361,11 +361,13 @@ public class EntityRhodes extends Entity
 		{
 			if ((rider.isSneaking() || rider.isDead) && RivalRebels.rhodesExit)
 			{
+				freeze = false;
 				if (!rider.capabilities.isCreativeMode) rider.capabilities.disableDamage = false;
 				rider = null;
 			}
 			if (health <= 0 && rider != null)
 			{
+				freeze = false;
 				if (!rider.capabilities.isCreativeMode)
 				{
 					rider.capabilities.disableDamage = false;
@@ -557,7 +559,14 @@ public class EntityRhodes extends Entity
 		if (flying!=0)
 		{
 			flying--;
-			motionY += 0.03f;
+			if (b2spirit)
+			{
+				motionY = 0.03;
+			}
+			else
+			{
+				motionY += 0.03f;
+			}
 			if (rand.nextInt(32)==0)
 			{
 				RivalRebelsSoundPlayer.playSound(this, 23, 1, 4.5f, (float) (0.8f + Math.random()*0.2f));
@@ -714,27 +723,59 @@ public class EntityRhodes extends Entity
 	private void doAITick(float syaw, float cyaw)
 	{
 		if (health*2 < RivalRebels.rhodesHealth) endangered = true;
-		motionX = 0;
-		motionZ = 0;
+		if (!b2spirit)
+		{
+			motionX = 0;
+			motionZ = 0;
+		}
 		if (rider != null)
 		{
+			if (b2spirit && !freeze && b2energy == 0 && scale < 1.5f && scale > 0.5f)
+			{
+				freeze = true;
+				nukecount--;
+				health -= 1000;
+				worldObj.spawnEntityInWorld(new EntityB2Spirit(this));
+			}
 			if (RivalRebels.rhodesHold) return;
 			if (energy < maxenergy) energy += recharge;
-			rocket &= rocketcount > 0;
-			flame &= flamecount > 0;
-			bomb &= nukecount > 0;
+			if (!RivalRebels.infiniteAmmo)
+			{
+				rocket &= rocketcount > 0;
+				flame &= flamecount > 0;
+			}
+			if (!RivalRebels.infiniteNukes)
+			{
+				bomb &= nukecount > 0;
+			}
 			forcefield &= energy > ecshield;
 			laser &= energy > eclaser;
-			jet &= energy > ecjet;
+			jet &= (energy+b2energy) > ecjet;
+			b2spirit &= b2energy > 0;
+			
 			if (forcefield)
 			{
 				energy -= ecshield;
 				if (ticksExisted%8==0)	RivalRebelsSoundPlayer.playSound(this, 5, 0, 10f, 1f);
 			}
 			if (laser) energy -= eclaser;
-			if (jet)
+			if (jet || b2spirit)
 			{
-				energy -= ecjet;
+				if (b2energy > 0)
+				{
+					b2energy -= ecjet;
+					if (b2energy <= 0)
+					{
+						b2energy = 0;
+						worldObj.createExplosion((Entity) null, this.posX, this.posY, this.posZ, 6.0F, true);
+						worldObj.spawnEntityInWorld(new EntityB2Frag(worldObj, this, 0));
+						worldObj.spawnEntityInWorld(new EntityB2Frag(worldObj, this, 1));
+					}
+				}
+				else
+				{
+					energy -= ecjet;
+				}
 				flying = 3;
 			}
 			else
@@ -748,8 +789,24 @@ public class EntityRhodes extends Entity
 				bodyyaw += Math.max(Math.min(goal, 2), -2);
 				if (flying > 0)
 				{
-					motionX = syaw * 0.5f;
-					motionZ = cyaw * 0.5f;
+					if (b2spirit)
+					{
+						motionX += syaw * 0.1f;
+						motionZ += cyaw * 0.1f;
+						double speed = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+						if (speed > 0.7)
+						{
+							motionX /= speed;
+							motionZ /= speed;
+							motionX *= 0.7f;
+							motionZ *= 0.7f;
+						}
+					}
+					else
+					{
+						motionX = syaw * 0.5f;
+						motionZ = cyaw * 0.5f;
+					}
 					rightthighpitch = approach(rightthighpitch,-30);
 					leftthighpitch  = approach(leftthighpitch, -30);
 					rightshinpitch  = approach(rightshinpitch, 60);
@@ -784,19 +841,13 @@ public class EntityRhodes extends Entity
 				endy = hit.yCoord;
 				endz = hit.zCoord;
 			}
-			
-			/*if (b2spirit && !freeze && b2energy == 0)
-			{
-				freeze = true;
-				worldObj.spawnEntityInWorld(new EntityB2Spirit(this));
-			}*/
-			if (b2spirit && tickssincenuke >= 40 && nukecount > 0 && health > 2000)
+			/*if (b2spirit && tickssincenuke >= 40 && nukecount > 0 && health > 2000)
  			{
 				tickssincenuke = 0;
 				nukecount--;
 				health -= 1000;
 				worldObj.spawnEntityInWorld(new EntityB2Spirit(worldObj, endx, endy, endz, posX, posY, posZ, null, false, false));
- 			}
+ 			}*/
 			
 			if (laser)
 			{
@@ -2173,6 +2224,7 @@ public class EntityRhodes extends Entity
 		nbt.setByte("color", colorType);
 		nbt.setInteger("rocketcount", rocketcount);
 		nbt.setInteger("energy", energy);
+		nbt.setInteger("b2energy", b2energy);
 		nbt.setInteger("flamecount", flamecount);
 		nbt.setInteger("nukecount", nukecount);
 		nbt.setInteger("texfolder", itexfolder);
@@ -2203,6 +2255,7 @@ public class EntityRhodes extends Entity
 		colorType = nbt.getByte("color");
 		rocketcount = nbt.getInteger("rocketcount");
 		energy = nbt.getInteger("energy");
+		b2energy = nbt.getInteger("b2energy");
 		flamecount = nbt.getInteger("flamecount");
 		nukecount = nbt.getInteger("nukecount");
 		itexfolder = nbt.getInteger("texfolder");

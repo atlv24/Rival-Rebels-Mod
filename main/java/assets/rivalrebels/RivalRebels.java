@@ -254,7 +254,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"T";
+	public static final String				rrversion		= mcversion+"U";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()
@@ -301,6 +301,7 @@ public class RivalRebels// extends DummyModContainer
 	public static int						teleportDist;
 	public static boolean					flareExplode;
 	public static boolean					infiniteAmmo;
+	public static boolean					infiniteNukes;
 	public static boolean					infiniteGrenades;
 	public static int						landmineExplodeSize;
 	public static int						chargeExplodeSize;
@@ -349,6 +350,7 @@ public class RivalRebels// extends DummyModContainer
 	public static int						objectiveHealth;
 	public static boolean					freeDragonAmmo;
 	public static int						bombDamageToRhodes;
+	public static boolean					rhodesRoundsBase;
 	
 	public static Block						amario;
 	public static Block						aquicksand;
@@ -633,6 +635,7 @@ public class RivalRebels// extends DummyModContainer
 		
 		flareExplode = config.get("misc", "FlareExplodeOnBreak", true).getBoolean(true);
 		infiniteAmmo = config.get("misc", "InfiniteAmmo", false).getBoolean(false);
+		infiniteNukes = config.get("misc", "InfiniteNukes", false).getBoolean(false);
 		infiniteGrenades = config.get("misc", "InfiniteGrenades", false).getBoolean(false);
 		boolean safemode = config.get("misc", "safemode", true).getBoolean(true);
 		resetMax = config.get("misc", "MaximumResets", 2).getInt();
@@ -648,7 +651,8 @@ public class RivalRebels// extends DummyModContainer
 		scoreboardenabled = config.get("misc", "scoreboardEnabled", true).getBoolean(true);
 		prefillrhodes = config.get("misc", "prefillrhodes", true).getBoolean(true);
 		altRkey = config.get("misc", "useFkeyInsteadofRkey", false).getBoolean(false);
-		rhodesChance = (config.get("misc", "rhodesInRoundsChance", 100).getInt()) / 100F;
+		rhodesChance = (config.get("misc", "rhodesInRoundsChance", 0).getInt()) / 100F;
+		rhodesRoundsBase = config.get("misc", "rhodesInRoundsBase", true).getBoolean(false);
 		rhodesHealth = (config.get("misc", "rhodesHealth", 15000).getInt());
 		rhodesNukes = (config.get("misc", "rhodesNukes", 8).getInt());
 		rhodesTeams = (config.get("misc", "rhodesTeams", new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}, "Range: 0-15. Repeat the numbers for multiple occurences of the same rhodes. 0:Rhodes 1:Magnesium 2:Arsenic 3:Vanadium 4:Aurum 5:Iodine 6:Iron 7:Astatine 8:Cobalt 9:Strontium 10:Bismuth 11:Zinc 12:Osmium 13:Neon 14:Argent, 15:Wolfram").getIntList());

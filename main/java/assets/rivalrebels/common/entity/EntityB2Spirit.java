@@ -130,14 +130,14 @@ public class EntityB2Spirit extends Entity
 			motionY = rhodeswing.posY - posY;
 			motionZ = rhodeswing.posZ - posZ;
 			double t = Math.sqrt(motionX*motionX+motionY*motionY+motionZ*motionZ);
-			motionX /= t*10;
+			motionX /= t;
 			motionY /= t;
-			motionZ /= t*10;
+			motionZ /= t;
 			rotationYaw = rhodeswing.rotationYaw;
 			rotationPitch = (float) (Math.min(t,90.0));
 			if (t < 25.0)
 			{
-				rhodeswing.b2energy = 100;
+				rhodeswing.b2energy = 8000;
 				rhodeswing.freeze = false;
 				setDead();
 			}
@@ -243,8 +243,8 @@ public class EntityB2Spirit extends Entity
 	Entity rhodes = null;
 	public void startBombRun(double x, double z)
 	{
-		/*if (rhodes != null && rhodes.isDead) rhodes = null;
-		if (rhodes == null)
+		//if (rhodes != null && rhodes.isDead) rhodes = null;
+		/*if (rhodes == null)
 		{
 			Entity er = rhodes;
 			Iterator iter = worldObj.loadedEntityList.iterator();
@@ -265,7 +265,7 @@ public class EntityB2Spirit extends Entity
 				}
 			}
 			rhodes = er;
-		}
+		}*/
 		if (rhodes != null)
 		{
 			tx = rhodes.posX;
@@ -273,7 +273,7 @@ public class EntityB2Spirit extends Entity
 			tz = rhodes.posZ;
 			x = -rhodes.motionX;
 			z = -rhodes.motionZ;
-		}*/
+		}
 		double dist = 1.0/Math.sqrt(x*x + z*z);
 		x *= dist;
 		z *= dist;

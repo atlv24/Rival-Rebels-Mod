@@ -487,6 +487,11 @@ public class RivalRebelsRound implements IMessage
 		
 		world.setBlock(oObjx, oObjy + 1, oObjz, RivalRebels.omegaobj);
 		world.setBlock(sObjx, sObjy + 1, sObjz, RivalRebels.sigmaobj);
+		if (RivalRebels.rhodesRoundsBase)
+		{
+			world.setBlock(oObjx, oObjy + 2, oObjz, RivalRebels.buildrhodes);
+			world.setBlock(sObjx, sObjy + 2, sObjz, RivalRebels.buildrhodes);
+		}
 	}
 	
 	private boolean isInSpawn(EntityPlayer player)
