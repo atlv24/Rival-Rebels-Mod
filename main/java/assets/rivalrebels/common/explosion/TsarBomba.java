@@ -316,6 +316,7 @@ public class TsarBomba
 	private int		repeatCount	= 0;
 	private boolean isTree;
 	private int 	treeHeight;
+	public int processedchunks = 0;
 	
 	public TsarBomba(int x, int y, int z, World world, int rad)
 	{
@@ -326,6 +327,8 @@ public class TsarBomba
 		radius = rad;
 		nlimit = ((radius + 25) * (radius + 25)) * 4;
 		rad = rad*rad;
+		System.out.println("radius:" + radius);
+		System.out.println("Nlimit:" + nlimit);
 		for (int X = -radius; X < radius; X++)
 		{
 			int x2 = X * X;
@@ -379,6 +382,8 @@ public class TsarBomba
 	
 	private boolean processChunk(int x, int z)
 	{
+		processedchunks++;
+		System.out.println("processedchunks:" + processedchunks);
 		double dist = x * x + z * z;
 		if (dist < radius * radius)
 		{

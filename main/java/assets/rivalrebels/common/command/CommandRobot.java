@@ -21,6 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.entity.EntityRhodes;
@@ -60,6 +61,69 @@ public class CommandRobot extends CommandBase
 		if (array.length == 2)
 		{
 			String str = array[0];
+			if (str.equals("spawn") && !sender.getEntityWorld().isRemote)
+			{
+				String str2 = array[1];
+				try
+				{
+					float scale = Float.parseFloat(str2);
+					ChunkCoordinates cc = sender.getPlayerCoordinates();
+					EntityRhodes er = new EntityRhodes(sender.getEntityWorld(), cc.posX, cc.posY, cc.posZ, scale / 30.0f);
+					sender.getEntityWorld().spawnEntityInWorld(er);
+				}
+				catch(Exception e)
+				{
+					sender.addChatMessage(new ChatComponentText("§cUsage: /rrrobot spawn <blocks high>"));
+				}
+				return;
+			}
+			if (str.equals("speedscale"))
+			{
+				String str2 = array[1];
+				if (str2.equals("on"))
+				{
+					RivalRebels.rhodesScaleSpeed = true;
+					sender.addChatMessage(new ChatComponentText("§cRhodes Speed Scaling Enabled"));
+				}
+				else if (str2.equals("off"))
+				{
+					RivalRebels.rhodesScaleSpeed = false;
+					sender.addChatMessage(new ChatComponentText("§cRhodes Speed Scaling Disabled"));
+				}
+				else
+				{
+					float scale = -1.0f;
+					try
+					{
+						scale = Float.parseFloat(str2);
+						RivalRebels.rhodesSpeedScale = scale;
+					}
+					catch(Exception e)
+					{
+						sender.addChatMessage(new ChatComponentText("§cUsage: /rrrobot speedscale [on|off|number]"));
+					}
+				}
+				return;
+			}
+			if (str.equals("rekt"))
+			{
+				String str2 = array[1];
+				if (str2.equals("on"))
+				{
+					RivalRebels.rhodesBlockBreak = 1.0f;
+					sender.addChatMessage(new ChatComponentText("§cRhodes Rekt Enabled"));
+				}
+				else if (str2.equals("off"))
+				{
+					RivalRebels.rhodesBlockBreak = 0.0f;
+					sender.addChatMessage(new ChatComponentText("§cRhodes Rekt Disabled"));
+				}
+				else
+				{
+					sender.addChatMessage(new ChatComponentText("§cUsage: /rrrobot rekt [on|off]"));
+				}
+				return;
+			}
 			if (str.equals("exit"))
 			{
 				String str2 = array[1];
@@ -242,7 +306,7 @@ public class CommandRobot extends CommandBase
 				}
 			}
 		}
-		sender.addChatMessage(new ChatComponentText("§cUsage: /rrrobot [model|logo|ai|ff|tff|exit|stop]"));
+		sender.addChatMessage(new ChatComponentText("§cUsage: /rrrobot [model|logo|ai|ff|tff|exit|stop|rekt|speedscale|spawn]"));
 	}
 	/**
      * Adds the strings available in this command to the given list of tab completion options.
@@ -263,10 +327,14 @@ public class CommandRobot extends CommandBase
         		l.add("blocks/");
         		l.add("entity/");
     		}
-    		else if (s[0].equals("ai") || s[0].equals("ff") || s[0].equals("tff") || s[0].equals("exit"))
+    		else if (s[0].equals("ai") || s[0].equals("ff") || s[0].equals("tff") || s[0].equals("exit") || s[0].equals("rekt") || s[0].equals("speedscale"))
     		{
         		l.add("on");
         		l.add("off");
+    		}
+    		else if (s[0].equals("spawn"))
+    		{
+    			l.add("30");
     		}
         	else
         	{
@@ -277,6 +345,8 @@ public class CommandRobot extends CommandBase
         		l.add("tff");
         		l.add("exit");
         		l.add("stop");
+        		l.add("speedscale");
+        		l.add("spawn");
         	}
     	}
     	else
@@ -288,6 +358,9 @@ public class CommandRobot extends CommandBase
     		l.add("tff");
     		l.add("exit");
     		l.add("stop");
+    		l.add("rekt");
+    		l.add("speedscale");
+    		l.add("spawn");
     	}
 		return l;
     }

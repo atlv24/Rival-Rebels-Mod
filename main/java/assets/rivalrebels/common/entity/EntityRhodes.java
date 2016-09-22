@@ -190,6 +190,10 @@ public class EntityRhodes extends Entity
 	public static int texfolder = -1;
 	public String itexloc;
 	public int itexfolder;
+
+	public int wakeX = -1;
+	public int wakeY = -1;
+	public int wakeZ = -1;
 	
 	public EntityRhodes(World w)
 	{
@@ -236,6 +240,7 @@ public class EntityRhodes extends Entity
 			nukecount *= 0.25;
 			rocketcount *= 0.004;
 		}
+		health = health - 5000 + (int)(5000 * scale);
 		boundingBox.setBounds(-5*scale, -15*scale, -5*scale, 5*scale, 15*scale, 5*scale);
 		setPosition(x, y, z);
 		if (!worldObj.isRemote) PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING " + getName() + " RivalRebels.tsar.armed"));
@@ -247,6 +252,11 @@ public class EntityRhodes extends Entity
 	@Override
 	public void onUpdate()
 	{
+		if ((wakeY != -1) && (worldObj.getBlock(wakeX, wakeY, wakeZ) != RivalRebels.rhodesactivator))
+		{
+			damageUntilWake -= 100;
+			
+		}
 		if (posY <= 0)
 		{
 			setDead();
@@ -440,81 +450,106 @@ public class EntityRhodes extends Entity
 		
 		if (ac > 1)
 		{
-			int irpyyoff = irpy + (ticksExisted % 6);
-			int ilpyyoff = ilpy + (ticksExisted % 6);
-			Block b = worldObj.getBlock(irpx, irpyyoff, irpz);
-			if (b != Blocks.water && b != Blocks.flowing_water && b != Blocks.air)
+			if (RivalRebels.rhodesBlockBreak > 0.0f)
 			{
-				worldObj.setBlock(irpx-2, irpyyoff, irpz-2, Blocks.air);
-				worldObj.setBlock(irpx-2, irpyyoff, irpz-1, Blocks.air);
-				worldObj.setBlock(irpx-2, irpyyoff, irpz+0, Blocks.air);
-				worldObj.setBlock(irpx-2, irpyyoff, irpz+1, Blocks.air);
-				worldObj.setBlock(irpx-2, irpyyoff, irpz+2, Blocks.air);
-				worldObj.setBlock(irpx-1, irpyyoff, irpz-2, Blocks.air);
-				worldObj.setBlock(irpx-1, irpyyoff, irpz-1, Blocks.air);
-				worldObj.setBlock(irpx-1, irpyyoff, irpz+0, Blocks.air);
-				worldObj.setBlock(irpx-1, irpyyoff, irpz+1, Blocks.air);
-				worldObj.setBlock(irpx-1, irpyyoff, irpz+2, Blocks.air);
-				worldObj.setBlock(irpx-0, irpyyoff, irpz-2, Blocks.air);
-				worldObj.setBlock(irpx-0, irpyyoff, irpz-1, Blocks.air);
-				worldObj.setBlock(irpx-0, irpyyoff, irpz+0, Blocks.air);
-				worldObj.setBlock(irpx-0, irpyyoff, irpz+1, Blocks.air);
-				worldObj.setBlock(irpx-0, irpyyoff, irpz+2, Blocks.air);
-				worldObj.setBlock(irpx+1, irpyyoff, irpz-2, Blocks.air);
-				worldObj.setBlock(irpx+1, irpyyoff, irpz-1, Blocks.air);
-				worldObj.setBlock(irpx+1, irpyyoff, irpz+0, Blocks.air);
-				worldObj.setBlock(irpx+1, irpyyoff, irpz+1, Blocks.air);
-				worldObj.setBlock(irpx+1, irpyyoff, irpz+2, Blocks.air);
-				worldObj.setBlock(irpx+2, irpyyoff, irpz-2, Blocks.air);
-				worldObj.setBlock(irpx+2, irpyyoff, irpz-1, Blocks.air);
-				worldObj.setBlock(irpx+2, irpyyoff, irpz+0, Blocks.air);
-				worldObj.setBlock(irpx+2, irpyyoff, irpz+1, Blocks.air);
-				worldObj.setBlock(irpx+2, irpyyoff, irpz+2, Blocks.air);
-			}
-			b = worldObj.getBlock(ilpx, ilpyyoff, ilpz);
-			if (b != Blocks.water && b != Blocks.flowing_water && b != Blocks.air)
-			{
-				worldObj.setBlock(ilpx-2, ilpyyoff, ilpz-2, Blocks.air);
-				worldObj.setBlock(ilpx-2, ilpyyoff, ilpz-1, Blocks.air);
-				worldObj.setBlock(ilpx-2, ilpyyoff, ilpz+0, Blocks.air);
-				worldObj.setBlock(ilpx-2, ilpyyoff, ilpz+1, Blocks.air);
-				worldObj.setBlock(ilpx-2, ilpyyoff, ilpz+2, Blocks.air);
-				worldObj.setBlock(ilpx-1, ilpyyoff, ilpz-2, Blocks.air);
-				worldObj.setBlock(ilpx-1, ilpyyoff, ilpz-1, Blocks.air);
-				worldObj.setBlock(ilpx-1, ilpyyoff, ilpz+0, Blocks.air);
-				worldObj.setBlock(ilpx-1, ilpyyoff, ilpz+1, Blocks.air);
-				worldObj.setBlock(ilpx-1, ilpyyoff, ilpz+2, Blocks.air);
-				worldObj.setBlock(ilpx-0, ilpyyoff, ilpz-2, Blocks.air);
-				worldObj.setBlock(ilpx-0, ilpyyoff, ilpz-1, Blocks.air);
-				worldObj.setBlock(ilpx-0, ilpyyoff, ilpz+0, Blocks.air);
-				worldObj.setBlock(ilpx-0, ilpyyoff, ilpz+1, Blocks.air);
-				worldObj.setBlock(ilpx-0, ilpyyoff, ilpz+2, Blocks.air);
-				worldObj.setBlock(ilpx+1, ilpyyoff, ilpz-2, Blocks.air);
-				worldObj.setBlock(ilpx+1, ilpyyoff, ilpz-1, Blocks.air);
-				worldObj.setBlock(ilpx+1, ilpyyoff, ilpz+0, Blocks.air);
-				worldObj.setBlock(ilpx+1, ilpyyoff, ilpz+1, Blocks.air);
-				worldObj.setBlock(ilpx+1, ilpyyoff, ilpz+2, Blocks.air);
-				worldObj.setBlock(ilpx+2, ilpyyoff, ilpz-2, Blocks.air);
-				worldObj.setBlock(ilpx+2, ilpyyoff, ilpz-1, Blocks.air);
-				worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+0, Blocks.air);
-				worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+1, Blocks.air);
-				worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+2, Blocks.air);
-			}
-			int px = (int) posX;
-			int py = (int) (posY-5*scale + (ticksExisted%20)*scale);
-			int pz = (int) posZ;
-			for (int x = -4; x < 5; x++)
-			{
-				for (int z = -4; z < 5; z++)
+				int sx = (int) (posX - 5.0f * scale);
+				int sy = (int) (posY - 15.0f * scale);
+				int sz = (int) (posZ - 5.0f * scale);
+				int ex = (int) (posX + 5.0f * scale);
+				int ey = (int) (posY + 15.0f * scale);
+				int ez = (int) (posZ + 5.0f * scale);
+				for (int y = sy; y < ey; y++)
 				{
-					b = worldObj.getBlock(px+x, py, pz+z);
-					if (b != Blocks.air && b != Blocks.water && b != Blocks.flowing_water)
+					if ((y + ticksExisted) % 8 == 0)
 					{
-						worldObj.setBlock(px+x, py, pz+z, Blocks.air);
-						if (rand.nextInt(333)==0)
+						for (int x = sx; x < ex; x++)
 						{
-							new Explosion(worldObj, px, py, pz, 3, false, true, RivalRebelsDamageSource.rocket);
-							RivalRebelsSoundPlayer.playSound(this, 23, 3, 4.5f, (float) (0.8f + Math.random()*0.3f));
+							for (int z = sz; z < ez; z++)
+							{
+								worldObj.setBlock(x,y,z, Blocks.air);
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				int irpyyoff = irpy + (ticksExisted % 6);
+				int ilpyyoff = ilpy + (ticksExisted % 6);
+				Block b = worldObj.getBlock(irpx, irpyyoff, irpz);
+				if (b != Blocks.water && b != Blocks.flowing_water && b != Blocks.air)
+				{
+					worldObj.setBlock(irpx-2, irpyyoff, irpz-2, Blocks.air);
+					worldObj.setBlock(irpx-2, irpyyoff, irpz-1, Blocks.air);
+					worldObj.setBlock(irpx-2, irpyyoff, irpz+0, Blocks.air);
+					worldObj.setBlock(irpx-2, irpyyoff, irpz+1, Blocks.air);
+					worldObj.setBlock(irpx-2, irpyyoff, irpz+2, Blocks.air);
+					worldObj.setBlock(irpx-1, irpyyoff, irpz-2, Blocks.air);
+					worldObj.setBlock(irpx-1, irpyyoff, irpz-1, Blocks.air);
+					worldObj.setBlock(irpx-1, irpyyoff, irpz+0, Blocks.air);
+					worldObj.setBlock(irpx-1, irpyyoff, irpz+1, Blocks.air);
+					worldObj.setBlock(irpx-1, irpyyoff, irpz+2, Blocks.air);
+					worldObj.setBlock(irpx-0, irpyyoff, irpz-2, Blocks.air);
+					worldObj.setBlock(irpx-0, irpyyoff, irpz-1, Blocks.air);
+					worldObj.setBlock(irpx-0, irpyyoff, irpz+0, Blocks.air);
+					worldObj.setBlock(irpx-0, irpyyoff, irpz+1, Blocks.air);
+					worldObj.setBlock(irpx-0, irpyyoff, irpz+2, Blocks.air);
+					worldObj.setBlock(irpx+1, irpyyoff, irpz-2, Blocks.air);
+					worldObj.setBlock(irpx+1, irpyyoff, irpz-1, Blocks.air);
+					worldObj.setBlock(irpx+1, irpyyoff, irpz+0, Blocks.air);
+					worldObj.setBlock(irpx+1, irpyyoff, irpz+1, Blocks.air);
+					worldObj.setBlock(irpx+1, irpyyoff, irpz+2, Blocks.air);
+					worldObj.setBlock(irpx+2, irpyyoff, irpz-2, Blocks.air);
+					worldObj.setBlock(irpx+2, irpyyoff, irpz-1, Blocks.air);
+					worldObj.setBlock(irpx+2, irpyyoff, irpz+0, Blocks.air);
+					worldObj.setBlock(irpx+2, irpyyoff, irpz+1, Blocks.air);
+					worldObj.setBlock(irpx+2, irpyyoff, irpz+2, Blocks.air);
+				}
+				b = worldObj.getBlock(ilpx, ilpyyoff, ilpz);
+				if (b != Blocks.water && b != Blocks.flowing_water && b != Blocks.air)
+				{
+					worldObj.setBlock(ilpx-2, ilpyyoff, ilpz-2, Blocks.air);
+					worldObj.setBlock(ilpx-2, ilpyyoff, ilpz-1, Blocks.air);
+					worldObj.setBlock(ilpx-2, ilpyyoff, ilpz+0, Blocks.air);
+					worldObj.setBlock(ilpx-2, ilpyyoff, ilpz+1, Blocks.air);
+					worldObj.setBlock(ilpx-2, ilpyyoff, ilpz+2, Blocks.air);
+					worldObj.setBlock(ilpx-1, ilpyyoff, ilpz-2, Blocks.air);
+					worldObj.setBlock(ilpx-1, ilpyyoff, ilpz-1, Blocks.air);
+					worldObj.setBlock(ilpx-1, ilpyyoff, ilpz+0, Blocks.air);
+					worldObj.setBlock(ilpx-1, ilpyyoff, ilpz+1, Blocks.air);
+					worldObj.setBlock(ilpx-1, ilpyyoff, ilpz+2, Blocks.air);
+					worldObj.setBlock(ilpx-0, ilpyyoff, ilpz-2, Blocks.air);
+					worldObj.setBlock(ilpx-0, ilpyyoff, ilpz-1, Blocks.air);
+					worldObj.setBlock(ilpx-0, ilpyyoff, ilpz+0, Blocks.air);
+					worldObj.setBlock(ilpx-0, ilpyyoff, ilpz+1, Blocks.air);
+					worldObj.setBlock(ilpx-0, ilpyyoff, ilpz+2, Blocks.air);
+					worldObj.setBlock(ilpx+1, ilpyyoff, ilpz-2, Blocks.air);
+					worldObj.setBlock(ilpx+1, ilpyyoff, ilpz-1, Blocks.air);
+					worldObj.setBlock(ilpx+1, ilpyyoff, ilpz+0, Blocks.air);
+					worldObj.setBlock(ilpx+1, ilpyyoff, ilpz+1, Blocks.air);
+					worldObj.setBlock(ilpx+1, ilpyyoff, ilpz+2, Blocks.air);
+					worldObj.setBlock(ilpx+2, ilpyyoff, ilpz-2, Blocks.air);
+					worldObj.setBlock(ilpx+2, ilpyyoff, ilpz-1, Blocks.air);
+					worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+0, Blocks.air);
+					worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+1, Blocks.air);
+					worldObj.setBlock(ilpx+2, ilpyyoff, ilpz+2, Blocks.air);
+				}
+				int px = (int) posX;
+				int py = (int) (posY-5*scale + (ticksExisted%20)*scale);
+				int pz = (int) posZ;
+				for (int x = -4; x < 5; x++)
+				{
+					for (int z = -4; z < 5; z++)
+					{
+						b = worldObj.getBlock(px+x, py, pz+z);
+						if (b != Blocks.air && b != Blocks.water && b != Blocks.flowing_water)
+						{
+							worldObj.setBlock(px+x, py, pz+z, Blocks.air);
+							if (rand.nextInt(333)==0)
+							{
+								new Explosion(worldObj, px, py, pz, 3, false, true, RivalRebelsDamageSource.rocket);
+								RivalRebelsSoundPlayer.playSound(this, 23, 3, 4.5f, (float) (0.8f + Math.random()*0.3f));
+							}
 						}
 					}
 				}
@@ -1092,7 +1127,10 @@ public class EntityRhodes extends Entity
 							nukecount--;
 							RivalRebelsSoundPlayer.playSound(this, 23, 10, 1f);
 							float cp = -0.5f/(float)Math.sqrt(x*x+y*y+z*z);
-							if (scale >= 2.0)
+							if (scale >= 3.0)
+								worldObj.spawnEntityInWorld(new EntityHotPotato(worldObj, px, py, pz, 
+										x*cp*5.0f, y*cp*5.0f, z*cp*5.0f));
+							else if (scale >= 2.0)
 								worldObj.spawnEntityInWorld(new EntityTsar(worldObj, px, py, pz, 
 										x*cp*5.0f, y*cp*5.0f, z*cp*5.0f));
 							else
@@ -1150,7 +1188,10 @@ public class EntityRhodes extends Entity
 			}
 			else ac = 2;
 		}
-		
+
+		float movescale = scale;
+		if (RivalRebels.rhodesScaleSpeed) movescale *= RivalRebels.rhodesSpeedScale;
+		else movescale = RivalRebels.rhodesSpeedScale;
 		switch (ac)
 		{
 		case 0: //Spawned
@@ -1314,7 +1355,7 @@ public class EntityRhodes extends Entity
 			shootFlameAtBestTarget(-syaw, cyaw);
 			shootLaserAtBestTarget(-syaw, cyaw);
 		case 6:
-			bodyyaw += 0.5f;
+			bodyyaw += 1.5f * movescale;
 			doWalkingAnimation(syaw, cyaw);
 			break;
 			
@@ -1323,7 +1364,7 @@ public class EntityRhodes extends Entity
 			shootFlameAtBestTarget(-syaw, cyaw);
 			shootLaserAtBestTarget(-syaw, cyaw);
 		case 8:
-			bodyyaw -= 0.5f;
+			bodyyaw -= 1.5f * movescale;
 			doWalkingAnimation(syaw, cyaw);
 			break;
 			
@@ -1331,8 +1372,8 @@ public class EntityRhodes extends Entity
 			shootRocketsAtBestTarget(-syaw, cyaw);
 			shootFlameAtBestTarget(-syaw, cyaw);
 			shootLaserAtBestTarget(-syaw, cyaw);
-			motionX = syaw * 0.5f;
-			motionZ = cyaw * 0.5f;
+			motionX = syaw * 0.5f * movescale;
+			motionZ = cyaw * 0.5f * movescale;
 			rightthighpitch = approach(rightthighpitch,-30);
 			leftthighpitch  = approach(leftthighpitch, -30);
 			rightshinpitch  = approach(rightshinpitch, 60);
@@ -1437,8 +1478,11 @@ public class EntityRhodes extends Entity
 	private int walkstate = 0;
 	private void doWalkingAnimation(float syaw, float cyaw)
 	{
-		motionX = syaw * 0.125f*scale;
-		motionZ = cyaw * 0.125f*scale;
+		float movescale = scale;
+		if (RivalRebels.rhodesScaleSpeed) movescale *= RivalRebels.rhodesSpeedScale;
+		else movescale = RivalRebels.rhodesSpeedScale;
+		motionX = syaw * 0.125f*movescale;
+		motionZ = cyaw * 0.125f*movescale;
 		switch (walkstate)
 		{
 		case 0: {

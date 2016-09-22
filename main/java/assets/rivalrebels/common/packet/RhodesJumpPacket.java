@@ -112,7 +112,11 @@ public class RhodesJumpPacket implements IMessage
 				er.guard = m.guard;
 				if (m.guard && RivalRebels.rhodesExit)
 				{
-					er.rider = null;
+					if (er.rider != null)
+					{
+						er.rider.capabilities.disableDamage = false;
+						er.rider = null;
+					}
 				}
 				if (m.jump && !er.stop)
 				{

@@ -59,6 +59,24 @@ public class EntityHotPotato extends EntityThrowable
 		nextz = z;
 	}
 	
+	public EntityHotPotato(World worldObj, float px, float py, float pz, float f, float g, float h)
+	{
+		super(worldObj);
+		setSize(0.5F, 0.5F);
+		setPosition(px, py, pz);
+		motionX = f;
+		motionY = g;
+		motionZ = h;
+		yOffset = 0.0F;
+		prevRotationYaw = rotationYaw = 0;
+		prevRotationPitch = rotationPitch = 0;
+		round = 0;
+		nextx = (int)px;
+		nexty = (int)py;
+		nextz = (int)pz;
+		ticksInAir = 1;
+	}
+
 	/**
 	 * Called to update the entity's position/logic.
 	 */

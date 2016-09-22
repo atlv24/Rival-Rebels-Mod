@@ -67,7 +67,11 @@ public class BlockRhodesScaffold extends BlockAutoTemplate
 		if (!world.isRemote)
 		{
 			int scale = 1;
-			if (world.getBlock(x, y-1, z) == RivalRebels.buildrhodes && world.getBlock(x, y-2, z) == RivalRebels.buildrhodes) scale = 2;
+			if (world.getBlock(x, y-1, z) == RivalRebels.buildrhodes && world.getBlock(x, y-2, z) == RivalRebels.buildrhodes)
+			{
+				if (world.getBlock(x, y-3, z) == RivalRebels.buildrhodes && world.getBlock(x, y-4, z) == RivalRebels.buildrhodes) scale = 3;
+				else scale = 2;
+			}
 			for (int i = 0; i < 32*9; i++)
 			{
 				int fy = +30-(i/9);
@@ -92,6 +96,27 @@ public class BlockRhodesScaffold extends BlockAutoTemplate
 					place(world,x,y,z,fy+1,fx2,b);
 					place(world,x,y,z,fy+1,fx1+1,b);
 					place(world,x,y,z,fy+1,fx2+1,b);
+				}
+				else if (scale == 3)
+				{
+					place(world,x,y,z,fy,fx1,b);
+					place(world,x,y,z,fy,fx2,b);
+					place(world,x,y,z,fy,fx1+1,b);
+					place(world,x,y,z,fy,fx2+1,b);
+					place(world,x,y,z,fy,fx1+2,b);
+					place(world,x,y,z,fy,fx2+2,b);
+					place(world,x,y,z,fy+1,fx1,b);
+					place(world,x,y,z,fy+1,fx2,b);
+					place(world,x,y,z,fy+1,fx1+1,b);
+					place(world,x,y,z,fy+1,fx2+1,b);
+					place(world,x,y,z,fy+1,fx1+2,b);
+					place(world,x,y,z,fy+1,fx2+2,b);
+					place(world,x,y,z,fy+2,fx1,b);
+					place(world,x,y,z,fy+2,fx2,b);
+					place(world,x,y,z,fy+2,fx1+1,b);
+					place(world,x,y,z,fy+2,fx2+1,b);
+					place(world,x,y,z,fy+2,fx1+2,b);
+					place(world,x,y,z,fy+2,fx2+2,b);
 				}
 			}
 		}

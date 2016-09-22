@@ -75,6 +75,7 @@ public class ItemArmyShovel extends ItemTool
 		blocksEffectiveAgainst.add(RivalRebels.conduit);
 		blocksEffectiveAgainst.add(RivalRebels.tower);
 		blocksEffectiveAgainst.add(RivalRebels.steel);
+		blocksEffectiveAgainst.add(RivalRebels.rhodesactivator);
 		blocksEffectiveAgainst.add(RivalRebels.camo1);
 		blocksEffectiveAgainst.add(RivalRebels.camo2);
 		blocksEffectiveAgainst.add(RivalRebels.camo3);

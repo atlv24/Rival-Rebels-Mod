@@ -254,7 +254,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"U";
+	public static final String				rrversion		= mcversion+"V";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()
@@ -351,6 +351,9 @@ public class RivalRebels// extends DummyModContainer
 	public static boolean					freeDragonAmmo;
 	public static int						bombDamageToRhodes;
 	public static boolean					rhodesRoundsBase;
+	public static boolean					rhodesScaleSpeed;
+	public static float						rhodesSpeedScale;
+	public static float						rhodesBlockBreak;
 	
 	public static Block						amario;
 	public static Block						aquicksand;
@@ -665,6 +668,9 @@ public class RivalRebels// extends DummyModContainer
 		objectiveHealth = (config.get("misc", "objectiveHealth", 15000).getInt());
 		freeDragonAmmo = config.get("misc", "freeDragonAmmo", false).getBoolean(false);
 		bombDamageToRhodes = (config.get("misc", "bombDamageToRhodes", 20).getInt());
+		rhodesScaleSpeed = config.get("misc", "rhodesScaleSpeed", false).getBoolean(false);
+		rhodesSpeedScale = (float)config.get("misc", "rhodesSpeedScale", 1.0f).getDouble(1.0f);
+		rhodesBlockBreak = (float)config.get("misc", "rhodesBlockBreak", 1.0f).getDouble(1.0f);
 		config.addCustomCategoryComment("misc", "Miscellaneous.");
 		
 		String tempstring = config.get("modblacklist", "modblacklist", "").getString().toLowerCase();
@@ -1108,7 +1114,7 @@ public class RivalRebels// extends DummyModContainer
 		meltdown = (new BlockMeltDown()).setHardness(0.5F).setResistance(10F).setBlockName("rivalrebels.blocks." + (nextNum++));
 		ffreciever = (new BlockReciever()).setHardness(2F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
 		buildrhodes = (new BlockRhodesScaffold()).setHardness(2F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
-		rhodesactivator = (new BlockRhodesActivator()).setHardness(2F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
+		rhodesactivator = (new BlockRhodesActivator()).setHardness(0.1F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
 		
 		nextNum = 0;
 		GameRegistry.registerBlock(amario, "rivalrebelsblock" + (nextNum++));
