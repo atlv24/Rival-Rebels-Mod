@@ -130,5 +130,6 @@
 "28.14": {"category": "ambient","sounds": [{"name": "ba/o"}]},
 "28.15": {"category": "ambient","sounds": [{"name": "ba/p"}]},
 "28.16": {"category": "ambient","sounds": [{"name": "ba/q"}]},
-"28.17": {"category": "ambient","sounds": [{"name": "ba/r"}]}
+"28.16": {"category": "ambient","sounds": [{"name": "ba/r"}]},
+"28.17": {"category": "ambient","sounds": [{"name": "ba/s"}]}
 }

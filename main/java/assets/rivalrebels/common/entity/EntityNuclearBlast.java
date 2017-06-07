@@ -86,20 +86,22 @@ public class EntityNuclearBlast extends EntityInanimate
 	public void onUpdate()
 	{
 		super.onUpdate();
-		if (ticksExisted == 0)
+		if (!worldObj.isRemote)
 		{
-			worldObj.createExplosion(null, posX, posY - 5, posZ, 4, true);
-		}
-		if (ticksExisted % 20 == 0 && ticksExisted > 60)
-		{
-			time++;
-			if (time <= Strength)
+			if (ticksExisted == 0)
 			{
-				new NuclearExplosion(worldObj, (int) posX, (int) posY - 5, (int) posZ, (time * time) / 2 + RivalRebels.nuclearBombStrength);
+				worldObj.createExplosion(null, posX, posY - 5, posZ, 4, true);
 			}
+			if (ticksExisted % 20 == 0 && ticksExisted > 60)
+			{
+				time++;
+				if (time <= Strength)
+				{
+					new NuclearExplosion(worldObj, (int) posX, (int) posY - 5, (int) posZ, (time * time) / 2 + RivalRebels.nuclearBombStrength);
+				}
+			}
+			if (ticksExisted % 2 == 0 && ticksExisted < 400) pushAndHurtEntities();
 		}
-		if (ticksExisted % 2 == 0) pushAndHurtEntities();
-		
 		if (ticksExisted < 30)
 		{
 			worldObj.playSoundEffect(posX, posY + ticksExisted - 5, posZ, "random.explode", 4.0f, worldObj.rand.nextFloat() * 0.1f + 0.9f);
@@ -134,7 +136,8 @@ public class EntityNuclearBlast extends EntityInanimate
 	
 	private void pushAndHurtEntities()
 	{
-		int radius = (int) motionY * RivalRebels.nuclearBombStrength * 1;
+		int radius = Strength * RivalRebels.nuclearBombStrength * 1;
+		if (radius > 80) radius = 80;
 		int var3 = MathHelper.floor_double(posX - radius - 1.0D);
 		int var4 = MathHelper.floor_double(posX + radius + 1.0D);
 		int var5 = MathHelper.floor_double(posY - radius - 1.0D);
@@ -183,6 +186,8 @@ public class EntityNuclearBlast extends EntityInanimate
 	{
 		ticksExisted = var1.getInteger("ticksExisted");
 		time = var1.getInteger("time");
+		motionY = Strength = var1.getInteger("charges");
+		motionX = var1.getBoolean("troll") ? 1.0f : 0.0f;
 	}
 	
 	@Override
@@ -190,6 +195,7 @@ public class EntityNuclearBlast extends EntityInanimate
 	{
 		var1.setInteger("ticksExisted", ticksExisted);
 		var1.setInteger("time", time);
+		var1.setInteger("charges", Strength);
 	}
 	
 	@Override

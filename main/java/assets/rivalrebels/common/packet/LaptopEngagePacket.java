@@ -92,7 +92,7 @@ public class LaptopEngagePacket implements IMessage
 				if (te != null && te instanceof TileEntityLaptop)
 				{
 					TileEntityLaptop tel = ((TileEntityLaptop)te);
-					if (!m.c && tel.b2spirit > 0 && tel.canBomb)
+					if (!m.c && tel.b2spirit > 0)
 					{
 						int XX = 11;
 						int ZZ = 10;
@@ -110,10 +110,11 @@ public class LaptopEngagePacket implements IMessage
 						int zz = m.tz-m.lz;
 						if (xx*xx+zz*zz > 625 && XX*XX+ZZ*ZZ > 200)
 						{
-							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, tel, player.isSneaking(), false));
+							tel.b2spirit--;
+							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, false));
 						}
 					}
-					if (m.c && tel.b2carpet > 0 && tel.canBomb)
+					if (m.c && tel.b2carpet > 0)
 					{
 						int XX = 11;
 						int ZZ = 10;
@@ -121,7 +122,8 @@ public class LaptopEngagePacket implements IMessage
 						int zz = m.tz-m.lz;
 						if (xx*xx+zz*zz > 625 && XX*XX+ZZ*ZZ > 200)
 						{
-							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, tel, player.isSneaking(), true));
+							tel.b2carpet--;
+							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, true));
 						}
 					}
 				}

@@ -25,12 +25,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
 import assets.rivalrebels.common.entity.EntityFlameBall1;
 import assets.rivalrebels.common.entity.EntityRhodes;
+import assets.rivalrebels.common.item.weapon.ItemRoda;
 import assets.rivalrebels.common.packet.ADSUpdatePacket;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import assets.rivalrebels.common.packet.ReactorUpdatePacket;
@@ -65,11 +67,14 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 	private double			prevTz					= 0;
 	private Entity			le						= null;
 	public int				wepSelected;
+	public static int		staticEntityIndex		= 1;
+	public int				entityIndex				= 1;
 	public String			username				= "nohbdy";
 	private int ticksincepacket;
 	
 	public TileEntityReciever()
 	{
+		entityIndex = staticEntityIndex;
 		pInM = 400;
 		if (RivalRebels.freeDragonAmmo)
 		{
@@ -169,12 +174,12 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 					{
 						RivalRebelsSoundPlayer.playSound(worldObj, xCoord, yCoord, zCoord, 8, 1, 0.1f);
 					}
-					Entity entity = new EntityFlameBall1(worldObj, this, (float) (0.99 + (Math.random() * 0.02)));
-					Entity entity2 = new EntityFlameBall1(worldObj, this, (float) (0.99 + (Math.random() * 0.02)));
-					Entity entity3 = new EntityFlameBall1(worldObj, this, (float) (0.99 + (Math.random() * 0.02)));
-					if (!worldObj.isRemote) worldObj.spawnEntityInWorld(entity);
-					if (!worldObj.isRemote) worldObj.spawnEntityInWorld(entity2);
-					if (!worldObj.isRemote) worldObj.spawnEntityInWorld(entity3);
+					float rotationYaw = (float) (180 - yaw);
+					float rotationPitch = (float) (-pitch);
+					double motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+					double motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+					double motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
+					ItemRoda.spawn(entityIndex,worldObj,xCoord + xO + 0.5, yCoord + 0.75, zCoord + zO + 0.5,motionX,motionY,motionZ,1.0f,0.0f);
 					useAmmo();
 				}
 				return power - 4;
@@ -464,6 +469,7 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 		hasWeapon = nbt.getBoolean("hasWeapon");
 		username = nbt.getString("username");
 		team = RivalRebelsTeam.getForID(nbt.getInteger("team"));
+		entityIndex = nbt.getInteger("entityIndex");
 	}
 	
 	/**
@@ -494,6 +500,7 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 		nbt.setBoolean("kMobs", kMobs);
 		nbt.setBoolean("hasWeapon", hasWeapon);
 		nbt.setString("username", username);
+		nbt.setInteger("entityIndex", entityIndex);
 		if (team != null) nbt.setInteger("team", team.ordinal());
 	}
 	

@@ -94,11 +94,11 @@ public class EntityPlasmoid extends EntityInanimate
 		setAccurateHeading(motionX, motionY, motionZ, par3 * 1.5F, 1.0F);
 	}
 	
-	public EntityPlasmoid(World worldObj, float px, float py, float pz, float x, float y, float z, float d)
+	public EntityPlasmoid(World worldObj, double px, double py, double pz, double x, double y, double z, float d)
 	{
 		super(worldObj);
 		setSize(0.5F, 0.5F);
-		float f = d/MathHelper.sqrt_float(x*x+y*y+z*z);
+		double f = d/MathHelper.sqrt_double(x*x+y*y+z*z);
 		setPosition(px+x*f, py+y*f, pz+z*f);
 		yOffset = 0.0F;
 		size = 3;

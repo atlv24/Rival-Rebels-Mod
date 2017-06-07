@@ -74,7 +74,7 @@ public class LaptopRefreshPacket implements IMessage
 		public IMessage onMessage(LaptopRefreshPacket m, MessageContext ctx)
 		{
 			TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(m.x, m.y, m.z);
-			System.out.println("packet recieved");
+			//System.out.println("packet recieved");
 			if (te != null && te instanceof TileEntityLaptop)
 			{
 				((TileEntityLaptop)te).b2spirit=m.tasks;

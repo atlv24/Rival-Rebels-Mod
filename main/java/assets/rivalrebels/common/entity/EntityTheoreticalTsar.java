@@ -14,9 +14,11 @@ package assets.rivalrebels.common.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -25,44 +27,54 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.explosion.NuclearExplosion;
+import assets.rivalrebels.common.explosion.TsarBomba;
 
-public class EntityB83 extends EntityThrowable
+public class EntityTheoreticalTsar extends EntityThrowable
 {
 	public int	ticksInAir	= 0;
+	public int aoc = 0;
+	public boolean hasTrollface;
 	
-	public EntityB83(World par1World)
+	public EntityTheoreticalTsar(World par1World)
 	{
 		super(par1World);
 		this.setSize(0.5F, 0.5F);
 	}
 	
-	public EntityB83(World par1World, double x, double y, double z, float yaw, float pitch)
+	public EntityTheoreticalTsar(World par1World, double x, double y, double z, float yaw, float pitch, int charges, boolean troll)
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
 		setLocationAndAngles(x, y, z, yaw, pitch);
 		yOffset = 0.0F;
-		motionX = -(-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
-		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
-		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
+		prevRotationYaw = rotationYaw = yaw;
+		prevRotationPitch = rotationPitch = pitch;
+		aoc = charges;
+		hasTrollface = troll;
+		if (!RivalRebels.nukedrop)
+		{
+			explode();
+		}
 	}
 	
-	public EntityB83(World par1World, double x, double y, double z, float yaw, float pitch, float strength)
+	public EntityTheoreticalTsar(World worldObj, float px, float py, float pz, float f, float g, float h)
 	{
-		super(par1World);
-		setSize(0.5F, 0.5F);
-		setLocationAndAngles(x, y, z, yaw, pitch);
+		this(worldObj);
+		setPosition(px, py, pz);
 		yOffset = 0.0F;
-		motionX = -(-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI)) * strength;
-		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI)) * strength;
-		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI)) * strength;
+		motionX = f;
+		motionY = g;
+		motionZ = h;
+		aoc = 5;
+		hasTrollface = true;
 	}
-	public EntityB83(World par1World, double x, double y,double z, double mx, double my, double mz)
+	public EntityTheoreticalTsar(World par1World, double x, double y,double z, double mx, double my, double mz, int charges)
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
 		setPosition(x,y,z);
 		yOffset = 0.0F;
+		aoc = charges;
 		setAnglesMotion(mx, my, mz);
 	}
 	
@@ -84,22 +96,22 @@ public class EntityB83 extends EntityThrowable
 		this.lastTickPosX = this.posX;
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
-		if (ticksInAir == - 100 || posY < 0 || posY > 256) explode();
-		++this.ticksInAir;
 		
-		Vec3 var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-		Vec3 var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-		var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-		var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		
-		if (var3 != null)
+		if (!worldObj.isRemote)
 		{
-			var2 = Vec3.createVectorHelper(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
-		}
-		
-		if (!this.worldObj.isRemote)
-		{
+			if (ticksInAir == - 100) explode();
+			++this.ticksInAir;
+			
+			Vec3 var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+			Vec3 var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
+			var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+			var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+
+			if (var3 != null)
+			{
+				var2 = Vec3.createVectorHelper(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+			}
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
@@ -132,16 +144,18 @@ public class EntityB83 extends EntityThrowable
 			{
 				var3 = new MovingObjectPosition(var4);
 			}
-		}
-		
-		if (var3 != null)
-		{
-			this.onImpact(var3);
+			
+			if (var3 != null)
+			{
+				this.onImpact(var3);
+			}
 		}
 		
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
+		if (posY < 0) setDead();
+		
 		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		
@@ -165,9 +179,9 @@ public class EntityB83 extends EntityThrowable
 			this.prevRotationYaw += 360.0F;
 		}
 		
-		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-		float var17 = 0.9f;
+		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.05F;
+		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.05F;
+		float var17 = 0.98f;
 		float var18 = this.getGravityVelocity();
 		
 		this.motionX *= var17;
@@ -178,15 +192,17 @@ public class EntityB83 extends EntityThrowable
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		
+		nbt.setInteger("charge", aoc);
+		nbt.setBoolean("troll", hasTrollface);
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		
+		aoc = nbt.getInteger("charge");
+		hasTrollface = nbt.getBoolean("troll");
 	}
 	
 	@Override
@@ -200,8 +216,19 @@ public class EntityB83 extends EntityThrowable
 	{
 		if (var1.entityHit == null)
 		{
-			Material m = worldObj.getBlock(var1.blockX, var1.blockY, var1.blockZ).getMaterial();
-			if (m == Material.leaves || m == Material.clay || m == Material.ground || m == Material.plants || m == Material.cake || m == Material.circuits || m == Material.cactus || m == Material.cloth || m == Material.craftedSnow || m == Material.glass || m == Material.grass || m == Material.sand || m == Material.snow || m == Material.wood || m == Material.vine || m == Material.water || m == Material.sponge || m == Material.ice)
+			Block b = worldObj.getBlock(var1.blockX, var1.blockY, var1.blockZ);
+			Material m = b.getMaterial();
+			if (b == RivalRebels.jump || b == Blocks.ice)
+			{
+				motionY = Math.max(-motionY, 0.2f);
+				return;
+			}
+			if (hasTrollface && worldObj.rand.nextInt(10)!=0)
+			{
+				motionY = Math.max(-motionY, 0.2f);
+				return;
+			}
+			else if (!hasTrollface && (m == Material.leaves || m == Material.clay || m == Material.ground || m == Material.plants || m == Material.cake || m == Material.circuits || m == Material.cactus || m == Material.cloth || m == Material.craftedSnow || m == Material.glass || m == Material.grass || m == Material.sand || m == Material.snow || m == Material.wood || m == Material.vine || m == Material.water || m == Material.sponge || m == Material.ice))
 			{
 				worldObj.setBlockToAir(var1.blockX, var1.blockY, var1.blockZ);
 				return;
@@ -213,13 +240,17 @@ public class EntityB83 extends EntityThrowable
 	@Override
 	protected float getGravityVelocity()
 	{
-		return 0.1F;
+		return 0.03F;
 	}
 
 	public void explode()
 	{
-		new NuclearExplosion(worldObj, (int) posX, (int) posY, (int) posZ, RivalRebels.b83Strength);
-		worldObj.spawnEntityInWorld(new EntityTsarBlast(worldObj, posX, posY, posZ, RivalRebels.b83Strength * 1.333333333f).setTime());
-		this.setDead();
+		if (!worldObj.isRemote)
+		{
+			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, (int) ((RivalRebels.tsarBombaStrength + (aoc * aoc)) * 0.6f));
+			EntityTheoreticalTsarBlast tsarblast = new EntityTheoreticalTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar, RivalRebels.tsarBombaStrength + (aoc * aoc));
+			worldObj.spawnEntityInWorld(tsarblast);
+			this.setDead();
+		}
 	}
 }

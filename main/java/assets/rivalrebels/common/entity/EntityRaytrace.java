@@ -40,6 +40,26 @@ public class EntityRaytrace extends EntityInanimate
 		setSize(0.5F, 0.5F);
 	}
 	
+	public EntityRaytrace(World par1World, double x, double y,double z, double mx, double my, double mz)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setPosition(x,y,z);
+		yOffset = 0.0F;
+		setAnglesMotion(mx, my, mz);
+		c = 1.0f;
+		range = MathHelper.sqrt_double(mx*mx+my*my+mz*mz);
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
+	}
+	
 	public EntityRaytrace(World par1World, EntityPlayer player, float distance, float randomness, float chance, boolean shift)
 	{
 		super(par1World);

@@ -17,6 +17,7 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
@@ -57,6 +58,25 @@ public class EntityGore extends EntityInanimate
 	{
 		super(par1World);
 		setSize(0.25F, 0.25F);
+	}
+	public EntityGore(World par1World, double x, double y,double z, double mx, double my, double mz, int Type, int Mob)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setPosition(x,y,z);
+		yOffset = 0.0F;
+		setAnglesMotion(mx, my, mz);
+		type = Type;
+		mob = Mob;
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
 	}
 	
 	public EntityGore(World par1World, Entity toBeGibbed, int Type, int Mob)

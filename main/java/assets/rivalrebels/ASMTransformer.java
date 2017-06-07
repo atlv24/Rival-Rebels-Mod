@@ -51,7 +51,7 @@ public class ASMTransformer implements IClassTransformer
 				}
 			}
 		}
-		//*
+		/*
 		if (transformedName.equals("net.minecraft.world.biome.BiomeGenBase"))
 		{
 			int d = 3;

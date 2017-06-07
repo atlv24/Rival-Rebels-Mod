@@ -41,7 +41,6 @@ public class TileEntityLaptop extends TileEntity implements IInventory
 	public RivalRebelsTeam	rrteam			= null;
 	private ItemStack[]		chestContents	= new ItemStack[14];
 	
-	public boolean 			canBomb			= true;
 	public double			slide			= 0;
 	double					test			= Math.PI;
 	public int				b2spirit		= 0;

@@ -71,6 +71,8 @@ import assets.rivalrebels.client.renderentity.RenderRoddiskRegular;
 import assets.rivalrebels.client.renderentity.RenderRoddiskRep;
 import assets.rivalrebels.client.renderentity.RenderSeeker;
 import assets.rivalrebels.client.renderentity.RenderSphereBlast;
+import assets.rivalrebels.client.renderentity.RenderTheoreticalTsar;
+import assets.rivalrebels.client.renderentity.RenderTheoreticalTsarBlast;
 import assets.rivalrebels.client.renderentity.RenderTsar;
 import assets.rivalrebels.client.renderentity.RenderTsarBlast;
 import assets.rivalrebels.client.tileentityrender.TileEntityForceFieldNodeRenderer;
@@ -86,6 +88,7 @@ import assets.rivalrebels.client.tileentityrender.TileEntityPlasmaExplosionRende
 import assets.rivalrebels.client.tileentityrender.TileEntityReactorRenderer;
 import assets.rivalrebels.client.tileentityrender.TileEntityRecieverRenderer;
 import assets.rivalrebels.client.tileentityrender.TileEntitySigmaObjectiveRenderer;
+import assets.rivalrebels.client.tileentityrender.TileEntityTheoreticalTsarBombaRenderer;
 import assets.rivalrebels.client.tileentityrender.TileEntityTsarBombaRenderer;
 import assets.rivalrebels.common.entity.EntityB2Frag;
 import assets.rivalrebels.common.entity.EntityB2Spirit;
@@ -134,6 +137,8 @@ import assets.rivalrebels.common.entity.EntityRoddiskRegular;
 import assets.rivalrebels.common.entity.EntityRoddiskRep;
 import assets.rivalrebels.common.entity.EntitySeekB83;
 import assets.rivalrebels.common.entity.EntitySphereBlast;
+import assets.rivalrebels.common.entity.EntityTheoreticalTsar;
+import assets.rivalrebels.common.entity.EntityTheoreticalTsarBlast;
 import assets.rivalrebels.common.entity.EntityTsar;
 import assets.rivalrebels.common.entity.EntityTsarBlast;
 import assets.rivalrebels.common.round.RivalRebelsPlayer;
@@ -151,6 +156,7 @@ import assets.rivalrebels.common.tileentity.TileEntityPlasmaExplosion;
 import assets.rivalrebels.common.tileentity.TileEntityReactor;
 import assets.rivalrebels.common.tileentity.TileEntityReciever;
 import assets.rivalrebels.common.tileentity.TileEntitySigmaObjective;
+import assets.rivalrebels.common.tileentity.TileEntityTheoreticalTsarBomba;
 import assets.rivalrebels.common.tileentity.TileEntityTsarBomba;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -177,6 +183,7 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaptop.class, new TileEntityLaptopRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReciever.class, new TileEntityRecieverRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMeltDown.class, new TileEntityMeltdownRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTheoreticalTsarBomba.class, new TileEntityTheoreticalTsarBombaRenderer());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGasGrenade.class, new RenderGasGrenade());
 		RenderingRegistry.registerEntityRenderingHandler(EntityPropulsionFX.class, new RenderBullet("fire"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityPassiveFire.class, new RenderBullet("fire"));
@@ -224,6 +231,8 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityRoddiskRep.class, new RenderRoddiskRep());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHotPotato.class, new RenderHotPotato());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBomb.class, new RenderBomb());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTheoreticalTsar.class, new RenderTheoreticalTsar());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTheoreticalTsarBlast.class, new RenderTheoreticalTsarBlast());
 		RenderingRegistry.registerBlockHandler(new SteelBlockRenderer());
 	}
 	

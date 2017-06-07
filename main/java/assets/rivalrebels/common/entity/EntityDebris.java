@@ -42,7 +42,7 @@ public class EntityDebris extends EntityInanimate
 	{
 		super(w);
 	}
-	
+
 	public EntityDebris(World w, int x, int y, int z)
 	{
 		super(w);
@@ -55,6 +55,21 @@ public class EntityDebris extends EntityInanimate
 		prevPosX = x + 0.5f;
 		prevPosY = y + 0.5f;
 		prevPosZ = z + 0.5f;
+	}
+	public EntityDebris(World w, double x, double y, double z, double mx, double my, double mz, Block b)
+	{
+		super(w);
+		block = b;
+		metadata = 0;
+		setSize(1F, 1F);
+		yOffset = 0.5f;
+		setPosition(x, y, z);
+		prevPosX = x;
+		prevPosY = y;
+		prevPosZ = z;
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
 	}
 	
 	@Override
@@ -79,23 +94,6 @@ public class EntityDebris extends EntityInanimate
 		posZ += motionZ;
 		
 		if (!worldObj.isRemote && worldObj.getBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)).isOpaqueCube()) die(prevPosX, prevPosY, prevPosZ);
-		
-		/*
-		 * int x = MathHelper.floor_double(posX); int y = MathHelper.floor_double(posY); int z = MathHelper.floor_double(posZ); boolean c = worldObj.getBlock(x, y, z).isOpaqueCube(); boolean xp =
-		 * worldObj.getBlock(x+1, y, z).isOpaqueCube(); boolean xn = worldObj.getBlock(x-1, y, z).isOpaqueCube(); boolean yp = worldObj.getBlock(x, y+1, z).isOpaqueCube(); boolean yn =
-		 * worldObj.getBlock(x, y-1, z).isOpaqueCube(); boolean zp = worldObj.getBlock(x, y, z+1).isOpaqueCube(); boolean zn = worldObj.getBlock(x, y, z-1).isOpaqueCube(); if (xp && motionX > 0 &&
-		 * posX > x+0.5) { motionX = 0; posX = x+0.5; } else if (c) { posX = x-0.5; } if (xn && motionX < 0 && posX < x+0.5) { motionX = 0; posX = x+0.5; } else if (c) { posX = x+1.5; } if (yp &&
-		 * motionY > 0 && posY > y+0.5) { motionY = 0; posY = y+0.5; } else if (c) { posY = y-0.5; } if (yn && motionY < 0 && posY < y+0.5) { motionY = 0; posY = y+0.5; grounded = true; } else if (c)
-		 * { posY = y+1.5; } if (zp && motionZ > 0 && posZ > z+0.5) { motionZ = 0; posZ = z+0.5; } else if (c) { posZ = z-0.5; } if (zn && motionZ < 0 && posZ < z+0.5) { motionZ = 0; posZ = z+0.5; }
-		 * else if (c) { posZ = z+1.5; } x = MathHelper.floor_double(posX); y = MathHelper.floor_double(posY); z = MathHelper.floor_double(posZ); if (!worldObj.isRemote) { Iterator iterator =
-		 * worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox).iterator(); while (iterator.hasNext()) { Entity entity = (Entity)iterator.next();
-		 * entity.attackEntityFrom(RivalRebelsDamageSource.rocket, 4); } if (grounded && !worldObj.getBlock(x, y, z).isOpaqueCube()) { setDead(); worldObj.setBlock(x, y, z, block, metadata, 3); if
-		 * (block instanceof BlockFalling) ((BlockFalling)block).func_149828_a(worldObj, x, y, z, metadata); if (tileEntityData != null && block instanceof ITileEntityProvider) { TileEntity tileentity
-		 * = worldObj.getTileEntity(x, y, z); if (tileentity != null) { NBTTagCompound nbttagcompound = new NBTTagCompound(); tileentity.writeToNBT(nbttagcompound); Iterator iter =
-		 * tileEntityData.func_150296_c().iterator(); while (iter.hasNext()) { String s = (String)iter.next(); NBTBase nbtbase = tileEntityData.getTag(s); if (!s.equals("x") && !s.equals("y") &&
-		 * !s.equals("z")) { nbttagcompound.setTag(s, nbtbase.copy()); } } tileentity.readFromNBT(nbttagcompound); tileentity.markDirty(); } } } } else if (ticksExisted > 100 && !worldObj.isRemote &&
-		 * (y < 1 || y > 256) || ticksExisted > 600) setDead();
-		 */
 	}
 	
 	public void die(double X, double Y, double Z)

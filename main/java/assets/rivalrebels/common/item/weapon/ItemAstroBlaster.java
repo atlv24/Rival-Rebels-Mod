@@ -16,21 +16,32 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import java.util.HashSet;
+
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
 import assets.rivalrebels.common.entity.EntityLaserBurst;
 
-public class ItemAstroBlaster extends Item
+public class ItemAstroBlaster extends ItemTool
 {
 	boolean	isA	= true;
 	
 	public ItemAstroBlaster()
 	{
-		super();
+		super(1, ToolMaterial.EMERALD, new HashSet());
 		maxStackSize = 1;
 		setCreativeTab(RivalRebels.rralltab);
+	}
+	
+	@Override
+	public int getItemEnchantability()
+	{
+		return 100;
 	}
 	
 	@Override
@@ -105,7 +116,7 @@ public class ItemAstroBlaster extends Item
 			else RivalRebelsSoundPlayer.playSound(player, 2, 3, 0.4f, 1.7f);
 			
 			isA = !isA;
-			player.worldObj.spawnEntityInWorld(new EntityLaserBurst(player.worldObj, player));
+			player.worldObj.spawnEntityInWorld(new EntityLaserBurst(player.worldObj, player, is.getEnchantmentTagList() != null && is.getEnchantmentTagList().tagCount() > 0));
 		}
 		else if (player.worldObj.isRemote)
 		{

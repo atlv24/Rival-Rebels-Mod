@@ -251,6 +251,82 @@ public class BlockNukeCrate extends BlockContainer
 						world.setBlock(x, y - 1, z - 3, Blocks.air);
 						return true;
 					}
+					else if (world.getBlock(x + 1, y, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x + 2, y, z) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x + 3, y, z) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y + 1, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x + 1, y + 1, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x + 2, y + 1, z) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x + 3, y + 1, z) == RivalRebels.nukeCrateBottom)
+					{
+						world.setBlock(x, y, z, Blocks.air);
+						world.setBlock(x + 1, y + 1, z, Blocks.air);
+						world.setBlock(x + 2, y, z, Blocks.air);
+						world.setBlock(x + 3, y, z, Blocks.air);
+						world.setBlock(x, y + 1, z, Blocks.air);
+						world.setBlock(x + 1, y, z, RivalRebels.theoreticaltsarbombablock);
+						world.setBlockMetadataWithNotify(x + 1, y, z, 4, 1);
+						world.setBlock(x + 2, y + 1, z, Blocks.air);
+						world.setBlock(x + 3, y + 1, z, Blocks.air);
+						return true;
+					}
+					else if (world.getBlock(x - 1, y, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x - 2, y, z) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x - 3, y, z) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y + 1, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x - 1, y + 1, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x - 2, y + 1, z) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x - 3, y + 1, z) == RivalRebels.nukeCrateBottom)
+					{
+						world.setBlock(x, y, z, Blocks.air);
+						world.setBlock(x - 1, y + 1, z, Blocks.air);
+						world.setBlock(x - 2, y, z, Blocks.air);
+						world.setBlock(x - 3, y, z, Blocks.air);
+						world.setBlock(x, y + 1, z, Blocks.air);
+						world.setBlock(x - 1, y, z, RivalRebels.theoreticaltsarbombablock);
+						world.setBlockMetadataWithNotify(x - 1, y, z, 5, 1);
+						world.setBlock(x - 2, y + 1, z, Blocks.air);
+						world.setBlock(x - 3, y + 1, z, Blocks.air);
+						return true;
+					}
+					else if (world.getBlock(x, y, z + 1) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x, y, z + 2) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y, z + 3) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y + 1, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x, y + 1, z + 1) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x, y + 1, z + 2) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y + 1, z + 3) == RivalRebels.nukeCrateBottom)
+					{
+						world.setBlock(x, y, z, Blocks.air);
+						world.setBlock(x, y + 1, z + 1, Blocks.air);
+						world.setBlock(x, y, z + 2, Blocks.air);
+						world.setBlock(x, y, z + 3, Blocks.air);
+						world.setBlock(x, y + 1, z, Blocks.air);
+						world.setBlock(x, y, z + 1, RivalRebels.theoreticaltsarbombablock);
+						world.setBlockMetadataWithNotify(x, y, z + 1, 2, 1);
+						world.setBlock(x, y + 1, z + 2, Blocks.air);
+						world.setBlock(x, y + 1, z + 3, Blocks.air);
+						return true;
+					}
+					else if (world.getBlock(x, y, z - 1) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x, y, z - 2) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y, z - 3) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y + 1, z) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x, y + 1, z - 1) == RivalRebels.nukeCrateTop &&
+							world.getBlock(x, y + 1, z - 2) == RivalRebels.nukeCrateBottom &&
+							world.getBlock(x, y + 1, z - 3) == RivalRebels.nukeCrateBottom)
+					{
+						world.setBlock(x, y, z, Blocks.air);
+						world.setBlock(x, y + 1, z - 1, Blocks.air);
+						world.setBlock(x, y, z - 2, Blocks.air);
+						world.setBlock(x, y, z - 3, Blocks.air);
+						world.setBlock(x, y + 1, z, Blocks.air);
+						world.setBlock(x, y, z - 1, RivalRebels.theoreticaltsarbombablock);
+						world.setBlockMetadataWithNotify(x, y, z - 1, 3, 1);
+						world.setBlock(x, y + 1, z - 2, Blocks.air);
+						world.setBlock(x, y + 1, z - 3, Blocks.air);
+						return true;
+					}
 					else if (world.getBlock(x, y + 1, z) == RivalRebels.nukeCrateBottom)
 					{
 						world.setBlock(x, y + 1, z, Blocks.air);

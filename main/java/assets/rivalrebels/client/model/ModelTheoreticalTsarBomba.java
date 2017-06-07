@@ -22,7 +22,7 @@ import assets.rivalrebels.client.renderhelper.TextureVertice;
 import assets.rivalrebels.client.renderhelper.Vertice;
 import assets.rivalrebels.client.tileentityrender.TileEntityTsarBombaRenderer;
 
-public class ModelTsarBomba
+public class ModelTheoreticalTsarBomba
 {
 	private float[]	tsarx		= { 0.5f, 0.5f, 0.875f, 1f, 1f, 0.875f, 0.5f, 0f };
 	private float[]	tsary		= { -5f, -3.5f, -2f, -1f, 1f, 2f, 2.75f, 3f };
@@ -38,11 +38,30 @@ public class ModelTsarBomba
 	{
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glPushMatrix();
-		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettsarshell);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettheoreticaltsarshell1);
 		for (float i = 0; i < segments; i++)
 		{
 			GL11.glPushMatrix();
 			GL11.glRotatef(add * i, 0, 1, 0);
+			for (int f = 1; f < tsarx.length; f++)
+			{
+				TextureVertice t1 = new TextureVertice((1f / segments) * i, tsart[f]);
+				TextureVertice t2 = new TextureVertice((1f / segments) * i, tsart[f - 1]);
+				TextureVertice t3 = new TextureVertice((1f / segments) * (i + 1), tsart[f - 1]);
+				TextureVertice t4 = new TextureVertice((1f / segments) * (i + 1), tsart[f]);
+				RenderHelper.addFace(new Vertice(0f, tsary[f], tsarx[f]),
+						new Vertice(0f, tsary[f - 1], tsarx[f - 1]),
+						new Vertice(tsarx[f - 1] * sin, tsary[f - 1], tsarx[f - 1] * cos),
+						new Vertice(tsarx[f] * sin, tsary[f], tsarx[f] * cos), t1, t2, t3, t4);
+			}
+			GL11.glPopMatrix();
+		}
+		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettheoreticaltsarshell2);
+		for (float i = 0; i < segments; i++)
+		{
+			GL11.glPushMatrix();
+			GL11.glRotatef(add * i, 0, 1, 0);
+			GL11.glScalef(0.85f,0.95f,0.85f);
 			for (int f = 1; f < tsarx.length; f++)
 			{
 				TextureVertice t1 = new TextureVertice((1f / segments) * i, tsart[f]);

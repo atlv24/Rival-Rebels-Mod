@@ -14,10 +14,12 @@ package assets.rivalrebels.common.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -91,7 +93,7 @@ public class EntityRoddiskRegular extends EntityInanimate
 		
 		if (ticksExisted > 100 && shooter == null && !worldObj.isRemote)
 		{
-			worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(RivalRebels.roddisk)));
+			//worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(RivalRebels.roddisk)));
 			setDead();
 			RivalRebelsSoundPlayer.playSound(this, 5, 0);
 		}
@@ -214,6 +216,11 @@ public class EntityRoddiskRegular extends EntityInanimate
 			}
 			else
 			{
+				Block block = worldObj.getBlock(var3.blockX, var3.blockY, var3.blockZ);
+				if (block == Blocks.glass || block == Blocks.glass_pane)
+				{
+					worldObj.setBlock(var3.blockX, var3.blockY, var3.blockZ, Blocks.air);
+				}
 				RivalRebelsSoundPlayer.playSound(this, 5, 2);
 				
 				if (var3.sideHit == 4 || var3.sideHit == 5) this.motionX *= -1;

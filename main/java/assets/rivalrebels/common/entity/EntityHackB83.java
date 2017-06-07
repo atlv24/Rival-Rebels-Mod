@@ -51,6 +51,24 @@ public class EntityHackB83 extends EntityThrowable
 		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
 		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
 	}
+	public EntityHackB83(World par1World, double x, double y,double z, double mx, double my, double mz, boolean flystraight)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setPosition(x,y,z);
+		yOffset = 0.0F;
+		setAnglesMotion(mx, my, mz);
+		straight = flystraight;
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
+	}
 	
 	/**
 	 * Called to update the entity's position/logic.

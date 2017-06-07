@@ -17,17 +17,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import java.util.HashSet;
+
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
+import assets.rivalrebels.common.entity.EntityBomb;
 import assets.rivalrebels.common.entity.EntityRocket;
 
-public class ItemRPG extends Item
+public class ItemRPG extends ItemTool
 {
 	public ItemRPG()
 	{
-		super();
+		super(1, ToolMaterial.EMERALD, new HashSet());
 		maxStackSize = 1;
 		setCreativeTab(RivalRebels.rralltab);
 	}
@@ -66,7 +72,8 @@ public class ItemRPG extends Item
 			RivalRebelsSoundPlayer.playSound(par3EntityPlayer, 23, 2, 0.4f);
 			if (!par2World.isRemote)
 			{
-				par2World.spawnEntityInWorld(new EntityRocket(par2World, (EntityPlayer) par3EntityPlayer, 0.1F));
+				if (par1ItemStack.getEnchantmentTagList() == null) par2World.spawnEntityInWorld(new EntityRocket(par2World, (EntityPlayer) par3EntityPlayer, 0.1F));
+				else par2World.spawnEntityInWorld(new EntityBomb(par2World, (EntityPlayer) par3EntityPlayer, 0.1F));
 			}
 		}
 		else if (!par2World.isRemote)

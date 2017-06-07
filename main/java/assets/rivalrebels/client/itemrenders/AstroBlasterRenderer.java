@@ -26,6 +26,7 @@ import assets.rivalrebels.client.model.ModelAstroBlasterBarrel;
 import assets.rivalrebels.client.model.ModelAstroBlasterBody;
 import assets.rivalrebels.client.model.ModelAstroBlasterHandle;
 import assets.rivalrebels.client.model.ModelRod;
+import assets.rivalrebels.client.tileentityrender.TileEntityForceFieldNodeRenderer;
 
 public class AstroBlasterRenderer implements IItemRenderer
 {
@@ -101,6 +102,16 @@ public class AstroBlasterRenderer implements IItemRenderer
 		GL11.glTranslatef(0f, 0.9f, 0f);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.eteinstenbarrel);
 		md1.render();
+		if (item.getEnchantmentTagList() != null && item.getEnchantmentTagList().tagCount() > 0)
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			md1.render();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
 		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();
@@ -109,6 +120,16 @@ public class AstroBlasterRenderer implements IItemRenderer
 		GL11.glScalef(0.03125f, 0.03125f, 0.03125f);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.eteinstenhandle);
 		md2.render();
+		if (item.getEnchantmentTagList() != null && item.getEnchantmentTagList().tagCount() > 0)
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			md2.render();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
 		GL11.glPopMatrix();
 		
 		// GL11.glPushMatrix();
@@ -123,6 +144,16 @@ public class AstroBlasterRenderer implements IItemRenderer
 		GL11.glScaled(0.85, 0.85, 0.85);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.eteinstenback);
 		md4.render();
+		if (item.getEnchantmentTagList() != null && item.getEnchantmentTagList().tagCount() > 0)
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			md4.render();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
 		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();

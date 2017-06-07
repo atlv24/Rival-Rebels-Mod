@@ -59,7 +59,7 @@ public class EntityHotPotato extends EntityThrowable
 		nextz = z;
 	}
 	
-	public EntityHotPotato(World worldObj, float px, float py, float pz, float f, float g, float h)
+	public EntityHotPotato(World worldObj, double px, double py, double pz, double f, double g, double h)
 	{
 		super(worldObj);
 		setSize(0.5F, 0.5F);
@@ -70,7 +70,7 @@ public class EntityHotPotato extends EntityThrowable
 		yOffset = 0.0F;
 		prevRotationYaw = rotationYaw = 0;
 		prevRotationPitch = rotationPitch = 0;
-		round = 0;
+		round = 1;
 		nextx = (int)px;
 		nexty = (int)py;
 		nextz = (int)pz;
@@ -248,7 +248,7 @@ public class EntityHotPotato extends EntityThrowable
 		if (!worldObj.isRemote)
 		{
 			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, RivalRebels.tsarBombaStrength + 9);
-			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar);
+			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar,RivalRebels.tsarBombaStrength + 9);
 			worldObj.spawnEntityInWorld(tsarblast);
 			ticksInAir = 0;
 			round = round - 1;

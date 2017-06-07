@@ -51,6 +51,39 @@ public class EntityBomb extends EntityThrowable
 		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
 		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
 	}
+	public EntityBomb(World par1World, double x, double y,double z, double mx, double my, double mz)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setPosition(x+mx*1.4f,y+my*1.4f,z+mz*1.4f);
+		yOffset = 0.0F;
+		setAnglesMotion(mx, my, mz);
+	}
+	
+	public EntityBomb(World par1World, EntityPlayer entity2, float par3)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(entity2.posX, entity2.posY + entity2.getEyeHeight(), entity2.posZ, entity2.rotationYaw, entity2.rotationPitch);
+		setPosition(posX, posY, posZ);
+		yOffset = 0.0F;
+		motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
+		posX += motionX;
+		posY += motionY;
+		posZ += motionZ;
+		setThrowableHeading(motionX, motionY, motionZ, 2.5f, 0.1f);
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
+	}
 	
 	/**
 	 * Called to update the entity's position/logic.

@@ -199,10 +199,11 @@ public class RivalRebelsSoundEventHandler
 				"ba/p.ogg",
 				"ba/q.ogg",
 				"ba/r.ogg",
+				"ba/s.ogg",
 		};
 		for (int i = 0; i < soundFiles.length; i++)
 		{
-			// manager.sndHandler.addSound("rivalrebels:" + soundFiles[i]);
+			 //manager.sndHandler.addSound("rivalrebels:" + soundFiles[i]);
 		}
 	}
 }

@@ -26,6 +26,7 @@ import org.lwjgl.opengl.GL11;
 
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
+import assets.rivalrebels.common.entity.EntityTheoreticalTsar;
 import assets.rivalrebels.common.entity.EntityTsar;
 import assets.rivalrebels.common.entity.EntityTsarBlast;
 import assets.rivalrebels.common.explosion.TsarBomba;
@@ -35,7 +36,7 @@ import assets.rivalrebels.common.round.RivalRebelsTeam;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityTsarBomba extends TileEntity implements IInventory
+public class TileEntityTheoreticalTsarBomba extends TileEntity implements IInventory
 {
 	public String			username		= null;
 	public RivalRebelsTeam	rrteam			= null;
@@ -49,7 +50,6 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 	
 	public int				countdown		= RivalRebels.nuclearBombCountdown * 20;
 	public int				nuclear			= 0;
-	public int				hydrogen		= 0;
 	public boolean			hasAntennae		= false;
 	public boolean			hasExplosive	= false;
 	public boolean			hasFuse			= false;
@@ -222,19 +222,14 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 	public void updateEntity()
 	{
 		nuclear = 0;
-		hydrogen = 0;
 		for (int i = 3; i <= 18; i++)
 		{
 			if (getStackInSlot(i) != null)
 			{
 				Item item = getStackInSlot(i).getItem();
-				if (i < 11 && item == RivalRebels.nuclearelement)
+				if (item == RivalRebels.nuclearelement)
 				{
 					nuclear++;
-				}
-				else if (i > 10 && item == RivalRebels.hydrod)
-				{
-					hydrogen++;
 				}
 				if (item == RivalRebels.trollmask)
 				{
@@ -242,7 +237,7 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 				}
 			}
 		}
-		if (nuclear == hydrogen) megaton = nuclear * 6.25f;
+		megaton = nuclear * 6.25f;
 		
 		if (getStackInSlot(0) != null)
 		{
@@ -295,7 +290,7 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 			
 		}
 		
-		if (hasFuse && hasExplosive && nuclear == hydrogen && hasAntennae && hasChip)
+		if (hasFuse && hasExplosive && hasAntennae && hasChip)
 		{
 			double dist = 1000000;
 			
@@ -310,7 +305,7 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 					dist = getDistanceFrom(RivalRebels.round.sObjx, yCoord, RivalRebels.round.sObjz);
 				}
 			}
-			if (dist > (RivalRebels.tsarBombaStrength + (nuclear * hydrogen) + 29) * (RivalRebels.tsarBombaStrength + (nuclear * hydrogen) + 29))
+			if (dist > (RivalRebels.tsarBombaStrength + (nuclear * nuclear) + 29) * (RivalRebels.tsarBombaStrength + (nuclear * nuclear) + 29))
 			{
 				if (countdown > 0) countdown--;
 			}
@@ -338,7 +333,7 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 		
 		if (countdown % 20 == 0 && countdown <= 200 && RivalRebels.nuclearBombCountdown > 10) RivalRebelsSoundPlayer.playSound(worldObj, 14, 0, xCoord, yCoord, zCoord, 100);
 		
-		if (countdown == 0 && nuclear != 0 && hydrogen != 0 && !worldObj.isRemote && nuclear == hydrogen)
+		if (countdown == 0 && nuclear != 0 && !worldObj.isRemote)
 		{
 			worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
 			worldObj.lastLightningBolt = 2;
@@ -360,11 +355,11 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 				break;
 			}
 			
-			EntityTsar tsar = new EntityTsar(worldObj, xCoord+0.5f, yCoord+1f, zCoord+0.5f, yaw, pitch, hydrogen, hasTrollface);
+			EntityTheoreticalTsar tsar = new EntityTheoreticalTsar(worldObj, xCoord+0.5f, yCoord+1f, zCoord+0.5f, yaw, pitch, nuclear, hasTrollface);
 			worldObj.spawnEntityInWorld(tsar);
 		}
 		
-		if (countdown == 0 && nuclear == 0 && hydrogen == 0)
+		if (countdown == 0 && nuclear == 0)
 		{
 			worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
 			worldObj.createExplosion(null, xCoord, yCoord, zCoord, 4, false);
@@ -421,7 +416,7 @@ public class TileEntityTsarBomba extends TileEntity implements IInventory
 	@Override
 	public String getInventoryName()
 	{
-		return "Tsar Bomba";
+		return "Theoretical Tsar Bomba";
 	}
 	
 	@Override

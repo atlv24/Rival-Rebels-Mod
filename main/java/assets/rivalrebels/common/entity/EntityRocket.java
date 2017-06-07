@@ -71,6 +71,25 @@ public class EntityRocket extends EntityInanimate implements IProjectile
 		setThrowableHeading(motionX, motionY, motionZ, 0.5f, 0.1f);
 	}
 	
+	public EntityRocket(World par1World, double x, double y,double z, double mx, double my, double mz)
+	{
+		super(par1World);
+		fins = false;
+		setSize(0.5F, 0.5F);
+		setPosition(x,y,z);
+		yOffset = 0.0F;
+		setAnglesMotion(mx, my, mz);
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
+	}
+	
 	@Override
 	public void setThrowableHeading(double mx, double my, double mz, float speed, float randomness)
 	{
@@ -84,11 +103,7 @@ public class EntityRocket extends EntityInanimate implements IProjectile
 		mx *= speed;
 		my *= speed;
 		mz *= speed;
-		motionX = mx;
-		motionY = my;
-		motionZ = mz;
-		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
-		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
+		setAnglesMotion(mx, my, mz);
 	}
 	
 	/**

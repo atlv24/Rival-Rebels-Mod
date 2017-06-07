@@ -58,6 +58,23 @@ public class EntityCuchillo extends EntityInanimate
 		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI)) * par3;
 		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI)) * par3;
 	}
+	public EntityCuchillo(World par1World, double x, double y,double z, double mx, double my, double mz)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setPosition(x,y,z);
+		yOffset = 0.0F;
+		setAnglesMotion(mx, my, mz);
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
+	}
 	
 	@Override
 	protected void entityInit()

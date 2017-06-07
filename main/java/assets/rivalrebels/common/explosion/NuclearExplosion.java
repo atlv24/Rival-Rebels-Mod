@@ -34,7 +34,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class NuclearExplosion
 {
-	Block[]	prblocks	= {
+	public static Block[]	prblocks	= {
 						Blocks.coal_ore,
 						Blocks.iron_ore,
 						Blocks.redstone_ore,
@@ -44,7 +44,7 @@ public class NuclearExplosion
 						Blocks.emerald_ore,
 						};
 	
-	Block[]	pgblocks	= {
+	public static Block[]	pgblocks	= {
 						Blocks.stone,
 						Blocks.cobblestone,
 						Blocks.dirt,

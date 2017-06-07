@@ -23,7 +23,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import assets.rivalrebels.RivalRebels;
+import assets.rivalrebels.common.entity.EntityB2Spirit;
 import assets.rivalrebels.common.entity.EntityRhodes;
+import assets.rivalrebels.common.explosion.TsarBomba;
+import assets.rivalrebels.common.item.weapon.ItemRoda;
+import assets.rivalrebels.common.tileentity.TileEntityReciever;
+import assets.rivalrebels.common.tileentity.TileEntityTsarBomba;
 
 public class CommandConfig extends CommandBase
 {
@@ -69,8 +74,85 @@ public class CommandConfig extends CommandBase
 				sender.addChatMessage(new ChatComponentText("§cnuketime has been set to " + i));
 				return;
 			}
+			if (str.equals("nukepancake"))
+			{
+				String str2 = array[1];
+				if (str2.equals("off"))
+				{
+					RivalRebels.elevation = true;
+					sender.addChatMessage(new ChatComponentText("§cNew Pancake off"));
+				}
+				else if (str2.equals("on"))
+				{
+					RivalRebels.elevation = false;
+					sender.addChatMessage(new ChatComponentText("§cNew Pancake on"));
+				}
+				else sender.addChatMessage(new ChatComponentText("§cPlease give a value of either on or off."));
+				return;
+			}
+			if (str.equals("nukedrop"))
+			{
+				String str2 = array[1];
+				if (str2.equals("off"))
+				{
+					RivalRebels.nukedrop = false;
+					sender.addChatMessage(new ChatComponentText("§cNuke drop off"));
+				}
+				else if (str2.equals("on"))
+				{
+					RivalRebels.nukedrop = true;
+					sender.addChatMessage(new ChatComponentText("§cNuke drop on"));
+				}
+				else sender.addChatMessage(new ChatComponentText("§cPlease give a value of either on or off."));
+				return;
+			}
+			if (str.equals("b2chance"))
+			{
+				String str2 = array[1];
+				if (str2.equals("off"))
+				{
+					EntityB2Spirit.randchance = false;
+					sender.addChatMessage(new ChatComponentText("§cB2 chance off"));
+				}
+				else if (str2.equals("on"))
+				{
+					EntityB2Spirit.randchance = true;
+					sender.addChatMessage(new ChatComponentText("§cB2 chance on"));
+				}
+				else sender.addChatMessage(new ChatComponentText("§cPlease give a value of either on or off."));
+				return;
+			}
+			if (str.equals("dragon") || str.equals("b2"))
+			{
+				String str2 = array[1];
+				int index = -1;
+				for (int i = 0; i < ItemRoda.entities.length; i++)
+				{
+					if (str2.equals(ItemRoda.entities[i]))
+					{
+						index = i;
+						break;
+					}
+				}
+				if (index != -1)
+				{
+					if (str.equals("dragon"))
+					{
+						TileEntityReciever.staticEntityIndex = index;
+					}
+					else if (str.equals("b2"))
+					{
+						EntityB2Spirit.staticEntityIndex = index;
+					}
+				}
+				else
+				{
+					sender.addChatMessage(new ChatComponentText("§cPlease give a value of " + String.join(", ", ItemRoda.entities) + "."));
+				}
+				return;
+			}
 		}
-		sender.addChatMessage(new ChatComponentText("§cUsage: /rrconfig nuketime 1"));
+		sender.addChatMessage(new ChatComponentText("§cUsage: /rrconfig nuketime|nukedrop|b2chance|nukepancake|dragon|b2"));
 	}
 	/**
      * Adds the strings available in this command to the given list of tab completion options.
@@ -79,6 +161,10 @@ public class CommandConfig extends CommandBase
     {
     	List l = new ArrayList();
 		l.add("nuketime");
+		l.add("nukedrop");
+		l.add("nukepancake");
+		l.add("dragon");
+		l.add("b2");
 		return l;
     }
 }

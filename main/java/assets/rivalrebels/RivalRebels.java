@@ -109,6 +109,7 @@ import assets.rivalrebels.common.block.trap.BlockQuickSand;
 import assets.rivalrebels.common.block.trap.BlockRadioactiveDirt;
 import assets.rivalrebels.common.block.trap.BlockRadioactiveSand;
 import assets.rivalrebels.common.block.trap.BlockRemoteCharge;
+import assets.rivalrebels.common.block.trap.BlockTheoreticalTsarBomba;
 import assets.rivalrebels.common.block.trap.BlockTimedBomb;
 import assets.rivalrebels.common.block.trap.BlockToxicGas;
 import assets.rivalrebels.common.block.trap.BlockTsarBomba;
@@ -175,6 +176,8 @@ import assets.rivalrebels.common.entity.EntityRoddiskRep;
 import assets.rivalrebels.common.entity.EntitySeekB83;
 import assets.rivalrebels.common.entity.EntitySphereBlast;
 import assets.rivalrebels.common.entity.EntityTarget;
+import assets.rivalrebels.common.entity.EntityTheoreticalTsar;
+import assets.rivalrebels.common.entity.EntityTheoreticalTsarBlast;
 import assets.rivalrebels.common.entity.EntityTsar;
 import assets.rivalrebels.common.entity.EntityTsarBlast;
 import assets.rivalrebels.common.item.ItemAntenna;
@@ -229,6 +232,7 @@ import assets.rivalrebels.common.tileentity.TileEntityReactor;
 import assets.rivalrebels.common.tileentity.TileEntityReciever;
 import assets.rivalrebels.common.tileentity.TileEntityRhodesActivator;
 import assets.rivalrebels.common.tileentity.TileEntitySigmaObjective;
+import assets.rivalrebels.common.tileentity.TileEntityTheoreticalTsarBomba;
 import assets.rivalrebels.common.tileentity.TileEntityTsarBomba;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -254,7 +258,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"V";
+	public static final String				rrversion		= mcversion+"W";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()
@@ -354,6 +358,9 @@ public class RivalRebels// extends DummyModContainer
 	public static boolean					rhodesScaleSpeed;
 	public static float						rhodesSpeedScale;
 	public static float						rhodesBlockBreak;
+	public static boolean					nukedrop = true;
+	public static boolean 					elevation = true;
+	public static int						nametagrange = 7;
 	
 	public static Block						amario;
 	public static Block						aquicksand;
@@ -430,6 +437,7 @@ public class RivalRebels// extends DummyModContainer
 	public static Block						ffreciever;
 	public static Block						buildrhodes;
 	public static Block						rhodesactivator;
+	public static Block						theoreticaltsarbombablock;
 	
 	public static Item						rpg;
 	public static Item						flamethrower;
@@ -532,6 +540,7 @@ public class RivalRebels// extends DummyModContainer
 	public static ResourceLocation			guirhodesout;
 	public static ResourceLocation			guirhodeshelp;
 	public static ResourceLocation			guicarpet;
+	public static ResourceLocation			guitheoreticaltsar;
 	
 	public static ResourceLocation			etdisk0;
 	public static ResourceLocation			etdisk1;
@@ -591,6 +600,9 @@ public class RivalRebels// extends DummyModContainer
 	public static ResourceLocation			etrocketseek202;
 	public static ResourceLocation			etrocketseekhandle202;
 	public static ResourceLocation			etrocketseektube202;
+	public static ResourceLocation			ettheoreticaltsarshell1;
+	public static ResourceLocation			ettheoreticaltsarshell2;
+	public static ResourceLocation			etblacktsar;
 	
 	public static ResourceLocation			btcrate;
 	public static ResourceLocation			btnuketop;
@@ -671,6 +683,8 @@ public class RivalRebels// extends DummyModContainer
 		rhodesScaleSpeed = config.get("misc", "rhodesScaleSpeed", false).getBoolean(false);
 		rhodesSpeedScale = (float)config.get("misc", "rhodesSpeedScale", 1.0f).getDouble(1.0f);
 		rhodesBlockBreak = (float)config.get("misc", "rhodesBlockBreak", 1.0f).getDouble(1.0f);
+		nametagrange = (config.get("misc", "nametagrange", 7).getInt());
+		if (nametagrange > 7) nametagrange = 7;
 		config.addCustomCategoryComment("misc", "Miscellaneous.");
 		
 		String tempstring = config.get("modblacklist", "modblacklist", "").getString().toLowerCase();
@@ -686,6 +700,8 @@ public class RivalRebels// extends DummyModContainer
 		tsarBombaStrength = config.get("explosionsize", "tsarBombaStrength", 24).getInt();
 		b83Strength = config.get("explosionsize", "b83Strength", 15).getInt();
 		tsarBombaSpeed = config.get("explosionsize", "tsarBombaSpeed", 8).getInt();
+		elevation = config.get("explosionsize", "elevation", true).getBoolean(true);
+		nukedrop = config.get("explosionsize", "nukedrop", true).getBoolean(true);
 		config.addCustomCategoryComment("explosionsize", "Measured in blocks. Nuclear bomb just adds the specified number to its calculation.");
 		
 		flamethrowerDecay = config.get("decay", "FlamethrowerDecay", 64).getInt();
@@ -794,6 +810,7 @@ public class RivalRebels// extends DummyModContainer
 		guirhodesout = new ResourceLocation("rivalrebels:textures/gui/rhodes-gui_out.png");
 		guirhodeshelp = new ResourceLocation("rivalrebels:textures/gui/rhodes-gui_help.png");
 		guicarpet = new ResourceLocation("rivalrebels:textures/gui/v.png");
+		guitheoreticaltsar = new ResourceLocation("rivalrebels:textures/gui/w.png");
 		
 		etdisk0 = new ResourceLocation("rivalrebels:textures/entity/ba.png");
 		etdisk1 = new ResourceLocation("rivalrebels:textures/entity/bb.png");
@@ -850,6 +867,9 @@ public class RivalRebels// extends DummyModContainer
 		etrocketseek202 = new ResourceLocation("rivalrebels:textures/entity/ca.png");
 		etrocketseekhandle202 = new ResourceLocation("rivalrebels:textures/entity/cb.png");
 		etrocketseektube202 = new ResourceLocation("rivalrebels:textures/entity/cc.png");
+		ettheoreticaltsarshell1 = new ResourceLocation("rivalrebels:textures/entity/cd.png");
+		ettheoreticaltsarshell2 = new ResourceLocation("rivalrebels:textures/entity/ce.png");
+		etblacktsar = new ResourceLocation("rivalrebels:textures/entity/cf.png");
 		
 		btcrate = new ResourceLocation("rivalrebels:textures/blocks/ah.png");
 		btnuketop = new ResourceLocation("rivalrebels:textures/blocks/ay.png");
@@ -871,8 +891,8 @@ public class RivalRebels// extends DummyModContainer
 		{
 			optiFineWarn = FMLClientHandler.instance().hasOptifine();
 			ClientProxy.registerRenderInformation();
-			RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 7;
-			RendererLivingEntity.NAME_TAG_RANGE = 7;
+			RendererLivingEntity.NAME_TAG_RANGE_SNEAK = nametagrange;
+			RendererLivingEntity.NAME_TAG_RANGE = nametagrange;
 			MinecraftForge.EVENT_BUS.register(new RivalRebelsSoundEventHandler());
 			MinecraftForgeClient.registerItemRenderer(RivalRebels.roddisk, new RodDiskRenderer());
 			MinecraftForgeClient.registerItemRenderer(RivalRebels.plasmacannon, new PlasmaCannonRenderer());
@@ -910,115 +930,6 @@ public class RivalRebels// extends DummyModContainer
 		ICommandManager commandManager = MinecraftServer.getServer().getCommandManager();
 		ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
 		addCommands(serverCommandManager);
-		
-		// BufferedImage image = null;
-		//
-		// File file = new File("mods/RivalRebels/ServerBanners");
-		// String[] files = file.list();
-		//
-		// if (files != null && files.length > 0)
-		// {
-		// for (int i = 0; i < files.length; i++)
-		// {
-		// try
-		// {
-		// image = ImageIO.read(new File("mods/RivalRebels/ServerBanners/" + files[i]));
-		// }
-		// catch (Exception e)
-		// {
-		// e.printStackTrace();
-		// }
-		//
-		// int imgheight = image.getHeight();
-		// int imgwidth = image.getWidth();
-		// int size = imgheight * imgwidth * 3;
-		// if (imgheight == 116 && imgwidth == 500)
-		// {
-		// {
-		// ByteArrayOutputStream bos = new ByteArrayOutputStream(size + 8);
-		// DataOutputStream outputStream = new DataOutputStream(bos);
-		// try
-		// {
-		// outputStream.writeInt(20);
-		// outputStream.writeInt(0);
-		// for (int y = 0; y < imgheight; y++)
-		// {
-		// for (int x = 0; x < imgwidth; x++)
-		// {
-		// outputStream.writeByte((byte) (image.getRaster().getSample(x, y, 0)));
-		// outputStream.writeByte((byte) (image.getRaster().getSample(x, y, 1)));
-		// outputStream.writeByte((byte) (image.getRaster().getSample(x, y, 2)));
-		// }
-		// }
-		// }
-		// catch (Exception ex)
-		// {
-		// ex.printStackTrace();
-		// }
-		// finally
-		// {
-		// try
-		// {
-		// if (outputStream != null) outputStream.close();
-		// }
-		// catch (IOException error)
-		// {
-		//
-		// }
-		// }
-		// Packet250CustomPayload packet = new Packet250CustomPayload();
-		// packet.channel = "RodolRivalRebels";
-		// packet.data = bos.toByteArray();
-		// packet.length = bos.size();
-		// serverBanner = packet;
-		// }
-		//
-		// {
-		// ByteArrayOutputStream bos = new ByteArrayOutputStream(files[i].length() + 8);
-		// DataOutputStream outputStream = new DataOutputStream(bos);
-		// try
-		// {
-		// outputStream.writeInt(19);
-		// outputStream.writeInt(0);
-		// char[] buffer = files[i].toCharArray();
-		// byte[] bytes = new byte[buffer.length];
-		// for (int j = 0; j < bytes.length; j++)
-		// {
-		// bytes[j] = (byte) buffer[j];
-		// }
-		// outputStream.write(bytes);
-		// }
-		// catch (Exception ex)
-		// {
-		// ex.printStackTrace();
-		// }
-		// finally
-		// {
-		// try
-		// {
-		// if (outputStream != null) outputStream.close();
-		// }
-		// catch (IOException error)
-		// {
-		//
-		// }
-		// }
-		// Packet250CustomPayload packet = new Packet250CustomPayload();
-		// packet.channel = "RodolRivalRebels";
-		// packet.data = bos.toByteArray();
-		// packet.length = bos.size();
-		// serverBannerName = packet;
-		// }
-		// }
-		// }
-		// }
-		// else
-		// {
-		// System.err.println();
-		// System.err.println("Invalid Server Banner File!");
-		// System.err.println("Please use a banner file named localhost.png and let it have the dimensions of 500x116");
-		// System.err.println();
-		// }
 	}
 	
 	public void addCommands(ServerCommandManager manager)
@@ -1115,6 +1026,7 @@ public class RivalRebels// extends DummyModContainer
 		ffreciever = (new BlockReciever()).setHardness(2F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
 		buildrhodes = (new BlockRhodesScaffold()).setHardness(2F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
 		rhodesactivator = (new BlockRhodesActivator()).setHardness(0.1F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
+		theoreticaltsarbombablock = (new BlockTheoreticalTsarBomba()).setHardness(5.0F).setLightLevel(0.4F).setBlockName("rivalrebels.blocks." + (nextNum++));
 		
 		nextNum = 0;
 		GameRegistry.registerBlock(amario, "rivalrebelsblock" + (nextNum++));
@@ -1192,6 +1104,7 @@ public class RivalRebels// extends DummyModContainer
 		GameRegistry.registerBlock(meltdown, "rivalrebelsblock" + (nextNum++));
 		GameRegistry.registerBlock(buildrhodes, "rivalrebelsblock" + (nextNum++));
 		GameRegistry.registerBlock(rhodesactivator, "rivalrebelsblock" + (nextNum++));
+		GameRegistry.registerBlock(theoreticaltsarbombablock, "rivalrebelsblock" + (nextNum++));
 	}
 	
 	private void registerItems()
@@ -1386,6 +1299,7 @@ public class RivalRebels// extends DummyModContainer
 		GameRegistry.registerTileEntity(TileEntityReactive.class, "rivalrebelstileentity" + ++nextNum);
 		GameRegistry.registerTileEntity(TileEntityMeltDown.class, "rivalrebelstileentity" + ++nextNum);
 		GameRegistry.registerTileEntity(TileEntityRhodesActivator.class, "rivalrebelstileentity" + ++nextNum);
+		GameRegistry.registerTileEntity(TileEntityTheoreticalTsarBomba.class, "rivalrebelstileentity" + ++nextNum);
 		nextNum = -1;
 		EntityRegistry.registerModEntity(EntityGasGrenade.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 		EntityRegistry.registerModEntity(EntityCuchillo.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
@@ -1435,6 +1349,8 @@ public class RivalRebels// extends DummyModContainer
 		EntityRegistry.registerModEntity(EntityRoddiskRep.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 		EntityRegistry.registerModEntity(EntityHotPotato.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 		EntityRegistry.registerModEntity(EntityBomb.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
+		EntityRegistry.registerModEntity(EntityTheoreticalTsar.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
+		EntityRegistry.registerModEntity(EntityTheoreticalTsarBlast.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 	}
 	
 	private void registerGuis()

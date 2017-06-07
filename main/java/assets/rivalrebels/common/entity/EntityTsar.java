@@ -51,6 +51,10 @@ public class EntityTsar extends EntityThrowable
 		prevRotationPitch = rotationPitch = pitch;
 		aoc = charges;
 		hasTrollface = troll;
+		if (!RivalRebels.nukedrop)
+		{
+			explode();
+		}
 	}
 	
 	public EntityTsar(World worldObj, float px, float py, float pz, float f, float g, float h)
@@ -63,6 +67,24 @@ public class EntityTsar extends EntityThrowable
 		motionZ = h;
 		aoc = 5;
 		hasTrollface = true;
+	}
+	public EntityTsar(World par1World, double x, double y,double z, double mx, double my, double mz, int charges)
+	{
+		super(par1World);
+		setSize(0.5F, 0.5F);
+		setPosition(x,y,z);
+		yOffset = 0.0F;
+		aoc = charges;
+		setAnglesMotion(mx, my, mz);
+	}
+	
+	public void setAnglesMotion(double mx, double my, double mz)
+	{
+		motionX = mx;
+		motionY = my;
+		motionZ = mz;
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
 	}
 	
 	/**
@@ -170,15 +192,17 @@ public class EntityTsar extends EntityThrowable
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		
+		nbt.setInteger("charge", aoc);
+		nbt.setBoolean("troll", hasTrollface);
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		
+		aoc = nbt.getInteger("charge");
+		hasTrollface = nbt.getBoolean("troll");
 	}
 	
 	@Override
@@ -223,8 +247,8 @@ public class EntityTsar extends EntityThrowable
 	{
 		if (!worldObj.isRemote)
 		{
-			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, RivalRebels.tsarBombaStrength + (aoc * aoc));
-			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar);
+			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, (int) ((RivalRebels.tsarBombaStrength + (aoc * aoc)) * 0.8f));
+			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar, RivalRebels.tsarBombaStrength + (aoc * aoc));
 			worldObj.spawnEntityInWorld(tsarblast);
 			this.setDead();
 		}

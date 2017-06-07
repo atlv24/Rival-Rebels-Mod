@@ -39,14 +39,14 @@ public class EntityTsarBlast extends EntityInanimate
 		ignoreFrustumCheck = true;
 	}
 	
-	public EntityTsarBlast(World par1World, float x, float y, float z, TsarBomba tsarBomba)
+	public EntityTsarBlast(World par1World, float x, float y, float z, TsarBomba tsarBomba, int rad)
 	{
 		super(par1World);
 		ignoreFrustumCheck = true;
 		tsar = tsarBomba;
-		radius = tsar.radius;
+		radius = rad;
 		tsarhole = true;
-		motionX = Math.sqrt(tsar.radius - RivalRebels.tsarBombaStrength) / 10;
+		motionX = Math.sqrt(radius - RivalRebels.tsarBombaStrength) / 10;
 		setPosition(x, y, z);
 	}
 	
@@ -74,38 +74,39 @@ public class EntityTsarBlast extends EntityInanimate
 			if (worldObj.rand.nextInt(5) == 0) RivalRebelsSoundPlayer.playSound(this, 26, 0, 100, 0.7f);
 		}
 		
-		pushAndHurtEntities();
-		
 		ticksExisted++;
 		
-		if (ticksExisted > 1200 && !tsarhole) setDead();
-		
-		for (int i = 0; i < RivalRebels.tsarBombaSpeed + (motionX * 50); i++)
+		if (!worldObj.isRemote)
 		{
-			if (tsar != null)
+			if (ticksExisted < 600) pushAndHurtEntities();
+			for (int i = 0; i < RivalRebels.tsarBombaSpeed * 2; i++)
 			{
-				tsar.update(this);
-				/*if (tsar.update())
+				if (tsar != null)
 				{
-					tsar = null;
-				}*/
-			}
-			else
-			{
-				return;
+					tsar.update(this);
+					/*if (tsar.update())
+					{
+						tsar = null;
+					}*/
+				}
+				else
+				{
+					return;
+				}
 			}
 		}
 	}
 	
 	public void pushAndHurtEntities()
 	{
-		radius *= 2;
-		int var3 = MathHelper.floor_double(posX - radius - 1.0D);
-		int var4 = MathHelper.floor_double(posX + radius + 1.0D);
-		int var5 = MathHelper.floor_double(posY - radius - 1.0D);
-		int var28 = MathHelper.floor_double(posY + radius + 1.0D);
-		int var7 = MathHelper.floor_double(posZ - radius - 1.0D);
-		int var29 = MathHelper.floor_double(posZ + radius + 1.0D);
+		int clampradius = (int) radius;
+		if (clampradius > 80) radius = 80;
+		int var3 = MathHelper.floor_double(posX - clampradius - 1.0D);
+		int var4 = MathHelper.floor_double(posX + clampradius + 1.0D);
+		int var5 = MathHelper.floor_double(posY - clampradius - 1.0D);
+		int var28 = MathHelper.floor_double(posY + clampradius + 1.0D);
+		int var7 = MathHelper.floor_double(posZ - clampradius - 1.0D);
+		int var29 = MathHelper.floor_double(posZ + clampradius + 1.0D);
 		List var9 = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(var3, var5, var7, var4, var28, var29));
 		Vec3 var30 = Vec3.createVectorHelper(posX, posY, posZ);
 		
@@ -114,7 +115,7 @@ public class EntityTsarBlast extends EntityInanimate
 			Entity var31 = (Entity) var9.get(var11);
 			if ((var31 instanceof EntityPlayer && ((EntityPlayer) var31).capabilities.isCreativeMode)
 					|| var31 instanceof EntityNuclearBlast || var31 instanceof EntityTsarBlast) continue;
-			double var13 = var31.getDistance(posX, posY, posZ) / radius;
+			double var13 = var31.getDistance(posX, posY, posZ) / clampradius;
 			
 			if (var13 <= 1.0D)
 			{
@@ -132,11 +133,11 @@ public class EntityTsarBlast extends EntityInanimate
 					double var34 = (1.0D - var13) * var32 * ((var31 instanceof EntityB83 || var31 instanceof EntityHackB83) ? -1 : 1);
 					if (var31 instanceof EntityRhodes)
 					{
-						var31.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) (radius*var34*0.2f));
+						var31.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) (clampradius*var34*0.2f));
 					}
 					else
 					{
-						var31.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) ((var34 * var34 + var34) / 2.0D * 8.0D * radius + 1.0D) * 20);
+						var31.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) ((var34 * var34 + var34) / 2.0D * 8.0D * clampradius + 1.0D) * 20);
 						var31.motionX -= var15 * var34 * 8;
 						var31.motionY -= var17 * var34 * 8;
 						var31.motionZ -= var19 * var34 * 8;
@@ -144,26 +145,20 @@ public class EntityTsarBlast extends EntityInanimate
 				}
 			}
 		}
-		radius /= 2;
 	}
 	
 	@Override
-	public void setDead()
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		super.setDead();
-		//RivalRebelsServerPacketHandler.sendPacketToAllPlayers(3, 0);
+		motionX = nbt.getFloat("size");
+		radius = nbt.getFloat("radius");
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		
-	}
-	
-	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-	{
-		
+		nbt.setFloat("size", (float) motionX);
+		nbt.setFloat("radius", (float) radius);
 	}
 	
 	@Override

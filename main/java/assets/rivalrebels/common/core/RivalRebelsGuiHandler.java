@@ -20,6 +20,7 @@ import assets.rivalrebels.client.gui.GuiNuclearBomb;
 import assets.rivalrebels.client.gui.GuiOptiFineWarning;
 import assets.rivalrebels.client.gui.GuiReactor;
 import assets.rivalrebels.client.gui.GuiTesla;
+import assets.rivalrebels.client.gui.GuiTheoreticalTsar;
 import assets.rivalrebels.client.gui.GuiTray;
 import assets.rivalrebels.client.gui.GuiTsar;
 import assets.rivalrebels.common.container.ContainerLaptop;
@@ -27,12 +28,14 @@ import assets.rivalrebels.common.container.ContainerLoader;
 import assets.rivalrebels.common.container.ContainerNuclearBomb;
 import assets.rivalrebels.common.container.ContainerReactor;
 import assets.rivalrebels.common.container.ContainerReciever;
+import assets.rivalrebels.common.container.ContainerTheoreticalTsar;
 import assets.rivalrebels.common.container.ContainerTsar;
 import assets.rivalrebels.common.tileentity.TileEntityLaptop;
 import assets.rivalrebels.common.tileentity.TileEntityLoader;
 import assets.rivalrebels.common.tileentity.TileEntityNuclearBomb;
 import assets.rivalrebels.common.tileentity.TileEntityReactor;
 import assets.rivalrebels.common.tileentity.TileEntityReciever;
+import assets.rivalrebels.common.tileentity.TileEntityTheoreticalTsarBomba;
 import assets.rivalrebels.common.tileentity.TileEntityTsarBomba;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -45,6 +48,10 @@ public class RivalRebelsGuiHandler implements IGuiHandler
 		if (tileEntity instanceof TileEntityTsarBomba)
 		{
 			return new ContainerTsar(player.inventory, (TileEntityTsarBomba) tileEntity);
+		}
+		if (tileEntity instanceof TileEntityTheoreticalTsarBomba)
+		{
+			return new ContainerTheoreticalTsar(player.inventory, (TileEntityTheoreticalTsarBomba) tileEntity);
 		}
 		if (tileEntity instanceof TileEntityNuclearBomb)
 		{
@@ -76,6 +83,10 @@ public class RivalRebelsGuiHandler implements IGuiHandler
 		if (tileEntity instanceof TileEntityTsarBomba)
 		{
 			return new GuiTsar(player.inventory, (TileEntityTsarBomba) tileEntity);
+		}
+		if (tileEntity instanceof TileEntityTheoreticalTsarBomba)
+		{
+			return new GuiTheoreticalTsar(player.inventory, (TileEntityTheoreticalTsarBomba) tileEntity);
 		}
 		if (tileEntity instanceof TileEntityNuclearBomb)
 		{
