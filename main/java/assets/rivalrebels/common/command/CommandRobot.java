@@ -287,7 +287,7 @@ public class CommandRobot extends CommandBase
 					if (which == -1)
 					{
 						int distance = 10000;
-						for (int i = 0; i < 16; i++)
+						for (int i = 0; i < names.length; i++)
 						{
 							int d = distance(str2, names[i]);
 							if (d < distance)
@@ -297,7 +297,7 @@ public class CommandRobot extends CommandBase
 							}
 						}
 					}
-					if (which > -1 && which < 16)
+					if (which > -1 && which < names.length)
 					{
 						EntityRhodes.forcecolor = which;
 						sender.addChatMessage(new ChatComponentText("§cNext Rhodes: " + EntityRhodes.names[which]));
@@ -400,6 +400,7 @@ public class CommandRobot extends CommandBase
 		"osmium",
 		"neon",
 		"argent",
-		"wolfram"
+		"wolfram",
+		"space"
 	};
 }

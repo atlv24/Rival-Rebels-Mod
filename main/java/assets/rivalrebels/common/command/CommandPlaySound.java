@@ -17,6 +17,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
 
 public class CommandPlaySound extends CommandBase
@@ -48,7 +49,6 @@ public class CommandPlaySound extends CommandBase
 	@Override
 	public void processCommand(ICommandSender sender, String[] array)
 	{
-		EntityPlayer person = getCommandSenderAsPlayer(sender);
 		if (array.length == 4)
 		{
 			int dir = 0;
@@ -66,7 +66,8 @@ public class CommandPlaySound extends CommandBase
 			{
 				sender.addChatMessage(new ChatComponentText("No!"));
 			}
-			RivalRebelsSoundPlayer.playSound(person, dir, num, vol, pit);
+			ChunkCoordinates cc = sender.getPlayerCoordinates();
+			RivalRebelsSoundPlayer.playSound(sender.getEntityWorld(), dir, num, cc.posX, cc.posY, cc.posZ, vol, pit);
 		}
 		else
 		{

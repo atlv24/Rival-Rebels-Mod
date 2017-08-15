@@ -243,7 +243,7 @@ public class EntityBomb extends EntityThrowable
 		exploded = true;
 		hit = b;
 		ticksExisted = 0;
-		if (Math.random() > 0.8f) RivalRebelsSoundPlayer.playSound(this, 0, 0, 20, 0.4f + (float)Math.random() * 0.3f);
+		if (Math.random() > 0.8f) RivalRebelsSoundPlayer.playSound(this, 23, 0, 20, 0.4f + (float)Math.random() * 0.3f);
 		if (!worldObj.isRemote && !b)
 		{
 			int r = 2;

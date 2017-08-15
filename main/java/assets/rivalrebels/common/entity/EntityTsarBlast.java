@@ -11,6 +11,7 @@
  *******************************************************************************/
 package assets.rivalrebels.common.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -29,7 +30,6 @@ import assets.rivalrebels.common.explosion.TsarBomba;
 public class EntityTsarBlast extends EntityInanimate
 {
 	public TsarBomba	tsar		= null;
-	public boolean		tsarhole	= false;
 	public double		radius;
 	public int			time		= 0;
 	
@@ -45,7 +45,6 @@ public class EntityTsarBlast extends EntityInanimate
 		ignoreFrustumCheck = true;
 		tsar = tsarBomba;
 		radius = rad;
-		tsarhole = true;
 		motionX = Math.sqrt(radius - RivalRebels.tsarBombaStrength) / 10;
 		setPosition(x, y, z);
 	}
@@ -55,7 +54,6 @@ public class EntityTsarBlast extends EntityInanimate
 		super(par1World);
 		ignoreFrustumCheck = true;
 		radius = rad;
-		tsarhole = false;
 		motionX = Math.sqrt(rad - RivalRebels.tsarBombaStrength) / 10;
 		setPosition(x, y, z);
 	}
@@ -78,7 +76,9 @@ public class EntityTsarBlast extends EntityInanimate
 		
 		if (!worldObj.isRemote)
 		{
-			if (ticksExisted < 600) pushAndHurtEntities();
+			if (tsar == null && ticksExisted > 1200) setDead();
+			if (ticksExisted % 20 == 0) updateEntityList();
+			if (ticksExisted < 1200 && ticksExisted % 5 == 0) pushAndHurtEntities();
 			for (int i = 0; i < RivalRebels.tsarBombaSpeed * 2; i++)
 			{
 				if (tsar != null)
@@ -97,53 +97,59 @@ public class EntityTsarBlast extends EntityInanimate
 		}
 	}
 	
+	List<Entity> entitylist = new ArrayList<Entity>();
+	
+	public void updateEntityList()
+	{
+		entitylist.clear();
+		double ldist = radius*radius;
+		for (int i = 0; i < worldObj.loadedEntityList.size(); i++)
+		{
+			Entity e = (Entity) worldObj.loadedEntityList.get(i);
+			double dist = e.getDistanceSq(posX,posY,posZ);
+			if (dist < ldist)
+			{
+				if ((e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode) || e instanceof EntityNuclearBlast || e instanceof EntityTsarBlast || e == this) continue;
+				entitylist.add(e);
+			}
+		}
+	}
+	
 	public void pushAndHurtEntities()
 	{
-		int clampradius = (int) radius;
-		if (clampradius > 80) radius = 80;
-		int var3 = MathHelper.floor_double(posX - clampradius - 1.0D);
-		int var4 = MathHelper.floor_double(posX + clampradius + 1.0D);
-		int var5 = MathHelper.floor_double(posY - clampradius - 1.0D);
-		int var28 = MathHelper.floor_double(posY + clampradius + 1.0D);
-		int var7 = MathHelper.floor_double(posZ - clampradius - 1.0D);
-		int var29 = MathHelper.floor_double(posZ + clampradius + 1.0D);
-		List var9 = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(var3, var5, var7, var4, var28, var29));
-		Vec3 var30 = Vec3.createVectorHelper(posX, posY, posZ);
-		
-		for (int var11 = 0; var11 < var9.size(); ++var11)
+		List<Entity> remove = new ArrayList<Entity>();
+		float invrad = 1.0f / (float) radius;
+		for (Entity e : entitylist)
 		{
-			Entity var31 = (Entity) var9.get(var11);
-			if ((var31 instanceof EntityPlayer && ((EntityPlayer) var31).capabilities.isCreativeMode)
-					|| var31 instanceof EntityNuclearBlast || var31 instanceof EntityTsarBlast) continue;
-			double var13 = var31.getDistance(posX, posY, posZ) / clampradius;
-			
-			if (var13 <= 1.0D)
+			if (e.isDead || e.isEntityInvulnerable())
 			{
-				double var15 = var31.posX - posX;
-				double var17 = var31.posY + var31.getEyeHeight() - posY;
-				double var19 = var31.posZ - posZ;
-				double var33 = MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
-				
-				if (var33 != 0.0D)
-				{
-					var15 /= var33;
-					var17 /= var33;
-					var19 /= var33;
-					double var32 = worldObj.getBlockDensity(var30, var31.boundingBox);
-					double var34 = (1.0D - var13) * var32 * ((var31 instanceof EntityB83 || var31 instanceof EntityHackB83) ? -1 : 1);
-					if (var31 instanceof EntityRhodes)
-					{
-						var31.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) (clampradius*var34*0.2f));
-					}
-					else
-					{
-						var31.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) ((var34 * var34 + var34) / 2.0D * 8.0D * clampradius + 1.0D) * 20);
-						var31.motionX -= var15 * var34 * 8;
-						var31.motionY -= var17 * var34 * 8;
-						var31.motionZ -= var19 * var34 * 8;
-					}
-				}
+				remove.add(e);
+				continue;
 			}
+			float dx = (float) (e.posX - posX);
+			float dy = (float) (e.posY - posY);
+			float dz = (float) (e.posZ - posZ);
+			float dist = MathHelper.sqrt_float(dx * dx + dy * dy + dz * dz);
+			float rsqrt = 1.0f / (dist + 0.0001f);
+			dx *= rsqrt;
+			dy *= rsqrt;
+			dz *= rsqrt;
+			double f = 40.0f * (1.0f - dist * invrad) * ((e instanceof EntityB83 || e instanceof EntityHackB83) ? -1.0f : 1.0f);
+			if (e instanceof EntityRhodes)
+			{
+				e.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) (radius*f*0.025f));
+			}
+			else
+			{
+				e.attackEntityFrom(RivalRebelsDamageSource.nuclearblast, (int) (f * f * 2.0f * radius + 20.0f));
+				e.motionX -= dx * f;
+				e.motionY -= dy * f;
+				e.motionZ -= dz * f;
+			}
+		}
+		for (Entity e : remove)
+		{
+			entitylist.remove(e);
 		}
 	}
 	

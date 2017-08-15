@@ -40,7 +40,6 @@ public class EntitySphereBlast extends EntityTsarBlast
 		super(par1World);
 		ignoreFrustumCheck = true;
 		radius = rad;
-		tsarhole = false;
 		motionX = Math.sqrt(rad - RivalRebels.tsarBombaStrength) / 10;
 		setPosition(x, y, z);
 	}

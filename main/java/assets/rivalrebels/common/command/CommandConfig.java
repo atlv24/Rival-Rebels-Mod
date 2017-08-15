@@ -74,6 +74,22 @@ public class CommandConfig extends CommandBase
 				sender.addChatMessage(new ChatComponentText("§cnuketime has been set to " + i));
 				return;
 			}
+			if (str.equals("b2trash"))
+			{
+				String str2 = array[1];
+				boolean i = Boolean.parseBoolean(str2);
+				EntityB2Spirit.trash = i;
+				sender.addChatMessage(new ChatComponentText("§cb2trash has been set to " + i));
+				return;
+			}
+			if (str.equals("b2leave"))
+			{
+				String str2 = array[1];
+				boolean i = Boolean.parseBoolean(str2);
+				EntityB2Spirit.leave = i;
+				sender.addChatMessage(new ChatComponentText("§cb2leave has been set to " + i));
+				return;
+			}
 			if (str.equals("nukepancake"))
 			{
 				String str2 = array[1];

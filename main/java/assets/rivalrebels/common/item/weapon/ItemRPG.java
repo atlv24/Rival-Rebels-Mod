@@ -69,7 +69,8 @@ public class ItemRPG extends ItemTool
 			{
 				par3EntityPlayer.inventory.consumeInventoryItem(RivalRebels.rocket);
 			}
-			RivalRebelsSoundPlayer.playSound(par3EntityPlayer, 23, 2, 0.4f);
+			if (par1ItemStack.getEnchantmentTagList() == null) RivalRebelsSoundPlayer.playSound(par3EntityPlayer, 23, 2, 0.4f);
+			else RivalRebelsSoundPlayer.playSound(par3EntityPlayer, 10, 4, 1.0f);
 			if (!par2World.isRemote)
 			{
 				if (par1ItemStack.getEnchantmentTagList() == null) par2World.spawnEntityInWorld(new EntityRocket(par2World, (EntityPlayer) par3EntityPlayer, 0.1F));

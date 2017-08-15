@@ -38,6 +38,7 @@ public class EntityHotPotato extends EntityThrowable
 	public int nextx = 0;
 	public int nexty = 0;
 	public int nextz = 0;
+	public boolean dorounds = false;
 	
 	public EntityHotPotato(World par1World)
 	{
@@ -57,6 +58,7 @@ public class EntityHotPotato extends EntityThrowable
 		nextx = x;
 		nexty = y;
 		nextz = z;
+		dorounds = true;
 	}
 	
 	public EntityHotPotato(World worldObj, double px, double py, double pz, double f, double g, double h)
@@ -75,6 +77,7 @@ public class EntityHotPotato extends EntityThrowable
 		nexty = (int)py;
 		nextz = (int)pz;
 		ticksInAir = 1;
+		dorounds = true;
 	}
 
 	/**
@@ -87,7 +90,7 @@ public class EntityHotPotato extends EntityThrowable
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
 		++this.ticksInAir;
-		if (ticksInAir < 2)
+		if (ticksInAir < 2 && dorounds)
 		{
 			RivalRebelsSoundPlayer.playSound(worldObj, 14, 0, posX, posY, posZ, 100);
 			motionX = 0;

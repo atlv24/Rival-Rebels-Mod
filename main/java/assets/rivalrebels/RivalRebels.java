@@ -258,7 +258,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"W";
+	public static final String				rrversion		= mcversion+"X";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()
@@ -361,6 +361,7 @@ public class RivalRebels// extends DummyModContainer
 	public static boolean					nukedrop = true;
 	public static boolean 					elevation = true;
 	public static int						nametagrange = 7;
+	public static String					bombertype = "b2";
 	
 	public static Block						amario;
 	public static Block						aquicksand;
@@ -603,6 +604,9 @@ public class RivalRebels// extends DummyModContainer
 	public static ResourceLocation			ettheoreticaltsarshell1;
 	public static ResourceLocation			ettheoreticaltsarshell2;
 	public static ResourceLocation			etblacktsar;
+	public static ResourceLocation			etwacknuke;
+	public static ResourceLocation			ettupolev;
+	public static ResourceLocation			etbooster;
 	
 	public static ResourceLocation			btcrate;
 	public static ResourceLocation			btnuketop;
@@ -677,6 +681,7 @@ public class RivalRebels// extends DummyModContainer
 		rhodesAI = config.get("misc", "rhodesAIEnabled", true).getBoolean(true);
 		rhodesCC = config.get("misc", "rhodesTeamFriendlyFire", true).getBoolean(true);
 		rhodesPromode = config.get("misc", "rhodesPromode", false).getBoolean(false);
+		bombertype = config.get("misc", "BomberType", "b2", "For the B2 bomber, set to 'b2', for Warfare Shuttle 'sh', for Tupolev-95 'tu'.").getString();
 		objectiveHealth = (config.get("misc", "objectiveHealth", 15000).getInt());
 		freeDragonAmmo = config.get("misc", "freeDragonAmmo", false).getBoolean(false);
 		bombDamageToRhodes = (config.get("misc", "bombDamageToRhodes", 20).getInt());
@@ -870,6 +875,9 @@ public class RivalRebels// extends DummyModContainer
 		ettheoreticaltsarshell1 = new ResourceLocation("rivalrebels:textures/entity/cd.png");
 		ettheoreticaltsarshell2 = new ResourceLocation("rivalrebels:textures/entity/ce.png");
 		etblacktsar = new ResourceLocation("rivalrebels:textures/entity/cf.png");
+		etwacknuke = new ResourceLocation("rivalrebels:textures/entity/cg.png");
+		ettupolev = new ResourceLocation("rivalrebels:textures/entity/tupolev.png");
+		etbooster = new ResourceLocation("rivalrebels:textures/entity/booster.png");
 		
 		btcrate = new ResourceLocation("rivalrebels:textures/blocks/ah.png");
 		btnuketop = new ResourceLocation("rivalrebels:textures/blocks/ay.png");

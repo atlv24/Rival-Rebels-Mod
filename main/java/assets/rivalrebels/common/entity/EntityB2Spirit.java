@@ -43,6 +43,9 @@ public class EntityB2Spirit extends Entity
 	public boolean dropAnything = true;
 	public boolean randomizer = false;
 	public static boolean randchance = true;
+	public boolean dropOnlyOne = false;
+	public static boolean trash = true;
+	public static boolean leave = true;
 	
 	public int mode = 0; //0=straight 1=left 2=right
 	
@@ -56,13 +59,14 @@ public class EntityB2Spirit extends Entity
 		yOffset = 0.0F;
 	}
 	
-	public EntityB2Spirit(World par1World, double x, double y, double z, double x1, double y1, double z1, boolean c)
+	public EntityB2Spirit(World par1World, double x, double y, double z, double x1, double y1, double z1, boolean c, boolean da)
 	{
 		this(par1World);
 		carpet = c;
 		tx = x;
 		ty = y;
 		tz = z;
+		dropOnlyOne = !da;
 		if (carpet)
 		{
 			entityIndex = 10;
@@ -154,7 +158,7 @@ public class EntityB2Spirit extends Entity
 			
 			if (ticksSinceStart >= 60 && mode == 0)
 			{
-				if (carpet || ticksSinceStart % 40 == 0)
+				if (carpet || (dropOnlyOne ? ticksSinceStart == 80 : ticksSinceStart % 40 == 0))
 					dropNuke();
 				
 				if (distfromtarget > 80.0f)
@@ -168,8 +172,8 @@ public class EntityB2Spirit extends Entity
 					}
 					if (ticksSinceStart > 1000 && randchance)
 					{
-						dropAnything = worldObj.rand.nextBoolean();
-						if (worldObj.rand.nextInt(4) == 1)
+						dropAnything = worldObj.rand.nextBoolean() && trash;
+						if (worldObj.rand.nextInt(4) == 1 && leave)
 						{
 							motionY = 2.0f;
 						}

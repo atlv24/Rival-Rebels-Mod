@@ -51,8 +51,9 @@ public class RenderRhodes extends Render
     public static IModelCustom rocketlauncher;
     public static IModelCustom thigh;
     public static IModelCustom shin;
-    private IModelCustom flame;
-    private IModelCustom laser;
+    private static IModelCustom booster;
+    private static IModelCustom flame;
+    private static IModelCustom laser;
     public static IModelCustom ffhead;
     public static IModelCustom fftorso;
     public static IModelCustom ffupperarm;
@@ -84,6 +85,7 @@ public class RenderRhodes extends Render
     	shin = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/rhodes/shin.obj"));
     	flame = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/rhodes/flame.obj"));
     	laser = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/rhodes/laser.obj"));
+    	booster = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/booster.obj"));
     	
     	ffhead = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/rhodes/ffhead.obj"));
     	fftorso = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/rhodes/fftorso.obj"));
@@ -165,6 +167,7 @@ public class RenderRhodes extends Render
 		211/255f,     235/255f,     113/255f, //14
 		145/255f,     163/255f,     175/255f, //15
 		 34/255f,      31/255f,      31/255f, //16
+		255/255f,     255/255f,     255/255f, //17
 	};
 	
 	public void renderRhodes(EntityRhodes rhodes, double x, double y, double z, float par8, float tt)
@@ -234,19 +237,35 @@ public class RenderRhodes extends Render
             GL11.glPopMatrix();
 			
 			
-			
-			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-			GL11.glDisable(GL11.GL_CULL_FACE);
-			GL11.glRotatef(rhodes.getbodyyaw(ptt), 0, 1, 0);
-	
-			float leftlegheight = 7.26756f - 15
-					+ (MathHelper.cos((rhodes.getleftthighpitch(ptt)+11.99684962f)*0.01745329252f) * 7.331691240f)
-					+ (MathHelper.cos((rhodes.getleftthighpitch(ptt)+rhodes.getleftshinpitch(ptt)-12.2153067f)*0.01745329252f) * 8.521366426f);
-			float rightlegheight = 7.26756f - 15
-					+ (MathHelper.cos((rhodes.getrightthighpitch(ptt)+11.99684962f)*0.01745329252f) * 7.331691240f)
-					+ (MathHelper.cos((rhodes.getrightthighpitch(ptt)+rhodes.getrightshinpitch(ptt)-12.2153067f)*0.01745329252f) * 8.521366426f);
+			if (rhodes.colorType == 16)
+			{
+				GL11.glPushMatrix();
+				GL11.glRotatef(rhodes.getbodyyaw(ptt), 0, 1, 0);
+				GL11.glTranslatef(0, 15f, 0);
+				Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etbooster);
+		    	booster.renderAll();
+				Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
+				GL11.glPushMatrix();
+				GL11.glRotatef(-90f, 1, 0, 0);
+				GL11.glTranslatef(0, 4, -2);
+				GL11.glScalef(3.0f, 3.0f, 3.0f);
+				if (rhodes.b2energy > 0) RenderB2Spirit.shuttle.render();
+				GL11.glPopMatrix();
+				GL11.glPopMatrix();
+			}
+			else {
+				Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+				GL11.glDisable(GL11.GL_CULL_FACE);
+				GL11.glRotatef(rhodes.getbodyyaw(ptt), 0, 1, 0);
+		
+				float leftlegheight = 7.26756f - 15
+						+ (MathHelper.cos((rhodes.getleftthighpitch(ptt)+11.99684962f)*0.01745329252f) * 7.331691240f)
+						+ (MathHelper.cos((rhodes.getleftthighpitch(ptt)+rhodes.getleftshinpitch(ptt)-12.2153067f)*0.01745329252f) * 8.521366426f);
+				float rightlegheight = 7.26756f - 15
+						+ (MathHelper.cos((rhodes.getrightthighpitch(ptt)+11.99684962f)*0.01745329252f) * 7.331691240f)
+						+ (MathHelper.cos((rhodes.getrightthighpitch(ptt)+rhodes.getrightshinpitch(ptt)-12.2153067f)*0.01745329252f) * 8.521366426f);
 			
 				//TORSO
 				GL11.glPushMatrix();
@@ -468,6 +487,7 @@ public class RenderRhodes extends Render
 						GL11.glEnable(GL11.GL_LIGHTING);
 			    	}
 				GL11.glPopMatrix();
+			}
 	    	GL11.glPopMatrix();
 		}
 		if (rhodes.health < 1)

@@ -111,7 +111,7 @@ public class LaptopEngagePacket implements IMessage
 						if (xx*xx+zz*zz > 625 && XX*XX+ZZ*ZZ > 200)
 						{
 							tel.b2spirit--;
-							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, false));
+							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, false, player.isSneaking()));
 						}
 					}
 					if (m.c && tel.b2carpet > 0)
@@ -123,7 +123,7 @@ public class LaptopEngagePacket implements IMessage
 						if (xx*xx+zz*zz > 625 && XX*XX+ZZ*ZZ > 200)
 						{
 							tel.b2carpet--;
-							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, true));
+							world.spawnEntityInWorld(new EntityB2Spirit(world, m.tx, m.ty, m.tz, player.posX, player.posY, player.posZ, true, false));
 						}
 					}
 				}

@@ -126,7 +126,8 @@ public class EntityRhodes extends Entity
 		"Osmium", //13
 		"Neon", //14
 		"Argent", //15
-		"Wolfram" //16
+		"Wolfram", //16
+		"Space"
 	};
 	public float bodyyaw = 0;
 	public float headyaw = 0;

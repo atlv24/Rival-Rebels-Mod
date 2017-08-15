@@ -18,7 +18,7 @@ public class RivalRebelsSoundPlayer
 {
 	static String[]		directory	=
 									{
-									// artillery 0
+			// artillery 0
 			"aa",
 			// autobuild 1
 			"ab",

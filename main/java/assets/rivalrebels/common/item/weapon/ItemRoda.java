@@ -162,6 +162,39 @@ public class ItemRoda extends Item
 			3.0f,
 			3.0f
 		};
+	public static int[] rates = new int[]{
+			1,//0
+			1,
+			1,
+			8,
+			8,
+			1,//5
+			6,
+			8,
+			1,
+			2,
+			6,//10
+			10,
+			10,
+			10,
+			10,
+			10,//15
+			10,
+			2,
+			10,
+			10,
+			1,//20
+			1,
+			1,
+			1,
+			20,
+			20,//25
+			20,
+			20,
+			20,
+			20,
+			20
+		};
 	public static int rodaindex = 23;
 	
 	public static void spawn(int index, World world, double x, double y, double z, double mx, double my, double mz, double speed, double random)

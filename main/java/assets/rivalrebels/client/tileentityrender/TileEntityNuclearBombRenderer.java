@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.model.ModelNuclearBomb;
+import assets.rivalrebels.client.renderentity.RenderNuke;
 import assets.rivalrebels.common.tileentity.TileEntityNuclearBomb;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,11 +27,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityNuclearBombRenderer extends TileEntitySpecialRenderer
 {
-	private ModelNuclearBomb	model;
-	
 	public TileEntityNuclearBombRenderer()
 	{
-		model = new ModelNuclearBomb();
 	}
 	
 	public void renderAModelAt(TileEntityNuclearBomb tile, double d, double d1, double d2, float f)
@@ -41,30 +39,35 @@ public class TileEntityNuclearBombRenderer extends TileEntitySpecialRenderer
 		int metadata = tile.getBlockMetadata();
 		if (metadata == 0)
 		{
-			GL11.glRotatef(180, 1, 0, 0);
+			GL11.glRotatef(90, 1, 0, 0);
 		}
 		
-		if (metadata == 2)
+		if (metadata == 1)
 		{
 			GL11.glRotatef(-90, 1, 0, 0);
 		}
 		
+		if (metadata == 2)
+		{
+			GL11.glRotatef(180, 0, 1, 0);
+		}
+		
 		if (metadata == 3)
 		{
-			GL11.glRotatef(90, 1, 0, 0);
+			GL11.glRotatef(0, 0, 1, 0);
 		}
 		
 		if (metadata == 4)
 		{
-			GL11.glRotatef(90, 0, 0, 1);
+			GL11.glRotatef(-90, 0, 1, 0);
 		}
 		
 		if (metadata == 5)
 		{
-			GL11.glRotatef(-90, 0, 0, 1);
+			GL11.glRotatef(90, 0, 1, 0);
 		}
-		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etnuke);
-		model.renderModel(tile.hasFuse);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etwacknuke);
+		RenderNuke.model.renderAll();
 		GL11.glPopMatrix();
 	}
 	

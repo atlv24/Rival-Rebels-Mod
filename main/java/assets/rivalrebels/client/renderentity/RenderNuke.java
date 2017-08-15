@@ -15,6 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
@@ -29,11 +31,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderNuke extends Render
 {
-	private ModelNuclearBomb	model;
+    public static IModelCustom model;
 	
 	public RenderNuke()
 	{
-		model = new ModelNuclearBomb();
+		model = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/wacknuke.obj"));
 	}
 	
 	public void renderB83(EntityNuke b83, double x, double y, double z, float par8, float par9)
@@ -43,8 +45,8 @@ public class RenderNuke extends Render
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		GL11.glRotatef(b83.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(b83.rotationPitch - 90.0f, 0.0F, 0.0F, 1.0F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etnuke);
-		model.renderModel(true);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etwacknuke);
+		model.renderAll();
 		GL11.glPopMatrix();
 	}
 	

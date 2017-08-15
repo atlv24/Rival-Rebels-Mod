@@ -40,7 +40,6 @@ public class EntityTheoreticalTsarBlast extends EntityTsarBlast
 		ignoreFrustumCheck = true;
 		tsar = tsarBomba;
 		radius = rad;
-		tsarhole = true;
 		motionX = Math.sqrt(radius - RivalRebels.tsarBombaStrength) / 10;
 		setPosition(x, y, z);
 	}

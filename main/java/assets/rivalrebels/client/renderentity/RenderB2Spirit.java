@@ -27,14 +27,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderB2Spirit extends Render
 {
-	ModelFromObj	md;
+	ModelFromObj	b2;
+	public static ModelFromObj	shuttle;
+	public static ModelFromObj	tupolev;
 	
 	public RenderB2Spirit()
 	{
 		try
 		{
-			md = ModelFromObj.readObjFile("d.obj");
-			md.scale(3, 3, 3);
+			b2 = ModelFromObj.readObjFile("d.obj");
+			b2.scale(3, 3, 3);
+			tupolev = ModelFromObj.readObjFile("tupolev.obj");
+			shuttle = ModelFromObj.readObjFile("shuttle.obj");
 		}
 		catch (Exception e)
 		{
@@ -49,9 +53,23 @@ public class RenderB2Spirit extends Render
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		GL11.glRotatef(b2spirit.rotationYaw, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(b2spirit.rotationPitch, 1.0F, 0.0F, 0.0F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		md.render();
+		if (RivalRebels.bombertype.equals("sh"))
+		{
+			GL11.glScalef(3.0f, 3.0f, 3.0f);
+			Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
+			shuttle.render();
+		}
+		else if (RivalRebels.bombertype.equals("tu"))
+		{
+			Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettupolev);
+			tupolev.render();
+		}
+		else
+		{
+			Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
+			b2.render();
+		}
 		GL11.glPopMatrix();
 	}
 	

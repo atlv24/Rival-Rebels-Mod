@@ -71,6 +71,7 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 	public int				entityIndex				= 1;
 	public String			username				= "nohbdy";
 	private int ticksincepacket;
+	int ticksSinceLastShot = 0;
 	
 	public TileEntityReciever()
 	{
@@ -165,24 +166,29 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 				target = getTarget();
 				ticksSinceLastTarget = 0;
 			}
-			if (target != null)
+			ticksSinceLastShot++;
+			if (ticksSinceLastShot > ItemRoda.rates[entityIndex])
 			{
-				lookAt(target);
-				if (hasAmmo())
+				if (target != null)
 				{
-					if (worldObj.rand.nextInt(3) == 0)
+					ticksSinceLastShot = 0;
+					lookAt(target);
+					if (hasAmmo())
 					{
-						RivalRebelsSoundPlayer.playSound(worldObj, xCoord, yCoord, zCoord, 8, 1, 0.1f);
+						if (worldObj.rand.nextInt(3) == 0)
+						{
+							RivalRebelsSoundPlayer.playSound(worldObj, xCoord, yCoord, zCoord, 8, 1, 0.1f);
+						}
+						float rotationYaw = (float) (180 - yaw);
+						float rotationPitch = (float) (-pitch);
+						double motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+						double motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+						double motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
+						ItemRoda.spawn(entityIndex,worldObj,xCoord + xO + 0.5, yCoord + 0.75, zCoord + zO + 0.5,motionX,motionY,motionZ,1.0f,0.0f);
+						useAmmo();
 					}
-					float rotationYaw = (float) (180 - yaw);
-					float rotationPitch = (float) (-pitch);
-					double motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
-					double motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
-					double motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
-					ItemRoda.spawn(entityIndex,worldObj,xCoord + xO + 0.5, yCoord + 0.75, zCoord + zO + 0.5,motionX,motionY,motionZ,1.0f,0.0f);
-					useAmmo();
+					return power - 4;
 				}
-				return power - 4;
 			}
 			ticksincepacket++;
 			if (ticksincepacket > 6 && !worldObj.isRemote)
@@ -222,15 +228,15 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 	private Entity getTarget()
 	{
 		Object[] iter = worldObj.loadedEntityList.toArray();
-		double ldist = 225;
+		double ldist = 40*40;
 		Entity result = null;
 		for (int i = 0; i < iter.length; i++)
 		{
 			Entity e = (Entity) iter[i];
-			if (canTarget(e))
+			double dist = e.getDistanceSq(xCoord + 0.5 + xO, yCoord + 0.5, zCoord + 0.5 + zO);
+			if (dist < ldist)
 			{
-				double dist = e.getDistanceSq(xCoord + 0.5 + xO, yCoord + 0.5, zCoord + 0.5 + zO);
-				if (dist < ldist)
+				if (canTarget(e))
 				{
 					ldist = dist;
 					result = e;
@@ -272,7 +278,7 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 		if (Math.abs(yaw) > yawLimit / 2 && Math.abs(yaw) < 360 - (yawLimit / 2)) return false;
 		Vec3 start = Vec3.createVectorHelper(e.posX, e.posY + e.getEyeHeight(), e.posZ);
 		Vec3 end = Vec3.createVectorHelper(xCoord + 0.5 + xO, yCoord + 0.5, zCoord + 0.5 + zO);
-		MovingObjectPosition mop = worldObj.rayTraceBlocks(start, end, true);
+		MovingObjectPosition mop = worldObj.func_147447_a(start, end, false, true, false);
 		return mop == null || (mop.blockX == xCoord && mop.blockY == yCoord && mop.blockZ == zCoord);
 	}
 	
@@ -298,7 +304,7 @@ public class TileEntityReciever extends TileEntityMachineBase implements IInvent
 			if (yaw - ya < -180) yaw += 360;
 			else if (yaw - ya > 180) yaw -= 360;
 			yaw = (yaw + yaw + yaw + ya) / 4;
-			pitch += dist / 10;
+			//pitch += dist / 10;
 			prevTx = t.posX;
 			prevTy = t.posY;
 			prevTz = t.posZ;
