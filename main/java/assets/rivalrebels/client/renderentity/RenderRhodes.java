@@ -241,14 +241,14 @@ public class RenderRhodes extends Render
 			{
 				GL11.glPushMatrix();
 				GL11.glRotatef(rhodes.getbodyyaw(ptt), 0, 1, 0);
-				GL11.glTranslatef(0, 15f, 0);
+				GL11.glTranslatef(0, 10f, 0);
 				Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etbooster);
 		    	booster.renderAll();
 				Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
 				GL11.glPushMatrix();
 				GL11.glRotatef(-90f, 1, 0, 0);
 				GL11.glTranslatef(0, 4, -2);
-				GL11.glScalef(3.0f, 3.0f, 3.0f);
+				GL11.glScalef(2.2f, 2.2f, 2.2f);
 				if (rhodes.b2energy > 0) RenderB2Spirit.shuttle.render();
 				GL11.glPopMatrix();
 				GL11.glPopMatrix();
