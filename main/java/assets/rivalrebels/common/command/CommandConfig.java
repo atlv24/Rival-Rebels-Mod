@@ -23,6 +23,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import assets.rivalrebels.RivalRebels;
+import assets.rivalrebels.client.renderentity.RenderAntimatterBombBlast;
 import assets.rivalrebels.common.entity.EntityB2Spirit;
 import assets.rivalrebels.common.entity.EntityRhodes;
 import assets.rivalrebels.common.explosion.TsarBomba;
@@ -80,6 +81,22 @@ public class CommandConfig extends CommandBase
 				boolean i = Boolean.parseBoolean(str2);
 				EntityB2Spirit.trash = i;
 				sender.addChatMessage(new ChatComponentText("§cb2trash has been set to " + i));
+				return;
+			}
+			if (str.equals("flash"))
+			{
+				String str2 = array[1];
+				boolean i = Boolean.parseBoolean(str2);
+				RivalRebels.antimatterFlash = i;
+				sender.addChatMessage(new ChatComponentText("§cflash has been set to " + i));
+				return;
+			}
+			if (str.equals("bignuke"))
+			{
+				String str2 = array[1];
+				float i = Float.parseFloat(str2);
+				RivalRebels.nukeScale = i;
+				sender.addChatMessage(new ChatComponentText("§cNuke scale is " + i + "x"));
 				return;
 			}
 			if (str.equals("b2leave"))

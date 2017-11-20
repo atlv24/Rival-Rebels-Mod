@@ -36,13 +36,21 @@ public class ModelBlastSphere
 	
 	public void renderModel(float size, float red, float green, float blue, float alpha)
 	{
+		renderModel(size, red, green, blue, alpha, true);
+	}
+	
+	public void renderModel(float size, float red, float green, float blue, float alpha, boolean blend)
+	{
 		GL11.glPushMatrix();
 		GL11.glColor4f(red, green, blue, alpha);
 		GL11.glScalef(size, size, size);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		if (blend)
+		{
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		}
 		for (int i = 0; i < 2; i++)
 		{
 			GL11.glRotatef(i * 180, 0, 0, 1);

@@ -33,12 +33,13 @@ import assets.rivalrebels.common.explosion.TsarBomba;
 
 public class EntityHotPotato extends EntityThrowable
 {
-	public int	ticksInAir	= 0;
+	public int	ticksExisted	= 0;
 	public int round = 0;
 	public int nextx = 0;
 	public int nexty = 0;
 	public int nextz = 0;
 	public boolean dorounds = false;
+	public int charges = RivalRebels.tsarBombaStrength + 9;
 	
 	public EntityHotPotato(World par1World)
 	{
@@ -76,7 +77,7 @@ public class EntityHotPotato extends EntityThrowable
 		nextx = (int)px;
 		nexty = (int)py;
 		nextz = (int)pz;
-		ticksInAir = 1;
+		ticksExisted = 1;
 		dorounds = true;
 	}
 
@@ -89,8 +90,8 @@ public class EntityHotPotato extends EntityThrowable
 		this.lastTickPosX = this.posX;
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
-		++this.ticksInAir;
-		if (ticksInAir < 2 && dorounds)
+		++this.ticksExisted;
+		if (ticksExisted < 2 && dorounds)
 		{
 			RivalRebelsSoundPlayer.playSound(worldObj, 14, 0, posX, posY, posZ, 100);
 			motionX = 0;
@@ -203,15 +204,15 @@ public class EntityHotPotato extends EntityThrowable
 	}
 	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		
+		nbt.setInteger("charge", charges);
 	}
 	
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		
+		charges = nbt.getInteger("charge");
 	}
 	
 	@Override
@@ -250,10 +251,10 @@ public class EntityHotPotato extends EntityThrowable
 	{
 		if (!worldObj.isRemote)
 		{
-			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, RivalRebels.tsarBombaStrength + 9);
-			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar,RivalRebels.tsarBombaStrength + 9);
+			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, charges);
+			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar, charges);
 			worldObj.spawnEntityInWorld(tsarblast);
-			ticksInAir = 0;
+			ticksExisted = 0;
 			round = round - 1;
 			CommandHotPotato.roundinprogress = false;
 			if (round == 0) this.setDead();

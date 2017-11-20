@@ -18,10 +18,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import java.util.HashSet;
 
 import org.lwjgl.input.Keyboard;
 
@@ -30,15 +34,16 @@ import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
 import assets.rivalrebels.common.entity.EntityFlameBall;
 import assets.rivalrebels.common.entity.EntityFlameBall1;
 import assets.rivalrebels.common.entity.EntityFlameBall2;
+import assets.rivalrebels.common.entity.EntityFlameBallGreen;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-public class ItemFlameThrower extends Item
+public class ItemFlameThrower extends ItemTool
 {
 	// HashMap<String, Entity> entities;
 	public ItemFlameThrower()
 	{
-		super();
+		super(1, ToolMaterial.EMERALD, new HashSet());
 		maxStackSize = 1;
 		// entities = new HashMap<String, Entity>();
 		setCreativeTab(RivalRebels.rralltab);
@@ -155,6 +160,10 @@ public class ItemFlameThrower extends Item
 				if (getMode(par1ItemStack) == 0) par3EntityPlayer.inventory.consumeInventoryItem(RivalRebels.fuel);
 				if (getMode(par1ItemStack) == 0) par3EntityPlayer.inventory.consumeInventoryItem(RivalRebels.fuel);
 			}
+			if (par1ItemStack.isItemEnchanted() && !par2World.isRemote)
+			{
+				par2World.spawnEntityInWorld(new EntityFlameBallGreen(par2World, par3EntityPlayer, (float) (Math.random() + 1.0f)));
+			}
 		}
 		else if (!par2World.isRemote)
 		{
@@ -187,17 +196,20 @@ public class ItemFlameThrower extends Item
 							RivalRebelsSoundPlayer.playSound(entity, 8, 1, 0.1f);
 						}
 					}
-					switch (getMode(item))
+					if (!item.isItemEnchanted())
 					{
-						case 0:
-							for (int i = 0; i < 4; i++) world.spawnEntityInWorld(new EntityFlameBall2(world, entity, (float) (Math.random() + 0.5f)));
-						break;
-						case 1:
-							world.spawnEntityInWorld(new EntityFlameBall1(entity.worldObj, entity, 1));
-						break;
-						case 2:
-							world.spawnEntityInWorld(new EntityFlameBall(world, entity, 1));
-						break;
+						switch (getMode(item))
+						{
+							case 0:
+								for (int i = 0; i < 4; i++) world.spawnEntityInWorld(new EntityFlameBall2(world, entity, (float) (Math.random() + 0.5f)));
+							break;
+							case 1:
+								world.spawnEntityInWorld(new EntityFlameBall1(entity.worldObj, entity, 1));
+							break;
+							case 2:
+								world.spawnEntityInWorld(new EntityFlameBall(world, entity, 1));
+							break;
+						}
 					}
 				}
 			}

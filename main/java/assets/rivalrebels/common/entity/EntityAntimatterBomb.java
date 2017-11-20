@@ -26,21 +26,23 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import assets.rivalrebels.RivalRebels;
+import assets.rivalrebels.common.explosion.AntimatterBomb;
 import assets.rivalrebels.common.explosion.NuclearExplosion;
+import assets.rivalrebels.common.explosion.TsarBomba;
 
-public class EntityNuke extends EntityThrowable
+public class EntityAntimatterBomb extends EntityThrowable
 {
 	public int	ticksInAir	= 0;
 	public int aoc = 0;
-	public boolean t = false;
+	public boolean hasTrollface;
 	
-	public EntityNuke(World par1World)
+	public EntityAntimatterBomb(World par1World)
 	{
 		super(par1World);
 		this.setSize(0.5F, 0.5F);
 	}
 	
-	public EntityNuke(World par1World, double x, double y, double z, float yaw, float pitch, int charges, boolean troll)
+	public EntityAntimatterBomb(World par1World, double x, double y, double z, float yaw, float pitch, int charges, boolean troll)
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
@@ -49,19 +51,31 @@ public class EntityNuke extends EntityThrowable
 		prevRotationYaw = rotationYaw = yaw;
 		prevRotationPitch = rotationPitch = pitch;
 		aoc = charges;
-		t = troll;
-		if (!RivalRebels.nukedrop)
+		hasTrollface = troll;
+		if (!RivalRebels.nukedrop && !par1World.isRemote)
 		{
 			explode();
 		}
 	}
-	public EntityNuke(World par1World, double x, double y,double z, double mx, double my, double mz)
+	
+	public EntityAntimatterBomb(World worldObj, float px, float py, float pz, float f, float g, float h)
+	{
+		this(worldObj);
+		setPosition(px, py, pz);
+		yOffset = 0.0F;
+		motionX = f;
+		motionY = g;
+		motionZ = h;
+		aoc = 5;
+		hasTrollface = true;
+	}
+	public EntityAntimatterBomb(World par1World, double x, double y,double z, double mx, double my, double mz, int charges)
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
 		setPosition(x,y,z);
 		yOffset = 0.0F;
-		aoc = 1;
+		aoc = charges;
 		setAnglesMotion(mx, my, mz);
 	}
 	
@@ -182,14 +196,14 @@ public class EntityNuke extends EntityThrowable
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		nbt.setInteger("charge", aoc);
-		nbt.setBoolean("troll", t);
+		nbt.setBoolean("troll", hasTrollface);
 	}
 	
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		aoc = nbt.getInteger("charge");
-		t = nbt.getBoolean("troll");
+		hasTrollface = nbt.getBoolean("troll");
 	}
 	
 	@Override
@@ -210,7 +224,12 @@ public class EntityNuke extends EntityThrowable
 				motionY = Math.max(-motionY, 0.2f);
 				return;
 			}
-			if (m == Material.leaves || m == Material.clay || m == Material.ground || m == Material.plants || m == Material.cake || m == Material.circuits || m == Material.cactus || m == Material.cloth || m == Material.craftedSnow || m == Material.glass || m == Material.grass || m == Material.sand || m == Material.snow || m == Material.wood || m == Material.vine || m == Material.water || m == Material.sponge || m == Material.ice)
+			if (hasTrollface && worldObj.rand.nextInt(10)!=0)
+			{
+				motionY = Math.max(-motionY, 0.2f);
+				return;
+			}
+			else if (!hasTrollface && (m == Material.leaves || m == Material.clay || m == Material.ground || m == Material.plants || m == Material.cake || m == Material.circuits || m == Material.cactus || m == Material.cloth || m == Material.craftedSnow || m == Material.glass || m == Material.grass || m == Material.sand || m == Material.snow || m == Material.wood || m == Material.vine || m == Material.water || m == Material.sponge || m == Material.ice))
 			{
 				worldObj.setBlockToAir(var1.blockX, var1.blockY, var1.blockZ);
 				return;
@@ -229,7 +248,9 @@ public class EntityNuke extends EntityThrowable
 	{
 		if (!worldObj.isRemote)
 		{
-			worldObj.spawnEntityInWorld(new EntityNuclearBlast(worldObj, posX, posY, posZ, aoc, t));
+			AntimatterBomb tsar = new AntimatterBomb((int)posX, (int)posY, (int)posZ, worldObj, (int) ((RivalRebels.tsarBombaStrength + (aoc * aoc)) * 0.8f));
+			EntityAntimatterBombBlast tsarblast = new EntityAntimatterBombBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar, RivalRebels.tsarBombaStrength + (aoc * aoc));
+			worldObj.spawnEntityInWorld(tsarblast);
 			this.setDead();
 		}
 	}

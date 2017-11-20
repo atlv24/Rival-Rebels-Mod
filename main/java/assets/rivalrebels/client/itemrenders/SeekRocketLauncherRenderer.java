@@ -25,6 +25,7 @@ import assets.rivalrebels.client.model.ModelRocketLauncherTube;
 import assets.rivalrebels.client.renderentity.RenderB83;
 import assets.rivalrebels.client.renderentity.RenderRocket;
 import assets.rivalrebels.client.renderentity.RenderSeeker;
+import assets.rivalrebels.client.tileentityrender.TileEntityForceFieldNodeRenderer;
 
 public class SeekRocketLauncherRenderer implements IItemRenderer
 {
@@ -67,6 +68,16 @@ public class SeekRocketLauncherRenderer implements IItemRenderer
 		GL11.glScalef(0.03125f, 0.03125f, 0.03125f);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etrocketseekhandle202);
 		md2.render();
+		if (item.getEnchantmentTagList() != null)
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			md2.render();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
 		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();
@@ -76,6 +87,16 @@ public class SeekRocketLauncherRenderer implements IItemRenderer
 		GL11.glScalef(0.4f, 0.4f, 0.4f);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etseek202);
 		md3.render();
+		if (item.getEnchantmentTagList() != null)
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			md3.render();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
 		GL11.glPopMatrix();
 		
 		float s = 0.0812f;

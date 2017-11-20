@@ -41,7 +41,6 @@ public class EntityB2Spirit extends Entity
 	public static int			staticEntityIndex		= 10;
 	public int					entityIndex				= 10;
 	public boolean dropAnything = true;
-	public boolean randomizer = false;
 	public static boolean randchance = true;
 	public boolean dropOnlyOne = false;
 	public static boolean trash = true;
@@ -143,7 +142,7 @@ public class EntityB2Spirit extends Entity
 			motionZ /= t;
 			rotationYaw = rhodeswing.rotationYaw;
 			rotationPitch = (float) (Math.min(t,90.0));
-			if (t < 25.0)
+			if (t < 25.0 || ticksExisted > 100)
 			{
 				rhodeswing.b2energy = 8000;
 				rhodeswing.freeze = false;
@@ -164,16 +163,18 @@ public class EntityB2Spirit extends Entity
 				if (distfromtarget > 80.0f)
 				{
 					mode = worldObj.rand.nextBoolean() ? 1 : 2;
-					if (!carpet || randomizer)
+					if (trash)
 					{
-						randomizer = true;
 						carpet = true;
 						entityIndex = worldObj.rand.nextInt(ItemRoda.rodaindex);
 					}
-					if (ticksSinceStart > 1000 && randchance)
+					if (leave)
 					{
-						dropAnything = worldObj.rand.nextBoolean() && trash;
-						if (worldObj.rand.nextInt(4) == 1 && leave)
+						if (ticksSinceStart > 1000 && worldObj.rand.nextInt(4) == 1)
+						{
+							motionY = 2.0f;
+						}
+						if (!trash && dropOnlyOne)
 						{
 							motionY = 2.0f;
 						}

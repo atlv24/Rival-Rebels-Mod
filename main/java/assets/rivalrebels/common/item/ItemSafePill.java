@@ -41,6 +41,7 @@ public class ItemSafePill extends Item
 		{
 			player.addChatMessage(new ChatComponentText("§7[§6Status§7]§e Regenerating..."));
 			RivalRebelsSoundPlayer.playSound(player, 15, 1);
+			RivalRebelsSoundPlayer.playSound(player, 28, 18);
 			world.playSoundAtEntity(player, "mob.magmacube.jump", 1.0F, 1.0F);
 			world.playSoundAtEntity(player, "mob.ghast.scream", 1.0F, 1.0F);
 			((EntityLivingBase) player).addPotionEffect(new PotionEffect(Potion.blindness.id, 10, 20));

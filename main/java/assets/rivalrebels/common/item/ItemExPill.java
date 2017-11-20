@@ -38,6 +38,7 @@ public class ItemExPill extends Item
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
 	{
 		RivalRebelsSoundPlayer.playSound(player, 15, 0);
+		RivalRebelsSoundPlayer.playSound(player, 28, 18, 1.0f, 0.6f);
 		player.setItemInUse(item, getMaxItemUseDuration(item));
 		if (!world.isRemote)
 		{

@@ -29,7 +29,7 @@ public class ItemRodRedstone extends ItemRod
 	@Override
 	public boolean isItemTool(ItemStack is)
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

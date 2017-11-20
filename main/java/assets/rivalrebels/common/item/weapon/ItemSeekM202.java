@@ -17,8 +17,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import java.util.HashSet;
+
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.core.RivalRebelsDamageSource;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
@@ -28,11 +33,11 @@ import assets.rivalrebels.common.entity.EntityRocket;
 import assets.rivalrebels.common.entity.EntitySeekB83;
 import assets.rivalrebels.common.explosion.Explosion;
 
-public class ItemSeekM202 extends Item
+public class ItemSeekM202 extends ItemTool
 {
 	public ItemSeekM202()
 	{
-		super();
+		super(1, ToolMaterial.EMERALD, new HashSet());
 		maxStackSize = 1;
 		setCreativeTab(RivalRebels.rralltab);
 	}
@@ -73,7 +78,18 @@ public class ItemSeekM202 extends Item
 			RivalRebelsSoundPlayer.playSound(p, 23, 2, 0.4f);
 			if (!w.isRemote)
 			{
-				w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F));
+				if (i.getEnchantmentTagList() == null)
+				{
+					w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F));
+				}
+				else
+				{
+					w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F, 15.0f));
+					w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F, 7.5f));
+					w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F));
+					w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F, -7.5f));
+					w.spawnEntityInWorld(new EntitySeekB83(w, p, 0.1F, -15.0f));
+				}
 			}
 		}
 		else if (!w.isRemote)

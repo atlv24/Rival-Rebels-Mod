@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.objfileloader.ModelFromObj;
+import assets.rivalrebels.client.tileentityrender.TileEntityForceFieldNodeRenderer;
 
 public class FlamethrowerRenderer implements IItemRenderer
 {
@@ -62,6 +63,16 @@ public class FlamethrowerRenderer implements IItemRenderer
 		// GL11.glTranslatef(0.3f, 0.05f, -0.1f);
 		
 		ft.render();
+		if (item.isItemEnchanted())
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			ft.render();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
 		
 		GL11.glPopMatrix();
 	}

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
+import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.renderhelper.Vertice;
 import assets.rivalrebels.common.tileentity.TileEntityNuclearBomb;
 import cpw.mods.fml.relauncher.Side;
@@ -59,6 +60,8 @@ public class ModelNuclearBomb
 	
 	public void renderModel(boolean hasFuse)
 	{
+		GL11.glPushMatrix();
+		GL11.glScalef(RivalRebels.nukeScale,RivalRebels.nukeScale,RivalRebels.nukeScale);
 		Tessellator tessellator = Tessellator.instance;
 		int itemIcon = 39;
 		float var3 = (itemIcon % 16 * 16 + 0) / 256.0F;
@@ -238,6 +241,7 @@ public class ModelNuclearBomb
 			tessellator.addVertexWithUV(v1.x, v1.y, v1.z, var4, var6);
 			tessellator.draw();
 		}
+		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
 }

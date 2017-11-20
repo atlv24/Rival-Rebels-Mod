@@ -98,6 +98,7 @@ import assets.rivalrebels.common.block.machine.BlockReactor;
 import assets.rivalrebels.common.block.machine.BlockReciever;
 import assets.rivalrebels.common.block.machine.BlockRhodesActivator;
 import assets.rivalrebels.common.block.machine.BlockSigmaObjective;
+import assets.rivalrebels.common.block.trap.BlockAntimatterBomb;
 import assets.rivalrebels.common.block.trap.BlockFlare;
 import assets.rivalrebels.common.block.trap.BlockJump;
 import assets.rivalrebels.common.block.trap.BlockLandMine;
@@ -130,6 +131,8 @@ import assets.rivalrebels.common.core.RivalRebelsRecipes;
 import assets.rivalrebels.common.core.RivalRebelsSoundEventHandler;
 import assets.rivalrebels.common.core.RivalRebelsTab;
 import assets.rivalrebels.common.core.RivalRebelsTranslations;
+import assets.rivalrebels.common.entity.EntityAntimatterBomb;
+import assets.rivalrebels.common.entity.EntityAntimatterBombBlast;
 import assets.rivalrebels.common.entity.EntityB2Frag;
 import assets.rivalrebels.common.entity.EntityB2Spirit;
 import assets.rivalrebels.common.entity.EntityB83;
@@ -141,6 +144,7 @@ import assets.rivalrebels.common.entity.EntityDebris;
 import assets.rivalrebels.common.entity.EntityFlameBall;
 import assets.rivalrebels.common.entity.EntityFlameBall1;
 import assets.rivalrebels.common.entity.EntityFlameBall2;
+import assets.rivalrebels.common.entity.EntityFlameBallGreen;
 import assets.rivalrebels.common.entity.EntityGasGrenade;
 import assets.rivalrebels.common.entity.EntityGoo;
 import assets.rivalrebels.common.entity.EntityGore;
@@ -216,6 +220,7 @@ import assets.rivalrebels.common.item.weapon.ItemSeekM202;
 import assets.rivalrebels.common.item.weapon.ItemTesla;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import assets.rivalrebels.common.round.RivalRebelsRound;
+import assets.rivalrebels.common.tileentity.TileEntityAntimatterBomb;
 import assets.rivalrebels.common.tileentity.TileEntityConduit;
 import assets.rivalrebels.common.tileentity.TileEntityForceFieldNode;
 import assets.rivalrebels.common.tileentity.TileEntityGore;
@@ -258,7 +263,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"X";
+	public static final String				rrversion		= mcversion+"Y";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()
@@ -362,6 +367,8 @@ public class RivalRebels// extends DummyModContainer
 	public static boolean 					elevation = true;
 	public static int						nametagrange = 7;
 	public static String					bombertype = "b2";
+	public static float						nukeScale = 1.0f;
+	public static boolean 					antimatterFlash = true;
 	
 	public static Block						amario;
 	public static Block						aquicksand;
@@ -439,6 +446,7 @@ public class RivalRebels// extends DummyModContainer
 	public static Block						buildrhodes;
 	public static Block						rhodesactivator;
 	public static Block						theoreticaltsarbombablock;
+	public static Block						antimatterbombblock;
 	
 	public static Item						rpg;
 	public static Item						flamethrower;
@@ -542,6 +550,7 @@ public class RivalRebels// extends DummyModContainer
 	public static ResourceLocation			guirhodeshelp;
 	public static ResourceLocation			guicarpet;
 	public static ResourceLocation			guitheoreticaltsar;
+	public static ResourceLocation			guitantimatterbomb;
 	
 	public static ResourceLocation			etdisk0;
 	public static ResourceLocation			etdisk1;
@@ -607,6 +616,9 @@ public class RivalRebels// extends DummyModContainer
 	public static ResourceLocation			etwacknuke;
 	public static ResourceLocation			ettupolev;
 	public static ResourceLocation			etbooster;
+	public static ResourceLocation			etflameballgreen;
+	public static ResourceLocation			etantimatterbomb;
+	public static ResourceLocation			etantimatterblast;
 	
 	public static ResourceLocation			btcrate;
 	public static ResourceLocation			btnuketop;
@@ -707,6 +719,8 @@ public class RivalRebels// extends DummyModContainer
 		tsarBombaSpeed = config.get("explosionsize", "tsarBombaSpeed", 8).getInt();
 		elevation = config.get("explosionsize", "elevation", true).getBoolean(true);
 		nukedrop = config.get("explosionsize", "nukedrop", true).getBoolean(true);
+		antimatterFlash = config.get("explosionsize", "antimatterFlash", true).getBoolean(true);
+		nukeScale = (float) config.get("explosionsize", "nukeScale", 1f).getDouble(1f);
 		config.addCustomCategoryComment("explosionsize", "Measured in blocks. Nuclear bomb just adds the specified number to its calculation.");
 		
 		flamethrowerDecay = config.get("decay", "FlamethrowerDecay", 64).getInt();
@@ -816,6 +830,7 @@ public class RivalRebels// extends DummyModContainer
 		guirhodeshelp = new ResourceLocation("rivalrebels:textures/gui/rhodes-gui_help.png");
 		guicarpet = new ResourceLocation("rivalrebels:textures/gui/v.png");
 		guitheoreticaltsar = new ResourceLocation("rivalrebels:textures/gui/w.png");
+		guitantimatterbomb = new ResourceLocation("rivalrebels:textures/gui/x.png");
 		
 		etdisk0 = new ResourceLocation("rivalrebels:textures/entity/ba.png");
 		etdisk1 = new ResourceLocation("rivalrebels:textures/entity/bb.png");
@@ -876,8 +891,11 @@ public class RivalRebels// extends DummyModContainer
 		ettheoreticaltsarshell2 = new ResourceLocation("rivalrebels:textures/entity/ce.png");
 		etblacktsar = new ResourceLocation("rivalrebels:textures/entity/cf.png");
 		etwacknuke = new ResourceLocation("rivalrebels:textures/entity/cg.png");
+		etflameballgreen = new ResourceLocation("rivalrebels:textures/entity/ch.png");
+		etantimatterbomb = new ResourceLocation("rivalrebels:textures/entity/ci.png");
 		ettupolev = new ResourceLocation("rivalrebels:textures/entity/tupolev.png");
 		etbooster = new ResourceLocation("rivalrebels:textures/entity/booster.png");
+		etantimatterblast = new ResourceLocation("rivalrebels:textures/entity/cj.png");
 		
 		btcrate = new ResourceLocation("rivalrebels:textures/blocks/ah.png");
 		btnuketop = new ResourceLocation("rivalrebels:textures/blocks/ay.png");
@@ -1035,6 +1053,7 @@ public class RivalRebels// extends DummyModContainer
 		buildrhodes = (new BlockRhodesScaffold()).setHardness(2F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
 		rhodesactivator = (new BlockRhodesActivator()).setHardness(0.1F).setResistance(100F).setCreativeTab(rralltab).setBlockName("rivalrebels.blocks." + (nextNum++));
 		theoreticaltsarbombablock = (new BlockTheoreticalTsarBomba()).setHardness(5.0F).setLightLevel(0.4F).setBlockName("rivalrebels.blocks." + (nextNum++));
+		antimatterbombblock = (new BlockAntimatterBomb()).setHardness(5.0F).setLightLevel(0.4F).setBlockName("rivalrebels.blocks." + (nextNum++));
 		
 		nextNum = 0;
 		GameRegistry.registerBlock(amario, "rivalrebelsblock" + (nextNum++));
@@ -1113,6 +1132,7 @@ public class RivalRebels// extends DummyModContainer
 		GameRegistry.registerBlock(buildrhodes, "rivalrebelsblock" + (nextNum++));
 		GameRegistry.registerBlock(rhodesactivator, "rivalrebelsblock" + (nextNum++));
 		GameRegistry.registerBlock(theoreticaltsarbombablock, "rivalrebelsblock" + (nextNum++));
+		GameRegistry.registerBlock(antimatterbombblock, "rivalrebelsblock" + (nextNum++));
 	}
 	
 	private void registerItems()
@@ -1308,6 +1328,7 @@ public class RivalRebels// extends DummyModContainer
 		GameRegistry.registerTileEntity(TileEntityMeltDown.class, "rivalrebelstileentity" + ++nextNum);
 		GameRegistry.registerTileEntity(TileEntityRhodesActivator.class, "rivalrebelstileentity" + ++nextNum);
 		GameRegistry.registerTileEntity(TileEntityTheoreticalTsarBomba.class, "rivalrebelstileentity" + ++nextNum);
+		GameRegistry.registerTileEntity(TileEntityAntimatterBomb.class, "rivalrebelstileentity" + ++nextNum);
 		nextNum = -1;
 		EntityRegistry.registerModEntity(EntityGasGrenade.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 		EntityRegistry.registerModEntity(EntityCuchillo.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
@@ -1359,6 +1380,9 @@ public class RivalRebels// extends DummyModContainer
 		EntityRegistry.registerModEntity(EntityBomb.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 		EntityRegistry.registerModEntity(EntityTheoreticalTsar.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 		EntityRegistry.registerModEntity(EntityTheoreticalTsarBlast.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
+		EntityRegistry.registerModEntity(EntityFlameBallGreen.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
+		EntityRegistry.registerModEntity(EntityAntimatterBomb.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
+		EntityRegistry.registerModEntity(EntityAntimatterBombBlast.class, "rivalrebelsentity" + ++nextNum, nextNum, this, 250, 1, true);
 	}
 	
 	private void registerGuis()

@@ -30,10 +30,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import assets.rivalrebels.RivalRebels;
+import assets.rivalrebels.common.entity.EntityAntimatterBomb;
 import assets.rivalrebels.common.entity.EntityB83;
 import assets.rivalrebels.common.entity.EntityBomb;
 import assets.rivalrebels.common.entity.EntityCuchillo;
@@ -92,7 +94,8 @@ public class ItemRoda extends Item
 			"nuke",
 			"tsar",
 			"theoreticaltsar",
-			"fatnuke"
+			"fatnuke",
+			"antimatter"
 		};
 	static float[] randoms = new float[]{
 			0.1f,			
@@ -111,6 +114,7 @@ public class ItemRoda extends Item
 			0.1f,
 			0.1f,
 			0.0f,
+			0.1f,
 			0.1f,
 			0.1f,
 			0.1f,
@@ -160,6 +164,7 @@ public class ItemRoda extends Item
 			3.0f,
 			3.0f,
 			3.0f,
+			3.0f,
 			3.0f
 		};
 	public static int[] rates = new int[]{
@@ -193,7 +198,8 @@ public class ItemRoda extends Item
 			20,
 			20,
 			20,
-			20
+			20,
+			1
 		};
 	public static int rodaindex = 23;
 	
@@ -361,6 +367,9 @@ public class ItemRoda extends Item
 		case 30:
 			e = new EntityHotPotato(world, x,y,z,mx,my,mz);
 		break;
+		case 31:
+			e = new EntityAntimatterBomb(world, x,y,z,mx,my,mz,1);
+		break;
 		}
 		if (world.isRemote) return;
 		if (e != null)
@@ -390,7 +399,8 @@ public class ItemRoda extends Item
 		player.swingItem();
 		//if (world.isRemote) return item;
 		RivalRebelsPlayer rrp = RivalRebels.round.rrplayerlist.getForName(player.getCommandSenderName());
-		if (rrp != null && (rrp.rrrank == RivalRebelsRank.LEADER || rrp.rrrank == RivalRebelsRank.OFFICER || rrp.rrrank == RivalRebelsRank.REP))
+		if (MinecraftServer.getServer().isSinglePlayer()
+		 || (rrp != null && (rrp.rrrank == RivalRebelsRank.LEADER || rrp.rrrank == RivalRebelsRank.OFFICER || rrp.rrrank == RivalRebelsRank.REP)))
 		{
 			//if (world.isRemote) return item;
 			player.setItemInUse(item, 256);

@@ -13,15 +13,20 @@ package assets.rivalrebels.common.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.minecraft.item.Item.ToolMaterial;
+
+import java.util.HashSet;
+
 import assets.rivalrebels.RivalRebels;
 
-public class ItemRod extends Item
+public class ItemRod extends ItemTool
 {
-	public int	power;
+	public int power;
 	
 	public ItemRod()
 	{
-		super();
+		super(1, ToolMaterial.EMERALD, new HashSet());
 		maxStackSize = 1;
 		this.setMaxDamage(32);
 		setCreativeTab(RivalRebels.rralltab);
@@ -30,7 +35,7 @@ public class ItemRod extends Item
 	@Override
 	public boolean isItemTool(ItemStack is)
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

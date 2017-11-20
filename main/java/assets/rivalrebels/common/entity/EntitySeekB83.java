@@ -72,6 +72,24 @@ public class EntitySeekB83 extends EntityInanimate implements IProjectile
 		setThrowableHeading(motionX, motionY, motionZ, 0.5f, 1f);
 	}
 	
+	public EntitySeekB83(World par1World, EntityPlayer entity2, float par3, float yawdelta)
+	{
+		super(par1World);
+		thrower = entity2;
+		fins = false;
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(entity2.posX, entity2.posY + entity2.getEyeHeight(), entity2.posZ, entity2.rotationYaw + yawdelta, entity2.rotationPitch);
+		posX -= (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+		posY -= 0.0D;
+		posZ -= (MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+		setPosition(posX, posY, posZ);
+		yOffset = 0.0F;
+		motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+		motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+		motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
+		setThrowableHeading(motionX, motionY, motionZ, 0.5f, 1f);
+	}
+	
 	public EntitySeekB83(World w, double x, double y, double z, double mx, double my, double mz)
 	{
 		super(w);

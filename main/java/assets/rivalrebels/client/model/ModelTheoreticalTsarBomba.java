@@ -36,6 +36,8 @@ public class ModelTheoreticalTsarBomba
 	
 	public void render()
 	{
+		GL11.glPushMatrix();
+		GL11.glScalef(RivalRebels.nukeScale,RivalRebels.nukeScale,RivalRebels.nukeScale);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glPushMatrix();
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettheoreticaltsarshell1);
@@ -116,7 +118,8 @@ public class ModelTheoreticalTsarBomba
 				new Vertice(0f, -5f, -0.5f),
 				new Vertice(0f, -3.5f, -0.5f),
 				new Vertice(0f, -3.5f, -1.4f), t1, t2, t3, t4);
-		
+
+		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
 }
