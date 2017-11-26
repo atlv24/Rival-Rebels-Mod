@@ -399,7 +399,7 @@ public class ItemRoda extends Item
 		player.swingItem();
 		//if (world.isRemote) return item;
 		RivalRebelsPlayer rrp = RivalRebels.round.rrplayerlist.getForName(player.getCommandSenderName());
-		if (MinecraftServer.getServer().isSinglePlayer()
+		if ((MinecraftServer.getServer() != null && MinecraftServer.getServer().isSinglePlayer())
 		 || (rrp != null && (rrp.rrrank == RivalRebelsRank.LEADER || rrp.rrrank == RivalRebelsRank.OFFICER || rrp.rrrank == RivalRebelsRank.REP)))
 		{
 			//if (world.isRemote) return item;

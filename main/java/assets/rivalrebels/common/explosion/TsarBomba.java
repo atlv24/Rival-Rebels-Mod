@@ -118,7 +118,7 @@ public class TsarBomba
 			
 			for (int Y = y; Y > ylimit; Y--)
 			{
-				if (Y == 0) continue;
+				if (Y == 0) break;
 				Block block = worldObj.getBlock(x + posX, Y, z + posZ);
 				if (block == RivalRebels.omegaobj) RivalRebels.round.winSigma();
 				else if (block == RivalRebels.sigmaobj) RivalRebels.round.winOmega();
@@ -140,7 +140,7 @@ public class TsarBomba
 				if (metadata > 15) metadata = 15;
 				for (int Y = ylimit; Y > ylimit - (worldObj.rand.nextInt(5) + 2); Y--)
 				{
-					if (Y == 0) continue;
+					if (Y == 0) break;
 					Block block = worldObj.getBlock(x + posX, Y, z + posZ);
 					if (block == RivalRebels.omegaobj) RivalRebels.round.winSigma();
 					else if (block == RivalRebels.sigmaobj) RivalRebels.round.winOmega();
@@ -161,7 +161,7 @@ public class TsarBomba
 				if (metadata > 15) metadata = 15;
 				for (int Y = ylimit; Y > ylimit - treeHeight; Y--)
 				{
-					if (Y == 0) continue;
+					if (Y == 0) break;
 					worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedwood);
 					worldObj.setBlockMetadataWithNotify(x + posX, Y, z + posZ, metadata, 3);
 				}
@@ -182,7 +182,7 @@ public class TsarBomba
 				if (metadata > 15) metadata = 15;
 				for (int Y = ylimit; Y >= 0; Y--)
 				{
-					if (Y == 0) continue;
+					if (Y == 0) break;
 					int yy = Y + y;
 					Block blockID = worldObj.getBlock(x + posX, yy, z + posZ);
 					if (blockID == RivalRebels.omegaobj) RivalRebels.round.winSigma();

@@ -47,7 +47,7 @@ public class AntimatterBomb
 		//int radiussmaller = (radius >> 2) + 45;
 		//if (radiussmaller < radius) radius = radiussmaller;
 		nlimit = ((radius + 25) * (radius + 25)) * 4;
-		rad = rad*rad;
+		rad = rad*rad/2;
 		if (world.isRemote) return;
 		System.out.println("radius:" + radius);
 		System.out.println("Nlimit:" + nlimit);
@@ -115,11 +115,11 @@ public class AntimatterBomb
 			int y = getTopBlock(x + posX, z + posZ, dist);
 			float yele = posY + (y - posY) * 0.5f;
 			if (RivalRebels.elevation) yele = y;
-			int ylimit = (int) Math.floor(yele - Math.min((radius - dist) / 2, 5.0f));
+			int ylimit = (int) Math.floor(yele - (radius - dist) * 4);
 			
 			for (int Y = y; Y > ylimit; Y--)
 			{
-				if (Y == 0) continue;
+				if (Y == 0) break;
 				Block block = worldObj.getBlock(x + posX, Y, z + posZ);
 				if (block == RivalRebels.omegaobj) RivalRebels.round.winSigma();
 				else if (block == RivalRebels.sigmaobj) RivalRebels.round.winOmega();
@@ -129,42 +129,13 @@ public class AntimatterBomb
 			double limit = (radius / 2) + worldObj.rand.nextInt(radius / 4) + 7.5;
 			if (dist < limit)
 			{
-				int blockType = worldObj.rand.nextInt(4) + 1;
-				if (x >= 0 && z < 0) blockType = 1;
-				if (x > 0 && z >= 0) blockType = 2;
-				if (x <= 0 && z > 0) blockType = 3;
-				if (x < 0 && z <= 0) blockType = 4;
-				int metadata = (int) Math.ceil((16d / limit) * dist);
-				metadata -= (radius / 10) - 1;
-				if (metadata < 0) metadata = -metadata;
-				metadata++;
-				if (metadata > 15) metadata = 15;
 				for (int Y = ylimit; Y > ylimit - (worldObj.rand.nextInt(5) + 2); Y--)
 				{
-					if (Y == 0) continue;
+					if (Y == 0) break;
 					Block block = worldObj.getBlock(x + posX, Y, z + posZ);
 					if (block == RivalRebels.omegaobj) RivalRebels.round.winSigma();
 					else if (block == RivalRebels.sigmaobj) RivalRebels.round.winOmega();
-					if (blockType == 1) worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedstone1);
-					else if (blockType == 2) worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedstone2);
-					else if (blockType == 3) worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedstone3);
-					else worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedstone4);
-					worldObj.setBlockMetadataWithNotify(x + posX, Y, z + posZ, metadata, 3);
-				}
-			}
-			
-			if (isTree)
-			{
-				isTree = false;
-				int metadata = (int) Math.floor((16d / radius) * dist);
-				if (metadata < 0) metadata = 0;
-				metadata++;
-				if (metadata > 15) metadata = 15;
-				for (int Y = ylimit; Y > ylimit - treeHeight; Y--)
-				{
-					if (Y == 0) continue;
-					worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedwood);
-					worldObj.setBlockMetadataWithNotify(x + posX, Y, z + posZ, metadata, 3);
+					worldObj.setBlock(x + posX, Y, z + posZ, Blocks.obsidian);
 				}
 			}
 			
@@ -209,22 +180,7 @@ public class AntimatterBomb
 			else
 			{
 				Block blockID = worldObj.getBlock(x + posX, y, z + posZ);
-				if (blockID == Blocks.bedrock)
-				;
-				else if (blockID != null && !blockID.isOpaqueCube()) worldObj.setBlock(x + posX, y, z + posZ, Blocks.air);
-				if (isTree)
-				{
-					isTree = false;
-					int metadata = (int) Math.floor((16d / radius) * dist);
-					if (metadata < 0) metadata = 0;
-					metadata++;
-					if (metadata > 15) metadata = 15;
-					for (int Y = ylimit; Y > ylimit - treeHeight; Y--)
-					{
-						worldObj.setBlock(x + posX, Y, z + posZ, RivalRebels.petrifiedwood);
-						worldObj.setBlockMetadataWithNotify(x + posX, Y, z + posZ, metadata, 3);
-					}
-				}
+				if (blockID != null && !blockID.isOpaqueCube()) worldObj.setBlock(x + posX, y, z + posZ, Blocks.air);
 			}
 			return true;
 		}

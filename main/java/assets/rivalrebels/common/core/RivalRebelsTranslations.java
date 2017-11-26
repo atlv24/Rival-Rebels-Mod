@@ -234,7 +234,7 @@ public class RivalRebelsTranslations
 			{"RivalRebels.trap", "Trap","Trampa","Armadilha","Ловушка","Trappola","Falle","Ansa","Trap","陷阱","Lõks","Trap", "Jebakan", "Piège", "فخ", "Pułapka"},
 			{"RivalRebels.Defuse","§7[§6Defuse§7]§e","§7[§6Desactivar§7]§e","§7[§6Desativar§7]§e","§7[§6Деактивировать§7]§e","§7[§6Disattivare§7]§e","§7[§6Deaktivieren§7]§e","§7[§6Deaktivoida§7]§e","§7[§6Deactiveren§7]§e","§7[§6停用§7]§e","§7[§6Deaktiveerima§7]§e","§7[§6Deaktivovat§7]§e", "§7[§Jinakkan§7]§e", "§7[§6Désamorcer§7]§e", "§7[§6نزع الفتيل§7]§e", "§7[§6Rozbrajanie§7]§e"},
 			{"RivalRebels.ads.tray","ADS","ADS","ADS","ADS","ADS","ADS","ADS","ADS","ADS","ADS","ADS", "ADS", "ADS", "نظام الدفاع التلقائي", "ADS"},
-			{"RivalRebels.antimatterbomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb","Antimatter Bomb", "Antimatter Bomb", "Antimatter Bomb", "Antimatter Bomb", "Antimatter Bomb"},
+			{"RivalRebels.antimatterbomb","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter","Antimatter", "Antimatter", "Antimatter", "Antimatter", "Antimatter"},
 			{"RivalRebels.ads.dragon","Dragon","Dragón","Dragão","Дракон","Drago","Drachen","lohikäärme","Draak","龍","Draakon","Drak", "Naga", "Dragon", "تنين", "Smok"},
 			{RivalRebels.roda,"Roda","Roda","Roda","Roda","Roda","Roda","Roda","Roda","Roda","Roda","Roda", "Roda", "Roda", "رودا", "Roda"},
 			{RivalRebels.hackm202,"M202-Hack","M202-Hack","M202-Hack","Взоманный M202","M202-Hack","M202-Hack","M202-Hack","M202-Hack","M202-Hack","M202-Hack","M202-Hack", "M202-Hack", "M202-Hack", "M202-تعديل ", "M202-Hack"},
