@@ -46,12 +46,13 @@ public class RenderTsarBlast extends Render
 		{
 			double elev = tsar.time / 5f;
 			GL11.glTranslated(x, y + elev, z);
-			modelsphere.renderModel(tsar.time, 1, 1, 1, 1);
+			modelsphere.renderModel(tsar.time * RivalRebels.shroomScale, 1, 1, 1, 1);
 		}
 		else if (tsar.time < 300 && radius - RivalRebels.tsarBombaStrength > 9)
 		{
 			double elev = (tsar.time - 60f) / 4f;
 			GL11.glTranslated(x, y + elev, z);
+			GL11.glScalef(RivalRebels.shroomScale,RivalRebels.shroomScale,RivalRebels.shroomScale);
 			GL11.glPushMatrix();
 			GL11.glRotatef((float) (elev * 2), 0, 1, 0);
 			GL11.glRotatef((float) (elev * 3), 1, 0, 0);
@@ -77,6 +78,7 @@ public class RenderTsarBlast extends Render
 		{
 			Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettsarflame);
 			GL11.glTranslated(x, y + 10 + ((tsar.motionX - 0.1d) * 14.14213562), z);
+			GL11.glScalef(RivalRebels.shroomScale,RivalRebels.shroomScale,RivalRebels.shroomScale);
 			GL11.glScalef((float) (radius * 0.116f), (float) (radius * 0.065f), (float) (radius * 0.116f));
 			model.render();
 		}

@@ -203,6 +203,7 @@ public class EntityTheoreticalTsar extends EntityThrowable
 	{
 		aoc = nbt.getInteger("charge");
 		hasTrollface = nbt.getBoolean("troll");
+		prevRotationYaw = rotationYaw = nbt.getFloat("rot");
 	}
 	
 	@Override

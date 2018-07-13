@@ -90,6 +90,7 @@ public class EntityHotPotato extends EntityThrowable
 		this.lastTickPosX = this.posX;
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
+		if (ticksExisted == -100) explode();
 		++this.ticksExisted;
 		if (ticksExisted < 2 && dorounds)
 		{
@@ -213,6 +214,7 @@ public class EntityHotPotato extends EntityThrowable
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		charges = nbt.getInteger("charge");
+		if (charges == 0) charges = RivalRebels.tsarBombaStrength + 9;
 	}
 	
 	@Override
@@ -257,7 +259,7 @@ public class EntityHotPotato extends EntityThrowable
 			ticksExisted = 0;
 			round = round - 1;
 			CommandHotPotato.roundinprogress = false;
-			if (round == 0) this.setDead();
+			if (round <= 0) this.setDead();
 		}
 	}
 }

@@ -99,6 +99,14 @@ public class CommandConfig extends CommandBase
 				sender.addChatMessage(new ChatComponentText("§cNuke scale is " + i + "x"));
 				return;
 			}
+			if (str.equals("bigshroom"))
+			{
+				String str2 = array[1];
+				float i = Float.parseFloat(str2);
+				RivalRebels.shroomScale = i;
+				sender.addChatMessage(new ChatComponentText("§cMushroom scale is " + i + "x"));
+				return;
+			}
 			if (str.equals("b2leave"))
 			{
 				String str2 = array[1];
@@ -185,7 +193,7 @@ public class CommandConfig extends CommandBase
 				return;
 			}
 		}
-		sender.addChatMessage(new ChatComponentText("§cUsage: /rrconfig nuketime|nukedrop|b2chance|nukepancake|dragon|b2"));
+		sender.addChatMessage(new ChatComponentText("§cUsage: /rrconfig nuketime|nukedrop|bignuke|bigshroom|flash|b2chance|nukepancake|dragon|b2"));
 	}
 	/**
      * Adds the strings available in this command to the given list of tab completion options.

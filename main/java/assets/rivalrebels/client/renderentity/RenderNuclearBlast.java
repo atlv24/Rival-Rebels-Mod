@@ -31,12 +31,19 @@ public class RenderNuclearBlast extends Render
 	private float	ring2			= 0;
 	private float	ring3			= 0;
 	private float	height			= 0;
+	static ModelBlastRing model;
 	
 	private int		textureCoordx	= 0;
 	private int		textureCoordy	= 0;
 	
+	public RenderNuclearBlast()
+	{
+		 model = new ModelBlastRing();
+	}
+	
 	public void renderNuclearBlast(EntityNuclearBlast enb, double x, double y, double z, float yaw, float pitch)
 	{
+		GL11.glPushMatrix();
 		if (enb.ticksExisted == 0)
 		{
 			ring1 = 0;
@@ -67,10 +74,9 @@ public class RenderNuclearBlast extends Render
 		
 		if (enb.ticksExisted < 600)
 		{
-			ModelBlastRing model = new ModelBlastRing();
-			model.renderModel(ring1 * 15, 64, 4, 0.5f, 0, 0, 0, (float) x, (float) y - 3, (float) z);
-			model.renderModel(ring2, 32, 1, 0.5f, 0, 0, 0, (float) x, (float) y + height + ring3, (float) z);
-			model.renderModel(ring3, 32, 2, 0.5f, 0, 0, 0, (float) x, (float) y + height + 7 + ring2, (float) z);
+			model.renderModel(RivalRebels.shroomScale * ring1 * 15, 64, 4, 0.5f, 0, 0, 0, (float) x, (float) y - 3, (float) z);
+			model.renderModel(RivalRebels.shroomScale * ring2, 32, 1, 0.5f, 0, 0, 0, (float) x, (float) y + height + ring3, (float) z);
+			model.renderModel(RivalRebels.shroomScale * ring3, 32, 2, 0.5f, 0, 0, 0, (float) x, (float) y + height + 7 + ring2, (float) z);
 			if (enb.ticksExisted > 550)
 			{
 				ring2 += 0.1;
@@ -98,6 +104,7 @@ public class RenderNuclearBlast extends Render
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y - 10, z);
+		GL11.glScalef(RivalRebels.shroomScale,RivalRebels.shroomScale,RivalRebels.shroomScale);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glScalef(0.5F + (float) enb.motionY * 0.3F, 2.6F + (float) enb.motionY * 0.3F, 0.5F + (float) enb.motionY * 0.3F);
@@ -261,6 +268,7 @@ public class RenderNuclearBlast extends Render
 		}
 		
 		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
 	

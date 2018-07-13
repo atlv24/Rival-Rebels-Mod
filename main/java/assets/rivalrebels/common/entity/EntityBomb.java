@@ -189,7 +189,7 @@ public class EntityBomb extends EntityThrowable
 			
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-			float var17 = 0.9f;
+			float var17 = 0.95f;
 			float var18 = this.getGravityVelocity();
 			
 			this.motionX *= var17;

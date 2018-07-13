@@ -26,22 +26,24 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import assets.rivalrebels.RivalRebels;
+import assets.rivalrebels.common.explosion.AntimatterBomb;
 import assets.rivalrebels.common.explosion.NuclearExplosion;
+import assets.rivalrebels.common.explosion.TachyonBomb;
 import assets.rivalrebels.common.explosion.TsarBomba;
 
-public class EntityTsar extends EntityThrowable
+public class EntityTachyonBomb extends EntityThrowable
 {
 	public int	ticksInAir	= 0;
 	public int aoc = 0;
 	public boolean hasTrollface;
 	
-	public EntityTsar(World par1World)
+	public EntityTachyonBomb(World par1World)
 	{
 		super(par1World);
 		this.setSize(0.5F, 0.5F);
 	}
 	
-	public EntityTsar(World par1World, double x, double y, double z, float yaw, float pitch, int charges, boolean troll)
+	public EntityTachyonBomb(World par1World, double x, double y, double z, float yaw, float pitch, int charges, boolean troll)
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
@@ -51,13 +53,13 @@ public class EntityTsar extends EntityThrowable
 		prevRotationPitch = rotationPitch = pitch;
 		aoc = charges;
 		hasTrollface = troll;
-		if (!RivalRebels.nukedrop)
+		if (!RivalRebels.nukedrop && !par1World.isRemote)
 		{
 			explode();
 		}
 	}
 	
-	public EntityTsar(World worldObj, float px, float py, float pz, float f, float g, float h)
+	public EntityTachyonBomb(World worldObj, float px, float py, float pz, float f, float g, float h)
 	{
 		this(worldObj);
 		setPosition(px, py, pz);
@@ -68,7 +70,7 @@ public class EntityTsar extends EntityThrowable
 		aoc = 5;
 		hasTrollface = true;
 	}
-	public EntityTsar(World par1World, double x, double y,double z, double mx, double my, double mz, int charges)
+	public EntityTachyonBomb(World par1World, double x, double y,double z, double mx, double my, double mz, int charges)
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
@@ -248,8 +250,8 @@ public class EntityTsar extends EntityThrowable
 	{
 		if (!worldObj.isRemote)
 		{
-			TsarBomba tsar = new TsarBomba((int)posX, (int)posY, (int)posZ, worldObj, (int) ((RivalRebels.tsarBombaStrength + (aoc * aoc)) * 0.8f));
-			EntityTsarBlast tsarblast = new EntityTsarBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar, RivalRebels.tsarBombaStrength + (aoc * aoc));
+			TachyonBomb tsar = new TachyonBomb((int)posX, (int)posY, (int)posZ, worldObj, (int) ((RivalRebels.tsarBombaStrength + (aoc * aoc)) * 1.0f));
+			EntityTachyonBombBlast tsarblast = new EntityTachyonBombBlast(worldObj, (int)posX, (int)posY, (int)posZ, tsar, RivalRebels.tsarBombaStrength + (aoc * aoc));
 			worldObj.spawnEntityInWorld(tsarblast);
 			this.setDead();
 		}

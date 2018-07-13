@@ -48,6 +48,7 @@ public class RenderAntimatterBombBlast extends Render
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glPushMatrix();
+		GL11.glScalef(RivalRebels.shroomScale,RivalRebels.shroomScale,RivalRebels.shroomScale);
 		GL11.glColor3f(0.0f, 0.0f, 0.2f);
 		float size = (tsar.time % 100) * 2.0f;
 		modelring.renderModel(size, 64, 6f, 2f, 0f, 0f, 0f, (float)x, (float)y, (float)z);

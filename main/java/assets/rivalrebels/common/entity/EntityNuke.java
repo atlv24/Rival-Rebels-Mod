@@ -190,6 +190,7 @@ public class EntityNuke extends EntityThrowable
 	{
 		aoc = nbt.getInteger("charge");
 		t = nbt.getBoolean("troll");
+		prevRotationYaw = rotationYaw = nbt.getFloat("rot");
 	}
 	
 	@Override

@@ -20,6 +20,7 @@ import assets.rivalrebels.client.gui.GuiLoader;
 import assets.rivalrebels.client.gui.GuiNuclearBomb;
 import assets.rivalrebels.client.gui.GuiOptiFineWarning;
 import assets.rivalrebels.client.gui.GuiReactor;
+import assets.rivalrebels.client.gui.GuiTachyonBomb;
 import assets.rivalrebels.client.gui.GuiTesla;
 import assets.rivalrebels.client.gui.GuiTheoreticalTsar;
 import assets.rivalrebels.client.gui.GuiTray;
@@ -30,6 +31,7 @@ import assets.rivalrebels.common.container.ContainerLoader;
 import assets.rivalrebels.common.container.ContainerNuclearBomb;
 import assets.rivalrebels.common.container.ContainerReactor;
 import assets.rivalrebels.common.container.ContainerReciever;
+import assets.rivalrebels.common.container.ContainerTachyonBomb;
 import assets.rivalrebels.common.container.ContainerTheoreticalTsar;
 import assets.rivalrebels.common.container.ContainerTsar;
 import assets.rivalrebels.common.tileentity.TileEntityAntimatterBomb;
@@ -38,6 +40,7 @@ import assets.rivalrebels.common.tileentity.TileEntityLoader;
 import assets.rivalrebels.common.tileentity.TileEntityNuclearBomb;
 import assets.rivalrebels.common.tileentity.TileEntityReactor;
 import assets.rivalrebels.common.tileentity.TileEntityReciever;
+import assets.rivalrebels.common.tileentity.TileEntityTachyonBomb;
 import assets.rivalrebels.common.tileentity.TileEntityTheoreticalTsarBomba;
 import assets.rivalrebels.common.tileentity.TileEntityTsarBomba;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -55,6 +58,10 @@ public class RivalRebelsGuiHandler implements IGuiHandler
 		if (tileEntity instanceof TileEntityAntimatterBomb)
 		{
 			return new ContainerAntimatterBomb(player.inventory, (TileEntityAntimatterBomb) tileEntity);
+		}
+		if (tileEntity instanceof TileEntityTachyonBomb)
+		{
+			return new ContainerTachyonBomb(player.inventory, (TileEntityTachyonBomb) tileEntity);
 		}
 		if (tileEntity instanceof TileEntityTheoreticalTsarBomba)
 		{
@@ -94,6 +101,10 @@ public class RivalRebelsGuiHandler implements IGuiHandler
 		if (tileEntity instanceof TileEntityAntimatterBomb)
 		{
 			return new GuiAntimatterBomb(player.inventory, (TileEntityAntimatterBomb) tileEntity);
+		}
+		if (tileEntity instanceof TileEntityTachyonBomb)
+		{
+			return new GuiTachyonBomb(player.inventory, (TileEntityTachyonBomb) tileEntity);
 		}
 		if (tileEntity instanceof TileEntityTheoreticalTsarBomba)
 		{

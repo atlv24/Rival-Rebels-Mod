@@ -214,8 +214,12 @@ public class EntityRhodes extends Entity
 		}
 		if (forcecolor == -1)
 		{
-			colorType = (byte) RivalRebels.rhodesTeams[lastct++];
-			if (lastct == RivalRebels.rhodesTeams.length) lastct = 0;
+			colorType = (byte) RivalRebels.rhodesTeams[lastct];
+			if (!w.isRemote)
+			{
+				lastct++;
+				if (lastct == RivalRebels.rhodesTeams.length) lastct = 0;
+			}
 		}
 		else
 		{
@@ -241,7 +245,7 @@ public class EntityRhodes extends Entity
 			nukecount *= 0.25;
 			rocketcount *= 0.004;
 		}
-		health = health - 5000 + (int)(5000 * scale);
+		health = health - 5000 + (int)(5000 * Math.min(scale,4));
 		boundingBox.setBounds(-5*scale, -15*scale, -5*scale, 5*scale, 15*scale, 5*scale);
 		setPosition(x, y, z);
 		if (!worldObj.isRemote) PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING " + getName() + " RivalRebels.tsar.armed"));
@@ -703,6 +707,26 @@ public class EntityRhodes extends Entity
 				else if (e instanceof EntityTsar)
 				{
 					((EntityTsar) e).ticksInAir = -100;
+					this.attackEntityFrom(DamageSource.generic, 100);
+				}
+				else if (e instanceof EntityTheoreticalTsar)
+				{
+					((EntityTheoreticalTsar) e).ticksInAir = -100;
+					this.attackEntityFrom(DamageSource.generic, 100);
+				}
+				else if (e instanceof EntityAntimatterBomb)
+				{
+					((EntityAntimatterBomb) e).ticksInAir = -100;
+					this.attackEntityFrom(DamageSource.generic, 100);
+				}
+				else if (e instanceof EntityTachyonBomb)
+				{
+					((EntityTachyonBomb) e).ticksInAir = -100;
+					this.attackEntityFrom(DamageSource.generic, 100);
+				}
+				else if (e instanceof EntityHotPotato)
+				{
+					((EntityHotPotato) e).ticksExisted = -100;
 					this.attackEntityFrom(DamageSource.generic, 100);
 				}
 				else if (e instanceof EntityB83NoShroom)

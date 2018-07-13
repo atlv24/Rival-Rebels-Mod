@@ -150,6 +150,7 @@ public class EntityFlameBallGreen extends EntityInanimate
 		lastTickPosZ = posZ;
 		super.onUpdate();
 		ticksExisted++;
+		if (ticksExisted > 100) setDead();
 		if (ticksExisted % 3 == 0) sequence++;
 		if (sequence > 3) sequence = 0;
 		

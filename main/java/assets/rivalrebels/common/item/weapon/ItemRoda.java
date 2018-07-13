@@ -55,6 +55,7 @@ import assets.rivalrebels.common.entity.EntityRaytrace;
 import assets.rivalrebels.common.entity.EntityRocket;
 import assets.rivalrebels.common.entity.EntityRoddiskRebel;
 import assets.rivalrebels.common.entity.EntitySeekB83;
+import assets.rivalrebels.common.entity.EntityTachyonBomb;
 import assets.rivalrebels.common.entity.EntityTheoreticalTsar;
 import assets.rivalrebels.common.entity.EntityTsar;
 import assets.rivalrebels.common.explosion.NuclearExplosion;
@@ -95,7 +96,8 @@ public class ItemRoda extends Item
 			"tsar",
 			"theoreticaltsar",
 			"fatnuke",
-			"antimatter"
+			"antimatter",
+			"tachyon"
 		};
 	static float[] randoms = new float[]{
 			0.1f,			
@@ -114,6 +116,7 @@ public class ItemRoda extends Item
 			0.1f,
 			0.1f,
 			0.0f,
+			0.1f,
 			0.1f,
 			0.1f,
 			0.1f,
@@ -165,6 +168,7 @@ public class ItemRoda extends Item
 			3.0f,
 			3.0f,
 			3.0f,
+			3.0f,
 			3.0f
 		};
 	public static int[] rates = new int[]{
@@ -199,6 +203,7 @@ public class ItemRoda extends Item
 			20,
 			20,
 			20,
+			1,
 			1
 		};
 	public static int rodaindex = 23;
@@ -369,6 +374,9 @@ public class ItemRoda extends Item
 		break;
 		case 31:
 			e = new EntityAntimatterBomb(world, x,y,z,mx,my,mz,1);
+		break;
+		case 32:
+			e = new EntityTachyonBomb(world, x,y,z,mx,my,mz,1);
 		break;
 		}
 		if (world.isRemote) return;
