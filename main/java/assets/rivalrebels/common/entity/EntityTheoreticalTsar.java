@@ -83,6 +83,7 @@ public class EntityTheoreticalTsar extends EntityThrowable
 		motionX = mx;
 		motionY = my;
 		motionZ = mz;
+		if (mx*mx+my*my+mz*mz<0.01) return;
 		prevRotationYaw = rotationYaw = (float) (Math.atan2(mx, mz) * 180.0D / Math.PI);
 		prevRotationPitch = rotationPitch = (float) (Math.atan2(my, MathHelper.sqrt_double(mx * mx + mz * mz)) * 180.0D / Math.PI);
 	}
@@ -155,7 +156,9 @@ public class EntityTheoreticalTsar extends EntityThrowable
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 		if (posY < 0) setDead();
-		
+
+		if (this.ridingEntity==null)
+		{
 		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		
@@ -181,6 +184,7 @@ public class EntityTheoreticalTsar extends EntityThrowable
 		
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.05F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.05F;
+		}
 		float var17 = 0.98f;
 		float var18 = this.getGravityVelocity();
 		

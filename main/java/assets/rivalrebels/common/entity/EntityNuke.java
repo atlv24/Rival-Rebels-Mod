@@ -142,7 +142,9 @@ public class EntityNuke extends EntityThrowable
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 		if (posY < 0) setDead();
-		
+
+		if (this.ridingEntity==null)
+		{
 		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		
@@ -168,6 +170,7 @@ public class EntityNuke extends EntityThrowable
 		
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.05F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.05F;
+		}
 		float var17 = 0.98f;
 		float var18 = this.getGravityVelocity();
 		

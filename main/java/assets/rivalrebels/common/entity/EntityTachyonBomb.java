@@ -158,6 +158,8 @@ public class EntityTachyonBomb extends EntityThrowable
 		this.posZ += this.motionZ;
 		if (posY < 0) setDead();
 		
+		if (this.ridingEntity==null)
+		{
 		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		
@@ -179,6 +181,7 @@ public class EntityTachyonBomb extends EntityThrowable
 		while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
 		{
 			this.prevRotationYaw += 360.0F;
+		}
 		}
 		
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.05F;

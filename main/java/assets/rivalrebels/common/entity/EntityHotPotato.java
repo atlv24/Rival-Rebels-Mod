@@ -51,10 +51,8 @@ public class EntityHotPotato extends EntityThrowable
 	{
 		super(par1World);
 		setSize(0.5F, 0.5F);
-		setLocationAndAngles(x+0.5f, y+0.5f, z+0.5f, 0, 0);
+		setPosition(x+0.5f, y+0.5f, z+0.5f);
 		yOffset = 0.0F;
-		prevRotationYaw = rotationYaw = 0;
-		prevRotationPitch = rotationPitch = 0;
 		round = count;
 		nextx = x;
 		nexty = y;
@@ -71,8 +69,6 @@ public class EntityHotPotato extends EntityThrowable
 		motionY = g;
 		motionZ = h;
 		yOffset = 0.0F;
-		prevRotationYaw = rotationYaw = 0;
-		prevRotationPitch = rotationPitch = 0;
 		round = 1;
 		nextx = (int)px;
 		nexty = (int)py;
@@ -99,10 +95,8 @@ public class EntityHotPotato extends EntityThrowable
 			motionY = 0;
 			motionZ = 0;
 			setSize(0.5F, 0.5F);
-			setLocationAndAngles(nextx+0.5f, nexty+0.5f, nextz+0.5f, 0, 0);
+			setPosition(nextx+0.5f, nexty+0.5f, nextz+0.5f);
 			yOffset = 0.0F;
-			prevRotationYaw = rotationYaw = 0;
-			prevRotationPitch = rotationPitch = 0;
 			worldObj.setBlock(nextx, nexty-400, nextz, RivalRebels.jump);
 			setPosition(posX, posY, posZ);
 			return;
@@ -169,6 +163,8 @@ public class EntityHotPotato extends EntityThrowable
 		this.posZ += this.motionZ;
 		if (posY < 0) setDead();
 		
+		if (this.ridingEntity==null)
+		{
 		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		
@@ -194,6 +190,7 @@ public class EntityHotPotato extends EntityThrowable
 		
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.05F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.05F;
+		}
 		float var17 = 0.98f;
 		float var18 = this.getGravityVelocity();
 		
@@ -215,6 +212,7 @@ public class EntityHotPotato extends EntityThrowable
 	{
 		charges = nbt.getInteger("charge");
 		if (charges == 0) charges = RivalRebels.tsarBombaStrength + 9;
+		prevRotationYaw = rotationYaw = nbt.getFloat("rot");
 	}
 	
 	@Override

@@ -142,6 +142,8 @@ public class EntityB83 extends EntityThrowable
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
+		if (this.ridingEntity==null)
+		{
 		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 		
@@ -167,6 +169,7 @@ public class EntityB83 extends EntityThrowable
 		
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+		}
 		float var17 = 0.9f;
 		float var18 = this.getGravityVelocity();
 		
