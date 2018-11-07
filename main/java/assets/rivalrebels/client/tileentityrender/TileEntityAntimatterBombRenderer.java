@@ -37,6 +37,7 @@ public class TileEntityAntimatterBombRenderer extends TileEntitySpecialRenderer
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d + 0.5F, (float) d1 + 1.0F, (float) d2 + 0.5F);
+		GL11.glScalef(RivalRebels.nukeScale,RivalRebels.nukeScale,RivalRebels.nukeScale);
 		int metadata = tile.getBlockMetadata();
 		
 		if (metadata == 2)

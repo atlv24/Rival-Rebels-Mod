@@ -42,8 +42,8 @@ public class RenderNuke extends Render
 	{
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPushMatrix();
-		GL11.glScalef(RivalRebels.nukeScale,RivalRebels.nukeScale,RivalRebels.nukeScale);
 		GL11.glTranslatef((float) x, (float) y, (float) z);
+		GL11.glScalef(RivalRebels.nukeScale,RivalRebels.nukeScale,RivalRebels.nukeScale);
 		GL11.glRotatef(b83.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(b83.rotationPitch - 90.0f, 0.0F, 0.0F, 1.0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etwacknuke);

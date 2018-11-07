@@ -267,7 +267,7 @@ public class RivalRebels// extends DummyModContainer
 	public static final String				MODID			= "rivalrebels";
 	public static final String				rrname			= "Rival Rebels";
 	public static final String				mcversion		= "1.7.10";
-	public static final String				rrversion		= mcversion+"Z";
+	public static final String				rrversion		= mcversion+"Z1";
 	public static final String				packagename		= "assets.rivalrebels.";
 	
 	/*public RivalRebels()
