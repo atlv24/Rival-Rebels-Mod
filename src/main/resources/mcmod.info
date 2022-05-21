@@ -1,0 +1,21 @@
+[
+{
+  "modid": "rivalrebels",
+  "name": "Rival Rebels",
+  "description": "Rival Rebels is a PvP war mod with powerful weapons",
+  "version": "1.7.10Z1",
+  "mcversion": "1.7.10",
+  "url": "rivalrebels.com",
+  "updateUrl": "rivalrebels.com/download",
+  "authorList": [
+    "rodolphito"
+  ],
+  "credits": "rodolphito",
+  "logoFile": "assets/rivalrebels/textures/gui/h.png",
+  "screenshots": [
+  ],
+  "parent": "",
+  "dependencies": [
+  ]
+}
+]

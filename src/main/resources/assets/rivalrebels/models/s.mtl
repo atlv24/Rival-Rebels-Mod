@@ -1,0 +1,11 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl None
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd /Users/atlas/Desktop/Projects/Rival Rebels Mod/forge-1.7.10-10.13.4.1614-1.7.10-src/src/main/resources/assets/rivalrebels/textures/entity/flame.png
